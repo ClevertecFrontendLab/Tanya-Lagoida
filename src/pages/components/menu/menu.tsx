@@ -1,0 +1,109 @@
+import React, {useState} from 'react';
+import {NavLink, useLocation, useParams} from 'react-router-dom';
+
+import {booksCategories} from '../../constants/constants-menu';
+import {LabelText} from '../../labels/labels';
+import menu from '../../images/stroke.svg';
+
+import {
+    BookCategoriesStyle,
+    BooksCategoriesContainer, CategoryAmount,
+    MenuStyles, MenuTermsContainer, ProfileAndExitContainer,
+    RulesAndContract,
+    ShowcaseBooksBox, ShowMenu
+} from './styles';
+import {useMediaQuery} from '../../hooks/use-media-query';
+import {device} from '../../main/styles';
+
+type TMenuProps = {
+    setIsMenuCollapsed?: (value: boolean) => void
+}
+
+export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
+    const {category} = useParams();
+    const location = useLocation();
+    const isLaptopView = useMediaQuery(`${device.laptopL}`);
+
+    const initialIsMenuOpenValue = location.pathname.includes('/books') || location.pathname === '/';
+
+    const [isMenuOpen, setMenuOpen] = useState<boolean>(initialIsMenuOpenValue);
+    const handleHideBookMenu = (): void => {
+        setMenuOpen((previousValue) => !previousValue);
+    };
+    const handleCloseMenu = (): void => {
+        if (setIsMenuCollapsed) {
+            setIsMenuCollapsed(true);
+        }
+    };
+    const handleCloseBookMenu = (): void => {
+        setMenuOpen(false);
+    };
+
+    const handleFunction = (): void => {
+        handleCloseMenu();
+        handleCloseBookMenu();
+    };
+
+    return (
+        <MenuStyles>
+            <NavLink to="/books/all">
+                <ShowcaseBooksBox
+                    onClick={handleHideBookMenu}
+                    isActive={location.pathname.includes('/books')}
+                    data-test-id={isLaptopView ? 'navigation-showcase' : 'burger-showcase'}
+                >
+                    <LabelText variantText="medium18">Витрина книг</LabelText>
+                    <ShowMenu
+                        isMenuOpen={isMenuOpen}
+                        src={menu} alt=""
+                        isActive={location.pathname.includes('/books')}
+                    />
+                </ShowcaseBooksBox>
+            </NavLink>
+            <BooksCategoriesContainer isMenuOpen={isMenuOpen}>
+                {
+                    booksCategories.map((bookCategory) =>
+                        <NavLink key={bookCategory.id} to={`/books/${bookCategory.category}`}
+                                 onClick={handleCloseMenu}
+                                 data-test-id={bookCategory.category === 'all' ?
+                                     (isLaptopView ? 'navigation-books' : 'burger-books') : ''}>
+                            <div>
+                                <BookCategoriesStyle isActive={category === bookCategory.category}>
+                                    <LabelText
+                                        variantText={category === bookCategory.category ? 'medium18LS' : 'medium16'}>{bookCategory.name}</LabelText>
+                                </BookCategoriesStyle>
+                                <CategoryAmount>
+                                    <LabelText
+                                        variantText="medium14">{bookCategory.amount}</LabelText>
+                                </CategoryAmount>
+                            </div>
+                        </NavLink>
+                    )
+                }
+            </BooksCategoriesContainer>
+            <MenuTermsContainer>
+                <NavLink to="/terms" onClick={handleFunction}
+                         data-test-id={isLaptopView ? 'navigation-terms' : 'burger-terms'}>
+                    <RulesAndContract isActive={location.pathname === '/terms'}>
+                        <LabelText variantText="medium18LS">Правила пользования</LabelText>
+                    </RulesAndContract>
+                </NavLink>
+                <NavLink to="/contract" onClick={handleFunction}
+                         data-test-id={isLaptopView ? 'navigation-contract' : 'burger-contract'}>
+                    <RulesAndContract isActive={location.pathname === '/contract'}>
+                        <LabelText variantText="medium18LS">Договор оферты</LabelText>
+                    </RulesAndContract>
+                </NavLink>
+            </MenuTermsContainer>
+            <ProfileAndExitContainer>
+                <LabelText variantText="medium18LS">Профиль</LabelText>
+                <LabelText variantText="medium18LS">Выход</LabelText>
+            </ProfileAndExitContainer>
+        </MenuStyles>
+    );
+};
+
+
+
+
+
