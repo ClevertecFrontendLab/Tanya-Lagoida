@@ -10,9 +10,9 @@ export const Button = styled.button<TButtonProps>`
     text-transform: uppercase;
     background: ${props => props.status === 'inStock'
         ? `linear-gradient(231.58deg, ${EColors.Red} -53.35%, ${EColors.Yellow} 297.76%)`
-        : props.status === 'booked' ? EColors.White : EColors.LightGrey};
+        : props.status === 'booking' ? EColors.White : EColors.LightGrey};
     color: ${props => props.status === 'inStock' ? EColors.White
-        : props.status === 'booked' ? EColors.DarkGrey : EColors.Grey};
+        : props.status === 'booking' ? EColors.DarkGrey : EColors.Grey};
     border-radius: 30px;
     border: 1px solid ${EColors.GreyBorder};
     width: ${(props) => props.width};

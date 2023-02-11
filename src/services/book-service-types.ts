@@ -86,8 +86,8 @@ export type TBooksByIdType = {
     ]
 }
 
-export type TBooksGenresType =  Array<{
+export type TBooksGenresType = {
     name: string
     path: string
     id: number
-}>
+}

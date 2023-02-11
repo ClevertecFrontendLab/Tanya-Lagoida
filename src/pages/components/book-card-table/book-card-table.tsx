@@ -18,10 +18,11 @@ import {
     ContainerTableView, ImgContainer,
     Name, StarLabel, StarsBoxBookCardTable,
 } from './styles';
-import {TBooksType} from '../../../services/book-service-types';
+import { TBooksGenresType, TBooksType } from '../../../services/book-service-types';
 
 type TProps = {
     dataBooks: Array<TBooksType>
+    dataCategories: Array<TBooksGenresType>
 }
 export const BookCardTable: React.FC<TProps> = ({dataBooks}) => {
     const navigate = useNavigate();

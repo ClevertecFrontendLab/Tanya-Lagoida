@@ -19,10 +19,12 @@ import {
 } from './styles';
 import {useMediaQuery} from '../../hooks/use-media-query';
 import {device} from '../../main/styles';
-import {TBooksType} from '../../../services/book-service-types';
+import { TBooksGenresType, TBooksType } from '../../../services/book-service-types';
 
 type TProps = {
     dataBooks: Array<TBooksType>
+    dataCategories: Array<TBooksGenresType>
+
 }
 
 export const BookCardList: React.FC<TProps> = ({dataBooks}) => {
@@ -85,8 +87,8 @@ export const BookCardList: React.FC<TProps> = ({dataBooks}) => {
                             <ButtonComponent status={book.status}
                                              width={isMobileView ? '186px' : '174px'} height="40px">
                                 <LabelText
-                                    variantText="smallLS">{book.status === 'inStock' ? 'Забронировать' :
-                                    book.status === 'isUsed' ? 'Занята до 03.05' : 'Забронирована'}</LabelText>
+                                    variantText="smallLS">{book.booking.order === true ? 'Забронирована' :
+                                    book.delivery.handed === true ? 'Занята до 03.05' : 'Забронировать'}</LabelText>
 
                             </ButtonComponent>
                         </RatingAndButtonList>
