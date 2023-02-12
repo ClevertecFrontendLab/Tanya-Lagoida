@@ -3,7 +3,7 @@ export type TBooksType = {
     rating: number
     title: string
     authors: string[]
-    image: { url: string }
+    image: { url: string } | null
     categories: string[]
     id: number
     booking: {
@@ -30,7 +30,18 @@ export type TBooksType = {
         }
     ]
 }
-
+export type TCommentsType = {
+    id: number
+    rating: number
+    text: string
+    createdAt: string
+    user: {
+        commentUserId: number
+        firstName: string
+        lastName: string
+        avatarUrl: string
+    }
+}
 export type TBooksByIdType = {
     id: number
     title: string
@@ -45,22 +56,9 @@ export type TBooksByIdType = {
     ISBN: string
     producer: string
     authors: string[]
-    images:Array<{url: string}>
+    images: Array<{url: string}> | null
     categories: string[]
-    comments: [
-        {
-            id: number
-            rating: number
-            text: string
-            createdAt: string
-            user: {
-                commentUserId: number
-                firstName: string
-                lastName: string
-                avatarUrl: string
-            }
-        }
-    ]
+    comments: Array<TCommentsType> | null
     booking: {
         id: number
         order: boolean

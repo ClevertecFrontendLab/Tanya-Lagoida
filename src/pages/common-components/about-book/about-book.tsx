@@ -5,8 +5,13 @@ import {LabelText} from '../../labels/labels';
 import {device} from '../../main/styles';
 
 import {AboutBookContainer, AboutBookText, AboutBookTop} from './styles';
+import {TBooksByIdType} from '../../../services/book-service-types';
 
-export const AboutBook = () => {
+type TProps = {
+    book?: TBooksByIdType
+}
+
+export const AboutBook: React.FC<TProps> = ({book}) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const isLaptopView = useMediaQuery(`${device.laptopL}`);
 
@@ -17,10 +22,7 @@ export const AboutBook = () => {
         </AboutBookTop>
         <AboutBookText>
             <LabelText  variantText={isMobileView ? 'smallNorm' : 'medium16LH24'}>
-                Алгоритмы  — это всего лишь пошаговые алгоритмы решения задач, и  большинство таких задач уже были кем-то  решены, протестированы и проверены. Можно, конечно, погрузится в глубокую философию гениального Кнута, изучить многостраничные фолианты с  доказательствами и  обоснованиями, но хотите ли  вы  тратить на  это свое время?
-                <br/>
-                <br/>
-                Откройте великолепно иллюстрированную книгу и вы сразу поймете, что алгоритмы — это просто. А грокать алгоритмы  это веселое и увлекательное занятие.
+                {book?.description}
             </LabelText>
         </AboutBookText>
     </AboutBookContainer>

@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 import { device } from '../../main/styles';
 import { EColors } from '../../themes/themes';
-import {TBooks} from '../../constants/constants-book';
 
 export const RatingContainer = styled.div`
 
@@ -63,7 +62,7 @@ export const StarsBox = styled.div`
     display: flex;
     gap: 12px;
 `;
-export const AmountBox = styled.div<TBooks>`
+export const AmountBox = styled.div<{rating?: number}>`
     @media screen and ${device.mobileS} {
         padding-left: ${(props) => props.rating ? '24px' : '0'} ;
     }

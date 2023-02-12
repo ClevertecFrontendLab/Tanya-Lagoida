@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-import {TBooks} from '../../constants/constants-book';
 import {device} from '../../main/styles';
 import {EColors} from '../../themes/themes';
 
@@ -45,9 +44,9 @@ export const BookCoverContainer = styled.div`
 
     }
 `;
-export const ImgContainer = styled.img<TBooks>`
-    width: ${(props) => props.cover === undefined ? '48px' : 'inherit'};
-    height: ${(props) => props.cover === undefined ? '48px' : 'inherit'};
+export const ImgContainer = styled.img<{image: string}>`
+    width: ${(props) => props.image === undefined ? '48px' : 'inherit'};
+    height: ${(props) => props.image === undefined ? '48px' : 'inherit'};
 `;
 export const Name = styled.div`
     @media screen and ${device.mobileS} {

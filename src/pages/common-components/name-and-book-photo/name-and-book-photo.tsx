@@ -6,19 +6,17 @@ import {device} from '../../main/styles';
 import {NameBookPhotoAndAboutBookLaptop} from './name-and-book-photo-laptop';
 import {NameBookPhotoAndAboutBookMobile} from './name-and-book-photo-mobile';
 import {NameBookPhotoAndAboutBookTablet} from './name-and-book-photo-tablet';
-import {TBooksByIdType, TBooksType} from '../../../services/book-service-types';
+import {TBooksByIdType} from '../../../services/book-service-types';
 
 type TProps = {
-    bookData?: TBooksByIdType
+    book?: TBooksByIdType
 }
 
-export const NameBookPhotoAndAboutBook: React.FC<TProps> = ({bookData}) => {
+export const NameBookPhotoAndAboutBook: React.FC<TProps> = ({book}) => {
     const isTabletView = useMediaQuery(`${device.tablet}`);
     const isLaptopLView = useMediaQuery(`${device.laptopL}`);
 
-    if (isLaptopLView) return <NameBookPhotoAndAboutBookLaptop bookData={bookData}/>;
-    if (isTabletView) return <NameBookPhotoAndAboutBookTablet bookData={bookData}/>;
-
-    return <NameBookPhotoAndAboutBookMobile bookData={bookData}/>;
-
+    if (isLaptopLView) return <NameBookPhotoAndAboutBookLaptop book={book}/>;
+    if (isTabletView) return <NameBookPhotoAndAboutBookTablet book={book}/>;
+    return <NameBookPhotoAndAboutBookMobile book={book}/>;
 };

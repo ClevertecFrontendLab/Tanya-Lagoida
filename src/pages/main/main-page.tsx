@@ -11,8 +11,7 @@ import {
 export const MainPage = () => {
     const { data: dataBooks = [], isLoading: isLoadingBooks, isFetching: isFetchingBooks, isError: isErrorBooks } = useGettingAListOfBooksQuery()
     const { data: dataCategories = [], isLoading: isLoadingCategories, isFetching: isFetchingCategories, isError: isErrorCategories } = useGettingAListOfBookGenresQuery()
-    console.log(dataBooks);
-    console.log(dataCategories);
+
     const [isListView, setIsListView] = useState<boolean>(false);
     const handleIsListView = (value: boolean): void => setIsListView(value);
 
@@ -20,7 +19,7 @@ export const MainPage = () => {
         return (
             <BlockNavigationAndContent>
                 <Navigation handleIsListView={handleIsListView} isListView={isListView} />
-                <Content isListView={isListView} dataBooks={dataBooks} dataCategories={dataCategories}/>
+                <Content isListView={isListView} dataBooks={dataBooks} />
             </BlockNavigationAndContent>
         )
 

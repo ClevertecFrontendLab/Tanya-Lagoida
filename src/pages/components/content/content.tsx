@@ -8,21 +8,20 @@ import { TBooksGenresType, TBooksType } from '../../../services/book-service-typ
 
 type TProps = {
     isListView: boolean
-    dataBooks: Array<TBooksType>
-    dataCategories: Array<TBooksGenresType>
+    dataBooks: TBooksType[]
 }
-export const Content: React.FC<TProps> = ({isListView, dataBooks, dataCategories}) => {
+export const Content: React.FC<TProps> = ({isListView, dataBooks, ...restProps}) => {
     if (isListView) {
         return (
             <ContentStylesForDesktopListView>
-                <BookCardList dataBooks={dataBooks} dataCategories={dataCategories}/>
+                <BookCardList dataBooks={dataBooks} />
             </ContentStylesForDesktopListView>
         );
     }
 
     return (
         <ContentStylesForDesktopTableView>
-            <BookCardTable dataBooks={dataBooks} dataCategories={dataCategories}/>
+            <BookCardTable dataBooks={dataBooks} />
         </ContentStylesForDesktopTableView>
     );
 };

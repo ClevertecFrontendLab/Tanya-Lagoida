@@ -9,10 +9,9 @@ export const LayoutMainPage = () => {
     const isLaptopView = useMediaQuery(`${device.laptopL}`);
     return (
         <Center>
-        {isLaptopView ? <Menu /> : null }
-
-        <Outlet/>
-    </Center>
-    )
-}
+            {isLaptopView ? <Menu/> : null}
+            <Outlet/>
+        </Center>
+    );
+};
 

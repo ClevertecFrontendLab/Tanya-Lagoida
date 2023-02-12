@@ -3,15 +3,16 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import {Pagination} from 'swiper';
-import {TBooks} from '../../constants/constants-book';
 import {
     MySwiperTwo,
     SwiperSlideTwo,
 } from './styles';
+import {TBooksByIdType} from '../../../services/book-service-types';
+import {EEndPoints} from '../../../config/endpoints';
 
 
 export type TProps = {
-    book?: TBooks
+    book?: TBooksByIdType
 }
 
 export const SwiperTabletAndMobile: React.FC<TProps> = ({book}) => (
@@ -19,14 +20,17 @@ export const SwiperTabletAndMobile: React.FC<TProps> = ({book}) => (
     <MySwiperTwo
         spaceBetween={0}
         grabCursor={true}
+        loop={true}
         pagination={{
             clickable: true,
+            dynamicMainBullets: 8,
+
         }}
         modules={[Pagination]}
         data-test-id="slide-big"
     >
-        {book?.cover?.map((photo) =>
-            <SwiperSlideTwo key={photo.id}> <img src={photo.img} alt=""/></SwiperSlideTwo>)
+        {book?.images?.map((photo) =>
+            <SwiperSlideTwo key={photo.url}> <img src={`${EEndPoints.baseUrl}${photo.url}`} alt=""/></SwiperSlideTwo>)
         }
     </MySwiperTwo>
 );

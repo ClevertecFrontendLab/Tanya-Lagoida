@@ -1,7 +1,6 @@
 import React from 'react';
 import {SwiperLaptop} from '../../components/swiper/swiper-for-laptop';
 import {ButtonComponent} from '../../components/button/button-component';
-import {TBooks} from '../../constants/constants-book';
 import {LabelText} from '../../labels/labels';
 import {AboutBook} from '../about-book/about-book';
 
@@ -14,45 +13,55 @@ import {
 } from './laptop-styles';
 import withoutCover from '../../images/icon-without-cover.svg';
 import {ImgContainerForSwiper} from '../../components/swiper/styles';
-import {TBooksByIdType, TBooksType} from '../../../services/book-service-types';
+import {TBooksByIdType} from '../../../services/book-service-types';
 
 
 type TProps = {
-    bookData?: TBooksByIdType
+    book?: TBooksByIdType
 }
 
-export const NameBookPhotoAndAboutBookLaptop: React.FC<TProps> = ({bookData}) => (
+export const NameBookPhotoAndAboutBookLaptop: React.FC<TProps> = ({book}) => (
 
-    <ContainerLaptopStyles bookData={bookData}>
-        <PhotoBox bookData={bookData}>
-            {book?.cover === undefined ?
+    <ContainerLaptopStyles images={book?.images}>
+        <PhotoBox images={book?.images}>
+            {book?.images ?
+                <SwiperLaptop book={book}/>
+                :
                 <ImgContainerForSwiper>
                     <img src={withoutCover} alt='' />
                 </ImgContainerForSwiper>
-                : <SwiperLaptop book={book}/>}
+                }
         </PhotoBox>
         <RightContainerBook>
             <NameAndAuthorContainer>
                 <BookName>
                     <LabelText variantText="large">
-                        {book?.bookName}
+                        {book?.title}
                     </LabelText>
                 </BookName>
                 <AuthorName>
-                    <LabelText variantText="medium18">
-                        {book?.bookAuthor}
-                    </LabelText>
+                    {
+                        book?.authors.map((author) =>
+                            <LabelText variantText="medium18" key={author}>
+                                {author}
+                            </LabelText>)
+                    }
                 </AuthorName>
             </NameAndAuthorContainer>
             <ButtonBookContainer>
-                <ButtonComponent status={book?.status} width="350px" height="52px">
+                <ButtonComponent
+                    status={book?.booking ? 'booking'
+                        : book?.delivery ? 'delivery'
+                            : 'inStock'}
+                    width="350px"
+                    height="52px">
                     <LabelText variantText="medium16LS">
-                        {book?.status === 'inStock' ? 'Забронировать' :
-                        book?.status === 'isUsed' ? 'Занята до 03.05' : 'Забронирована'}
+                        {book?.booking ? 'Забронирована' :
+                        book?.delivery ? 'Занята до 03.05' : 'Забронировать'}
                     </LabelText>
                 </ButtonComponent>
             </ButtonBookContainer>
-            <AboutBook/>
+            <AboutBook book={book}/>
         </RightContainerBook>
     </ContainerLaptopStyles>
 );

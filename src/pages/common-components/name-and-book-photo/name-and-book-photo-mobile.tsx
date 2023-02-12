@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { ButtonComponent } from '../../components/button/button-component';
-import { TBooks} from '../../constants/constants-book';
 import { LabelText } from '../../labels/labels';
 import { AboutBook } from '../about-book/about-book';
 
@@ -19,37 +18,43 @@ import withoutCover from '../../images/icon-without-cover.svg';
 import {TBooksByIdType} from '../../../services/book-service-types';
 
 type TProps = {
-    bookData?: TBooksByIdType
+    book?: TBooksByIdType
 }
-export const NameBookPhotoAndAboutBookMobile: React.FC<TProps> = ({bookData}) => (
+export const NameBookPhotoAndAboutBookMobile: React.FC<TProps> = ({book}) => (
     <ContainerTabletStylesMobile>
-        <PhotoBoxMobile bookData={bookData}>
-            {book?.cover === undefined ?
+        <PhotoBoxMobile images={book?.images}>
+            {book?.images ? <SwiperTabletAndMobile  book={book}/>
+                :
                 <ImgContainerForSwiper>
                     <img src={withoutCover} alt='' />
                 </ImgContainerForSwiper>
-                : <SwiperTabletAndMobile  book={book}/>
             }
         </PhotoBoxMobile>
         <BookNameMobile>
             <LabelText variantText='medium18'>
-                {book?.bookName}
+                {book?.title}
             </LabelText>
         </BookNameMobile>
         <AuthorName>
-            <LabelText variantText='small400'>
-                {book?.bookAuthor}
-            </LabelText>
+            {
+                book?.authors.map((author) =>
+                    <LabelText variantText="small400" key={author}>
+                        {author}
+                    </LabelText>)
+            }
         </AuthorName>
         <ButtonBookContainerMobile>
-            <ButtonComponent status={book?.status} width='288px' height='40px'>
-                <LabelText variantText='smallLS'>{book?.status === 'inStock'
-                    ? 'Забронировать'
-                    : book?.status === 'isUsed' ? 'Занята до 03.05' : 'Забронирована'}
+            <ButtonComponent
+                status={book?.booking ? 'booking'
+                    : book?.delivery ? 'delivery'
+                        : 'inStock'}
+                width='288px' height='40px'>
+                <LabelText variantText='smallLS'>
+                    {book?.booking ? 'Забронирована' :
+                        book?.delivery ? 'Занята до 03.05' : 'Забронировать'}
                 </LabelText>
             </ButtonComponent>
         </ButtonBookContainerMobile>
-        <AboutBook/>
+        <AboutBook book={book}/>
     </ContainerTabletStylesMobile>
 );
-

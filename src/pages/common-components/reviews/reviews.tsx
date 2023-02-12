@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 
 import {ButtonComponent} from '../../components/button/button-component';
-import {TBooks, TFeedback} from '../../constants/constants-book';
 import {useMediaQuery} from '../../hooks/use-media-query';
 import starWithoutColor from '../../images/icon_star-without-color.png';
 import hideReviews from '../../images/stroke-black.svg';
@@ -17,9 +16,11 @@ import {
     ReviewsContainer, ReviewsText, RightBlockUserName, StarsBox, UserNameAndData,
     UserPhoto,
 } from './styles';
+import {TBooksByIdType} from '../../../services/book-service-types';
+import {EEndPoints} from '../../../config/endpoints';
 
 type TProps = {
-    book?: TBooks
+    book?: TBooksByIdType
 }
 export const Reviews: React.FC<TProps> = ({book}) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
@@ -34,34 +35,32 @@ export const Reviews: React.FC<TProps> = ({book}) => {
     return (
         <ReviewsContainer>
             <CommonContainerReviews
-                rating={book?.rating}
-                isReviewsOpen={isReviewsOpen}
-                cover={book?.cover}>
+                comments={book?.comments}
+                isReviewsOpen={isReviewsOpen}>
                 <LabelText variantText="medium18">Отзывы</LabelText>
                 <ReviewsAmount>
-                    <LabelText variantText="medium14">{book?.feedbacks?.length}</LabelText>
+                    <LabelText variantText="medium14">{book?.comments?.length}</LabelText>
                 </ReviewsAmount>
                 <HideReviewsImg
-                    rating={book?.rating}
+                    comments={book?.comments}
                     isReviewsOpen={isReviewsOpen}
                     src={hideReviews} alt=""
                     onClick={handleHideReviews}
-                    cover={book?.cover}
                     data-test-id="button-hide-reviews"/>
             </CommonContainerReviews>
             <ReviewsBlockContainer isReviewsOpen={isReviewsOpen}>
-                {book?.feedbacks?.map((f: TFeedback) =>
-                    <ReviewsBlock key={f.id}>
+                {book?.comments?.map((comment) =>
+                    <ReviewsBlock key={comment.id}>
                         <ReviewsBlockInformation>
-                            <UserPhoto src={f.userPhoto} alt=""/>
+                            <UserPhoto src={`${EEndPoints.baseUrl}${comment.user.avatarUrl}`}  alt=""/>
                             <RightBlockUserName>
                                 <UserNameAndData>
                                     <LabelText
-                                        variantText={isMobileView ? 'medium15' : 'medium16LH24'}>{f.userName}</LabelText>
+                                        variantText={isMobileView ? 'medium15' : 'medium16LH24'}>{comment.user.firstName} {comment.user.lastName}</LabelText>
                                 </UserNameAndData>
                                 <UserNameAndData>
                                     <LabelText
-                                        variantText={isMobileView ? 'medium15' : 'medium16LH24'}>{f.data}</LabelText>
+                                        variantText={isMobileView ? 'medium15' : 'medium16LH24'}>{comment.createdAt}</LabelText>
                                 </UserNameAndData>
                             </RightBlockUserName>
                         </ReviewsBlockInformation>
@@ -73,9 +72,9 @@ export const Reviews: React.FC<TProps> = ({book}) => {
                             <StarComponent src={starWithoutColor} width="24px" height="24px"
                                            alt=""/>
                         </StarsBox>
-                        <ReviewsText feedbackText={f.feedbackText}>
+                        <ReviewsText text={comment.text}>
                             <LabelText
-                                variantText={isMobileView ? 'medium15' : 'medium16LH24'}>{f.feedbackText}</LabelText>
+                                variantText={isMobileView ? 'medium15' : 'medium16LH24'}>{comment.text}</LabelText>
                         </ReviewsText>
                     </ReviewsBlock>
                 )}
@@ -91,7 +90,5 @@ export const Reviews: React.FC<TProps> = ({book}) => {
                 </ButtonComponent>
             </ButtonReviewsContainer>
         </ReviewsContainer>
-
     );
 };
-

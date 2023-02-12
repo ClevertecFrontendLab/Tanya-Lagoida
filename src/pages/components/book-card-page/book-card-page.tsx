@@ -20,21 +20,18 @@ export const BookCardPage = () => {
 
     const {bookId} = useParams();
     const id = bookId === undefined ? bookId : +bookId
-    const { data: bookData, isLoading, isFetching, isError } = useGettingABookByIdQuery(id ?? skipToken)
-    console.log(bookData);
+    const { data: book, isLoading, isFetching, isError } = useGettingABookByIdQuery(id ?? skipToken)
+    console.log(id)
 
         return (
             <BookCardPageContainerStyles>
-                <Breadcrumbs bookData={bookData}/>
-                <NameBookPhotoAndAboutBook bookData={bookData}/>
-                <Rating bookData={bookData} />
-                <DetailedInformation/>
-                <Reviews bookData={bookData}/>
+                <Breadcrumbs book={book}/>
+                <NameBookPhotoAndAboutBook book={book}/>
+                <Rating book={book} />
+                <DetailedInformation book={book}/>
+                <Reviews book={book}/>
             </BookCardPageContainerStyles>
         );
-
-
-
 };
 
 

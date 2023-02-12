@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 
-import {TBooks} from '../../constants/constants-book';
 import {device} from '../../main/styles';
 import {EColors} from '../../themes/themes';
-import {TBooksType} from '../../../services/book-service-types';
 
 export const ContainerListView = styled.article`
     box-shadow: 0 2px 4px ${EColors.GreyShadow1}, 0 3px 4px ${EColors.GreyShadow2}, 0 1px 5px ${EColors.GreyShadow3};
@@ -150,7 +148,7 @@ export const RatingAndButtonList = styled.div`
     }
 `;
 
-export const ImgContainerList = styled.img<TBooksType>`
+export const ImgContainerList = styled.img<{image?: string}>`
     width: ${(props) => props.image === undefined ? '32px' : 'inherit'};
     height: ${(props) => props.image === undefined ? '32px' : 'inherit'};
 `;

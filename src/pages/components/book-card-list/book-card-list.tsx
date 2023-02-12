@@ -1,8 +1,7 @@
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 
 import {StarComponent} from '../../common-components/stars/star-component';
-import {booksArray, TBooks} from '../../constants/constants-book';
 import starWithoutColor from '../../images/icon_star-without-color.png';
 import starImg from '../../images/icon-star-yellow.png';
 import withoutCover from '../../images/icon-without-cover.svg';
@@ -19,12 +18,11 @@ import {
 } from './styles';
 import {useMediaQuery} from '../../hooks/use-media-query';
 import {device} from '../../main/styles';
-import { TBooksGenresType, TBooksType } from '../../../services/book-service-types';
+import { TBooksType } from '../../../services/book-service-types';
+import {EEndPoints} from '../../../config/endpoints';
 
 type TProps = {
-    dataBooks: Array<TBooksType>
-    dataCategories: Array<TBooksGenresType>
-
+    dataBooks: TBooksType[]
 }
 
 export const BookCardList: React.FC<TProps> = ({dataBooks}) => {
@@ -32,16 +30,26 @@ export const BookCardList: React.FC<TProps> = ({dataBooks}) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const isTabletView = useMediaQuery(`${device.tablet}`);
     const isLaptopView = useMediaQuery(`${device.laptopL}`);
+    const {category} = useParams();
 
     return (
         <React.Fragment>{
             dataBooks.map((book: TBooksType) =>
                 <ContainerListView key={book.id} data-test-id="card" onClick={() =>
-                    navigate(`/books/${book.category}/${book.id}`)}>
+                    navigate(`/books/${category}/${book.id}`)}>
                     <BookCoverListViewContainer>
-                        <ImgContainerList book={book}
-                                          src={book.image.url ? book?.image.url : withoutCover }
-                                          alt=""/>
+                        {
+                            book.image ?
+                            <ImgContainerList
+                                image={book.image.url}
+                                src={`${EEndPoints.baseUrl}${book.image.url}`}
+                                alt=""
+                            />
+                                :  <ImgContainerList
+                                    src={withoutCover}
+                                    alt=""
+                                />
+                        }
                     </BookCoverListViewContainer>
                     <RightContainerList>
                         <NameList>
@@ -52,11 +60,10 @@ export const BookCardList: React.FC<TProps> = ({dataBooks}) => {
                             <BookAuthorBlockList>
                                 {
                                     book.authors.map((author) =>
-                                    <LabelText variantText={isMobileView ? 'small400' : 'medium16'}>
+                                    <LabelText variantText={isMobileView ? 'small400' : 'medium16'} key={author}>
                                         {author}
                                     </LabelText> )
                                 }
-
                             </BookAuthorBlockList>
                         </NameList>
                         <RatingAndButtonList>
@@ -84,11 +91,18 @@ export const BookCardList: React.FC<TProps> = ({dataBooks}) => {
                                                    alt=""/>
                                 </StarsBoxBookCardTable>
                             }
-                            <ButtonComponent status={book.status}
-                                             width={isMobileView ? '186px' : '174px'} height="40px">
+                            <ButtonComponent
+                                status={book.booking ? 'booking'
+                                    : book.delivery ? 'delivery'
+                                    : 'inStock'}
+                                width={isMobileView ? '186px' : '174px'}
+                                height="40px"
+                            >
                                 <LabelText
-                                    variantText="smallLS">{book.booking.order === true ? 'Забронирована' :
-                                    book.delivery.handed === true ? 'Занята до 03.05' : 'Забронировать'}</LabelText>
+                                    variantText="smallLS">{book.booking ? 'Забронирована'
+                                    : book.delivery ? 'Занята до 03.05'
+                                        : 'Забронировать'}
+                                </LabelText>
 
                             </ButtonComponent>
                         </RatingAndButtonList>

@@ -7,16 +7,17 @@ import 'swiper/css/scrollbar';
 
 import {FreeMode, Scrollbar, Thumbs} from 'swiper';
 import SwiperClass from 'swiper/types/swiper-class';
-import {TBooks} from '../../constants/constants-book';
 import {
     MySwiper,
     MySwiperTwo,
     SwiperSlideOne,
     SwiperSlideTwo
 } from './styles';
+import {TBooksByIdType} from '../../../services/book-service-types';
+import {EEndPoints} from '../../../config/endpoints';
 
 export type TProps = {
-    book?: TBooks
+    book: TBooksByIdType
 }
 
 export const SwiperLaptop: React.FC<TProps> = ({book}) => {
@@ -34,30 +35,31 @@ export const SwiperLaptop: React.FC<TProps> = ({book}) => {
                 modules={[FreeMode, Thumbs]}
                 data-test-id="slide-big"
             >
-                {book?.cover?.map((photo) =>
-                    <SwiperSlideTwo key={photo.id}> <img src={photo.img} alt=""/></SwiperSlideTwo>)
+                {book.images?.map((photo) =>
+                    <SwiperSlideTwo key={photo.url}> <img src={`${EEndPoints.baseUrl}${photo.url}`} alt=""/></SwiperSlideTwo>)
                 }
             </MySwiperTwo>
-            <MySwiper book={book}
-                      onSwiper={setThumbsSwiper}
+            <MySwiper
+                book={book}
+                onSwiper={setThumbsSwiper}
                 // initialSlide={2}
-                      grabCursor={true}
-                      spaceBetween={30}
-                      slidesPerView={5}
-                      freeMode={true}
+                grabCursor={true}
+                spaceBetween={30}
+                slidesPerView={5}
+                freeMode={true}
                 // centeredSlides={true}
                 roundLengths={true}
-                      loop={true}
-                      modules={[FreeMode, Thumbs, Scrollbar]}
-                      scrollbar={{
-                          hide: true,
-                          draggable: true,
-                      }}
+                loop={true}
+                modules={[FreeMode, Thumbs, Scrollbar]}
+                scrollbar={{
+                    hide: true,
+                    draggable: true,
+                }}
             >
                 {
-                    book?.cover?.map((photo) =>
-                        <SwiperSlideOne book={book} key={photo.id} data-test-id="slide-mini"> <img
-                            src={photo.img} alt=""/></SwiperSlideOne>
+                    book.images?.map((photo) =>
+                        <SwiperSlideOne book={book} key={photo.url} data-test-id="slide-mini"> <img
+                            src={`${EEndPoints.baseUrl}${photo.url}`} alt=""/></SwiperSlideOne>
                     )
                 }
             </MySwiper>

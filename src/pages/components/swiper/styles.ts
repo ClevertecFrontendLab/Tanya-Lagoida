@@ -52,12 +52,12 @@ export const MySwiper = styled(Swiper)<TProps>`
         //justify-content: center;
         padding-top: 17px;
         flex-direction: column;
-        height: ${(props) => props.book?.cover?.length && props.book?.cover?.length > 5 ? '120px'
-            : props.book?.cover?.length && props.book?.cover?.length > 1 && props.book?.cover?.length <=5 ? '103px'
+        height: ${(props) => props.book.images?.length && props.book.images.length > 5 ? '120px'
+            : props.book.images?.length && props.book.images.length > 1 && props.book.images.length <=5 ? '103px'
             : '0'};
         .swiper-slide {
             width: 65px !important;
-            height: ${(props) => props.book?.cover?.length && props.book?.cover?.length > 1 ? '86px' : '0'};
+            height: ${(props) => props.book.images?.length && props.book.images.length > 1 ? '86px' : '0'};
             opacity: 0.5;
             border: 1px solid #BFC4C9;
         }
@@ -92,19 +92,17 @@ export const SwiperSlideTwo = styled(SwiperSlide)`
     align-items: center;
     @media screen and ${device.mobileS} {
         img {
-            display: block;
-            width: 188px !important;
+            width: 188px;
             height: 260px !important;
-            object-fit: cover;
             background-color: ${EColors.LightGrey};
+            border: 1px solid ${EColors.Grey};
+            border-radius: 10px;
         }
     }
     @media screen and ${device.tablet} {
         img {
-            display: block;
             width: 136px;
             height: 198px !important;
-            object-fit: cover;
             border: 1px solid ${EColors.Grey};
             border-radius: 3px;
         }
@@ -112,11 +110,10 @@ export const SwiperSlideTwo = styled(SwiperSlide)`
     @media screen and ${device.laptopL} {
         justify-items: center;
         box-sizing: border-box;
+
         img {
-            display: block;
             height: 593px !important;
-            width: 444px !important;
-            object-fit: cover;
+            width: 444px;
             background-color: ${EColors.LightGrey};
             border: 1px solid ${EColors.Grey};
             border-radius: 10px;
@@ -171,13 +168,13 @@ export const SwiperSlideOne = styled(SwiperSlide)<TProps>`
         display: none;
     }
     @media screen and ${device.laptopL} {
-        display: ${(props) => props.book?.cover?.length && props.book?.cover?.length > 1 ? 'flex' : 'none'};
+        display: ${(props) => props.book.images?.length && props.book.images.length > 1 ? 'flex' : 'none'};
         justify-content: center;
         align-items: center;
         img {
             display: block;
-            height: ${(props) => props.book?.cover?.length && props.book?.cover?.length > 1 ? '100%' : '0'};
-            width: ${(props) => props.book?.cover?.length && props.book?.cover?.length > 1 ? '100%' : '0'};
+            height: ${(props) => props.book.images?.length && props.book.images.length > 1 ? '100%' : '0'};
+            width: ${(props) => props.book.images?.length && props.book.images.length > 1 ? '100%' : '0'};
         }
     }
 `;

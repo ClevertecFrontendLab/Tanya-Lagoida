@@ -2,9 +2,8 @@ import styled from 'styled-components';
 
 import {EColors} from '../../themes/themes';
 import {device} from '../../main/styles';
-import {TProps} from '../../components/swiper/swiper-for-laptop';
 
-export const ContainerLaptopStyles = styled.div<TProps>`
+export const ContainerLaptopStyles = styled.div<{images?: Array<{ url: string }> | null}>`
     //height: 658px;
     display: flex;
     justify-content: center;
@@ -12,7 +11,7 @@ export const ContainerLaptopStyles = styled.div<TProps>`
     align-items: start;
     margin-bottom: 42px;
     @media screen and ${device.laptopL} {
-        margin-bottom: ${(props) => props.book?.cover?.length && props.book.cover.length > 5 ? '28px' : '42px'};
+        margin-bottom: ${(props) => props.images?.length && props.images.length > 5 ? '28px' : '42px'};
 
     }
 `;
@@ -47,9 +46,9 @@ export const ButtonBookContainer = styled.div`
     }
 
 `;
-export const PhotoBox = styled.div<TProps>`
+export const PhotoBox = styled.div<{images?: Array<{ url: string }> | null}>`
     width: 445px;
-    height: ${(props) => props.book?.cover?.length && props.book?.cover?.length > 5 ? '710px'
-        : props.book?.cover?.length && props.book?.cover?.length > 1 && props.book?.cover?.length <=5 ? '696px'
+    height: ${(props) => props.images?.length && props.images.length > 5 ? '710px'
+        : props.images?.length && props.images.length > 1 && props.images.length <=5 ? '696px'
         : '593px'};
 `;

@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {NavLink, useLocation, useParams} from 'react-router-dom';
 
-import {booksCategories} from '../../constants/constants-menu';
 import {LabelText} from '../../labels/labels';
 import menu from '../../images/stroke.svg';
 
@@ -14,6 +13,7 @@ import {
 } from './styles';
 import {useMediaQuery} from '../../hooks/use-media-query';
 import {device} from '../../main/styles';
+import {useGettingAListOfBookGenresQueryState} from '../../../services/book-service';
 
 type TMenuProps = {
     setIsMenuCollapsed?: (value: boolean) => void
@@ -23,6 +23,7 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
     const {category} = useParams();
     const location = useLocation();
     const isLaptopView = useMediaQuery(`${device.laptopL}`);
+    const { data: dataCategories = []} = useGettingAListOfBookGenresQueryState()
 
     const initialIsMenuOpenValue = location.pathname.includes('/books') || location.pathname === '/';
 
@@ -62,19 +63,19 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
             </NavLink>
             <BooksCategoriesContainer isMenuOpen={isMenuOpen}>
                 {
-                    booksCategories.map((bookCategory) =>
-                        <NavLink key={bookCategory.id} to={`/books/${bookCategory.category}`}
+                    dataCategories.map((bookCategory) =>
+                        <NavLink key={bookCategory.id} to={`/books/${bookCategory.path}`}
                                  onClick={handleCloseMenu}
-                                 data-test-id={bookCategory.category === 'all' ?
+                                 data-test-id={bookCategory.path === 'all' ?
                                      (isLaptopView ? 'navigation-books' : 'burger-books') : ''}>
                             <div>
-                                <BookCategoriesStyle isActive={category === bookCategory.category}>
+                                <BookCategoriesStyle isActive={category === bookCategory.path}>
                                     <LabelText
-                                        variantText={category === bookCategory.category ? 'medium18LS' : 'medium16'}>{bookCategory.name}</LabelText>
+                                        variantText={category === bookCategory.name ? 'medium18LS' : 'medium16'}>{bookCategory.name}</LabelText>
                                 </BookCategoriesStyle>
                                 <CategoryAmount>
                                     <LabelText
-                                        variantText="medium14">{bookCategory.amount}</LabelText>
+                                        variantText="medium14">5</LabelText>
                                 </CategoryAmount>
                             </div>
                         </NavLink>

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-import {TBooks, TFeedback} from '../../constants/constants-book';
 import {device} from '../../main/styles';
 import {EColors} from '../../themes/themes';
+import {TCommentsType} from '../../../services/book-service-types';
 
 export const ReviewsContainer = styled.div`
     @media screen and ${device.mobileS} {
@@ -43,13 +43,10 @@ export const ReviewsBlockInformation = styled.div`
 
 
 `;
-export const ReviewsAmount = styled.div<TFeedback>`
-
+export const ReviewsAmount = styled.div`
         margin-left: 6px;
         color: ${EColors.Grey};
         display: inline-block;
-
-
 `;
 export const ButtonReviewsContainer = styled.div`
     @media screen and ${device.mobileS} {
@@ -74,18 +71,18 @@ export const ReviewsBlock = styled.div`
     display: flex;
     flex-direction: column;
 `;
-export const ReviewsText = styled.div<TFeedback>`
+export const ReviewsText = styled.div<{text: string}>`
     @media screen and ${device.mobileS} {
         width: 288px;
-        margin-top: ${(props) => props.feedbackText === null ? '0' : '8px'};
+        margin-top: ${(props) => props.text === null ? '0' : '8px'};
     }
     @media screen and ${device.tablet} {
         width: 640px;
-        margin-top: ${(props) => props.feedbackText === null ? '0' : '16px'};
+        margin-top: ${(props) => props.text === null ? '0' : '16px'};
     }
     @media screen and ${device.laptopL} {
         width: 730px;
-        margin-top: ${(props) => props.feedbackText === null ? '0' : '16px'};
+        margin-top: ${(props) => props.text === null ? '0' : '16px'};
     }
 
 `;
@@ -121,35 +118,35 @@ export const RightBlockUserName = styled.div`
 
     //height: 51px;
 `;
-export const CommonContainerReviews = styled.div<TBooks & {isReviewsOpen: boolean}>`
+export const CommonContainerReviews = styled.div<{isReviewsOpen: boolean, comments?: TCommentsType[] | null}>`
     border-bottom: 1px solid ${ EColors.GreyBox };
     @media screen and ${device.mobileS} {
         display: flex;
         align-items: start;
         width: 288px;
-        height: ${(props) => props.rating === undefined || props.isReviewsOpen === false ? '28px' : '44px'};
-        margin-bottom: ${(props) => props.rating === undefined || props.isReviewsOpen === false ? '0' : '8px'};
+        height: ${(props) => props.comments === null || props.isReviewsOpen === false ? '28px' : '44px'};
+        margin-bottom: ${(props) => props.comments === null || props.isReviewsOpen === false ? '0' : '8px'};
     }
     @media screen and ${device.tablet} {
         display: flex;
         align-items: start;
         width: 350px;
-        height: ${(props) => props.rating === undefined || props.isReviewsOpen === false ? '24' : '40px'};
-        margin-bottom: ${(props) => props.rating === undefined || props.isReviewsOpen === false ? '0' : '42px'};
+        height: ${(props) => props.comments === null || props.isReviewsOpen === false ? '24' : '40px'};
+        margin-bottom: ${(props) => props.comments === null || props.isReviewsOpen === false ? '0' : '42px'};
     }
     @media screen and ${device.laptopL} {
         display: flex;
         align-items: start;
         width: 350px;
-        height: ${(props) => props.rating === undefined || props.isReviewsOpen === false ? '28px' : '44px'};
-        margin-bottom: ${(props) => props.rating === undefined || props.isReviewsOpen === false ? '0' : '16px'};
+        height: ${(props) => props.comments === null || props.isReviewsOpen === false ? '28px' : '44px'};
+        margin-bottom: ${(props) => props.comments === null || props.isReviewsOpen === false ? '0' : '16px'};
     }
-    border-bottom: ${(props) => props.rating === undefined || props.isReviewsOpen === false ? 'none' : '1px solid EColors.GreyBox'};
+    border-bottom: ${(props) => props.comments === null || props.isReviewsOpen === false ? 'none' : '1px solid EColors.GreyBox'};
 
 `;
 
-export const HideReviewsImg = styled.img<{isReviewsOpen: boolean} & TBooks>`
-    display: ${(props) => props.rating === undefined ? 'none' : 'block'};
+export const HideReviewsImg = styled.img<{isReviewsOpen: boolean, comments?: TCommentsType[] | null }>`
+    display: ${(props) => props.comments === null ? 'none' : 'block'};
     transform: ${(props) => props.isReviewsOpen === false ? 'rotate(180deg)' : 'none'};
     cursor: pointer;
     margin-left: 24px;

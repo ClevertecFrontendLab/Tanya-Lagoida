@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import {TProps} from '../../components/swiper/swiper-for-tablet-and-mobile';
-
 export const ContainerTabletStylesMobile = styled.div`
     display: flex;
     flex-direction: column;
@@ -9,9 +7,9 @@ export const ContainerTabletStylesMobile = styled.div`
     margin-bottom: 42px;
     width: 288px;
 `
-export const PhotoBoxMobile = styled.div<TProps>`
+export const PhotoBoxMobile = styled.div<{images?: Array<{ url: string }> | null}>`
     width: 188px;
-    height: ${(props) => props.book?.cover?.length && props.book?.cover?.length > 1  ? '300px' : '260px'};
+    height: ${(props) => props.images?.length && props.images.length > 1  ? '300px' : '260px'};
     margin-bottom: 16.5px;
 `;
 export const BookNameMobile = styled.div`

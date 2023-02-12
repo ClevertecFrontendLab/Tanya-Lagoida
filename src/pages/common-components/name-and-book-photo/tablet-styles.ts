@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import {EColors} from '../../themes/themes';
-import {TProps} from '../../components/swiper/swiper-for-tablet-and-mobile';
 
 export const ContainerTabletStyles = styled.div`
     //height: 254px;
@@ -12,9 +11,9 @@ export const ContainerTabletStyles = styled.div`
     margin-bottom: 48px;
     align-items: start;
 `
-export const PhotoBoxTablet = styled.div<TProps>`
+export const PhotoBoxTablet = styled.div<{images?: Array<{ url: string }> | null}>`
     width: 136px;
-    height: ${(props) => props.book?.cover?.length && props.book?.cover?.length > 1  ? '238px' : '198px'};
+    height: ${(props) => props.images?.length && props.images.length > 1  ? '238px' : '198px'};
 `;
 export const RightContainerBookTablet = styled.div`
     display: flex;
@@ -31,5 +30,4 @@ export const AuthorNameTablet = styled.div`
 export const ContainerTabletBook = styled.div`
 margin-bottom: 54px;
     width: 640px;
-
 `
