@@ -71,10 +71,19 @@ export const BookCardTable: React.FC<TProps> = ({dataBooks}) => {
                         <BookAuthorBlock>
                             {
                                 book.authors.map((author) =>
-                                    <LabelText variantText={isMobileView ? 'small400' : 'medium16'} key={author}>
-                                        {author}
-                                    </LabelText> )
+                                    <>
+                                        <LabelText
+                                            variantText={isLaptopView ? 'medium14Norm' : 'small400'}
+                                            key={author}>
+                                            {author},
+                                        </LabelText>
+                                        <span>      </span>
+                                    </>)
                             }
+                            <span>      </span>
+                            <LabelText variantText={isLaptopView ? 'medium14Norm' : 'small400'}>
+                                {book.issueYear}
+                            </LabelText>
                         </BookAuthorBlock>
                     </Name>
                     <ButtonContainer>

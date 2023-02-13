@@ -12,8 +12,7 @@ export const FooterStyles = styled.footer`
         width: 288px;
         flex-direction: column;
         align-items: center;
-        //justify-items: center;
-        //justify-content: center;
+        justify-self: end;
         justify-content: center;
     }
     @media screen and ${device.tablet} {
@@ -24,6 +23,7 @@ export const FooterStyles = styled.footer`
         align-items: center;
         flex-direction: row;
         justify-items: center;
+        justify-self: end;
     }
     @media screen and ${device.laptopL} {
         gap:0;
@@ -33,6 +33,7 @@ export const FooterStyles = styled.footer`
         align-items: center;
         flex-direction: row;
         justify-items: center;
+        justify-self: end;
     }
 `;
 export const FooterText = styled.div`

@@ -18,6 +18,7 @@ import {
 } from './styles';
 import {TBooksByIdType} from '../../../services/book-service-types';
 import {EEndPoints} from '../../../config/endpoints';
+import withoutCover from '../../images/icon-without-cover.svg';
 
 type TProps = {
     book?: TBooksByIdType
@@ -52,7 +53,11 @@ export const Reviews: React.FC<TProps> = ({book}) => {
                 {book?.comments?.map((comment) =>
                     <ReviewsBlock key={comment.id}>
                         <ReviewsBlockInformation>
-                            <UserPhoto src={`${EEndPoints.baseUrl}${comment.user.avatarUrl}`}  alt=""/>
+                            {
+                               comment.user.avatarUrl ?
+                                   <UserPhoto src={`${EEndPoints.baseUrl}${comment.user.avatarUrl}`}  alt=""/>
+                                   : <UserPhoto src={withoutCover} alt='' />
+                            }
                             <RightBlockUserName>
                                 <UserNameAndData>
                                     <LabelText

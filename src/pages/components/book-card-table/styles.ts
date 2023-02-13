@@ -44,10 +44,6 @@ export const BookCoverContainer = styled.div`
 
     }
 `;
-export const ImgContainer = styled.img<{image: string}>`
-    width: ${(props) => props.image === undefined ? '48px' : 'inherit'};
-    height: ${(props) => props.image === undefined ? '48px' : 'inherit'};
-`;
 export const Name = styled.div`
     @media screen and ${device.mobileS} {
         height: 98px;
@@ -70,7 +66,7 @@ export const Name = styled.div`
     display: flex;
 `;
 export const BookNameBlock = styled.div`
-    //text-overflow: ellipsis;
+    text-overflow: ellipsis;
     overflow: hidden;
    @media screen and  ${device.mobileS} {
         max-height: 54px;
@@ -86,13 +82,13 @@ export const BookNameBlock = styled.div`
     }
     @media screen and ${device.laptopL} {
         height: 54px;
-            //display: -webkit-box;
-            //-webkit-line-clamp: 3;
-            //-webkit-box-orient: vertical;
-        display: flex;
-        span{
-        align-self: center;
-        }
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        //display: flex;
+        //span{
+        //align-self: center;
+        //}
     }
 `;
 export const BookAuthorBlock = styled.div`
@@ -106,13 +102,21 @@ export const BookAuthorBlock = styled.div`
         height: 15px;
         text-transform: uppercase;
         overflow: hidden;
+        display: -webkit-box;
         text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
     }
     @media screen and ${device.laptopL} {
         display: flex;
-        align-items: center;
         text-transform: none;
         height: 36px;
+        flex-direction: column;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
 `;
 export const ButtonContainer = styled.div`
     align-self: center;
@@ -126,4 +130,3 @@ export const StarLabel = styled.div`
     color: ${EColors.Grey};
     height: 24px;
 `
-

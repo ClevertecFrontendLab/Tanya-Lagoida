@@ -7,9 +7,10 @@ import {Header} from '../header/header';
 
 export const Layout = () => (
     <MainStyles>
-        <Header/>
-        <Outlet/>
+        <div>
+            <Header/>
+            <Outlet/>
+        </div>
         <Footer/>
     </MainStyles>
 );
-

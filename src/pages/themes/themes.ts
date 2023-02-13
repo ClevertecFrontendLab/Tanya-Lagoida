@@ -10,5 +10,9 @@ export enum EColors {
     LightGrey = '#F9F9FA',
     GreyBorder = '#BFC4C9',
     GreyBox = '#EBEBEB',
-    Inherit = '#363636'
+    Inherit = '#363636',
+    RedError = '#F42C4F',
+    ErrorBack = '#FEEBEA',
+    Blur = 'rgba(54, 54, 54, 0.3)',
+
 }

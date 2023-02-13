@@ -60,10 +60,17 @@ export const BookCardList: React.FC<TProps> = ({dataBooks}) => {
                             <BookAuthorBlockList>
                                 {
                                     book.authors.map((author) =>
-                                    <LabelText variantText={isMobileView ? 'small400' : 'medium16'} key={author}>
-                                        {author}
-                                    </LabelText> )
+                                        <>
+                                            <LabelText
+                                                variantText={isMobileView ? 'small400' : 'medium16'}
+                                                key={author}>
+                                                {author},
+                                            </LabelText> <span>      </span> </>)
                                 }
+                                <span>      </span>
+                                <LabelText variantText={isLaptopView ? 'medium14Norm' : 'small400'}>
+                                    {book.issueYear}
+                                </LabelText>
                             </BookAuthorBlockList>
                         </NameList>
                         <RatingAndButtonList>

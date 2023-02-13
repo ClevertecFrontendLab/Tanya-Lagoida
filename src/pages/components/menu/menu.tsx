@@ -13,7 +13,10 @@ import {
 } from './styles';
 import {useMediaQuery} from '../../hooks/use-media-query';
 import {device} from '../../main/styles';
-import {useGettingAListOfBookGenresQueryState} from '../../../services/book-service';
+import {
+    useGettingAListOfBookGenresQueryState,
+    useGettingAListOfBooksQueryState
+} from '../../../services/book-service';
 
 type TMenuProps = {
     setIsMenuCollapsed?: (value: boolean) => void
@@ -23,7 +26,9 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
     const {category} = useParams();
     const location = useLocation();
     const isLaptopView = useMediaQuery(`${device.laptopL}`);
-    const { data: dataCategories = []} = useGettingAListOfBookGenresQueryState()
+    const { data: dataCategories = [], isLoading: isLoadingCategories, isFetching: isFetchingCategories, isError: isErrorCategories } = useGettingAListOfBookGenresQueryState()
+    const { isLoading: isLoadingBooks, isFetching: isFetchingBooks, isError: isErrorBooks } = useGettingAListOfBooksQueryState()
+    const mutateMenu = [{name: 'Все книги', path: 'all', id: 999999}, ...dataCategories]
 
     const initialIsMenuOpenValue = location.pathname.includes('/books') || location.pathname === '/';
 
@@ -58,12 +63,18 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
                         isMenuOpen={isMenuOpen}
                         src={menu} alt=""
                         isActive={location.pathname.includes('/books')}
+                        isLoadingCategories={isLoadingCategories}
+                        isFetchingCategories={isFetchingCategories}
+                        isErrorCategories={isErrorCategories}
+                        isLoadingBooks={isLoadingBooks}
+                        isFetchingBooks={isFetchingBooks}
+                        isErrorBooks={isErrorBooks}
                     />
                 </ShowcaseBooksBox>
             </NavLink>
             <BooksCategoriesContainer isMenuOpen={isMenuOpen}>
-                {
-                    dataCategories.map((bookCategory) =>
+                {(!isLoadingCategories && !isFetchingCategories && !isErrorCategories && !isLoadingBooks && !isFetchingBooks && !isErrorBooks) &&
+                    mutateMenu.map((bookCategory) =>
                         <NavLink key={bookCategory.id} to={`/books/${bookCategory.path}`}
                                  onClick={handleCloseMenu}
                                  data-test-id={bookCategory.path === 'all' ?
@@ -71,7 +82,7 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
                             <div>
                                 <BookCategoriesStyle isActive={category === bookCategory.path}>
                                     <LabelText
-                                        variantText={category === bookCategory.name ? 'medium18LS' : 'medium16'}>{bookCategory.name}</LabelText>
+                                        variantText={category === bookCategory.path ? 'medium18LS' : 'medium16'}>{bookCategory.name}</LabelText>
                                 </BookCategoriesStyle>
                                 <CategoryAmount>
                                     <LabelText

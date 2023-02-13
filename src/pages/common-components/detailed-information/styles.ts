@@ -38,13 +38,13 @@ export const DetailedInformationContainer = styled.div`
     }
     @media screen and ${device.tablet} {
         width: 640px;
-        height: 266px;
+        //height: 266px;
         margin: 52px 0;
         align-self: center;
     }
     @media screen and ${device.laptopL} {
         width: 1110px;
-        height: 244px;
+        //height: 244px;
         margin: 62px 0 62px 0;
         align-self: start;
     }
@@ -65,7 +65,7 @@ export const TablesContainer = styled.div`
 export const Table1 = styled.table`
     border: none;
     @media screen and ${device.tablet} {
-        height: 154px;
+        //height: 154px;
     }
 `;
 export const TH1 = styled.th`
@@ -137,9 +137,9 @@ export const TH4 = styled.th`
 export const Table2 = styled.table`
     border: none;
     @media screen and ${device.tablet} {
-        height: 210px;
+        //height: 210px;
     }
     @media screen and ${device.laptopL} {
-        height: 170px;
+        //height: 170px;
     }
 `;

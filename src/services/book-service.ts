@@ -22,3 +22,4 @@ export const bookApi = createApi({
 export const {useGettingAListOfBooksQuery, useGettingABookByIdQuery, useGettingAListOfBookGenresQuery} = bookApi;
 
 export const useGettingAListOfBookGenresQueryState = bookApi.endpoints.gettingAListOfBookGenres.useQueryState;
+export const useGettingAListOfBooksQueryState = bookApi.endpoints.gettingAListOfBooks.useQueryState;

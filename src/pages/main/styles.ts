@@ -13,13 +13,15 @@ export const device = {
     laptopL: `(min-width: ${size.laptopL})`,
 };
 export const MainStyles = styled.section`
-    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    : last-child {
-    justify-items: end;
-}
+    justify-content: space-between;
+    height: 100%;
+//    : last-child {
+//    justify-items: end;
+//
+//}
     @media screen and ${device.mobileS} {
         padding-top: 0;
         width: ${size.mobileS};
@@ -48,6 +50,8 @@ export const Center = styled.div`
         flex-direction: row;
         gap: 6px;
         padding: 62px 0;
+        justify-content: start;
+
     }
 `;
 export const BlockNavigationAndContent = styled.section`
@@ -65,7 +69,5 @@ export const BlockNavigationAndContent = styled.section`
         display: flex;
         flex-direction: column;
         gap: 32px;
-
-
     }
 `;

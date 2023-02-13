@@ -13,6 +13,8 @@ import {Reviews} from '../../common-components/reviews/reviews';
 
 import {BookCardPageContainerStyles} from './common-styles';
 import {useGettingABookByIdQuery} from '../../../services/book-service';
+import {Loader} from '../../../loader/loader';
+import {Error} from '../../../error/error';
 
 
 
@@ -21,13 +23,19 @@ export const BookCardPage = () => {
     const {bookId} = useParams();
     const id = bookId === undefined ? bookId : +bookId
     const { data: book, isLoading, isFetching, isError } = useGettingABookByIdQuery(id ?? skipToken)
-    console.log(id)
+
+    if (isLoading || isFetching) {
+        return <Loader/>;
+    }
+    if (isError) {
+        return <Error/>;
+    }
 
         return (
             <BookCardPageContainerStyles>
                 <Breadcrumbs book={book}/>
                 <NameBookPhotoAndAboutBook book={book}/>
-                <Rating book={book} />
+                <Rating book={book}/>
                 <DetailedInformation book={book}/>
                 <Reviews book={book}/>
             </BookCardPageContainerStyles>

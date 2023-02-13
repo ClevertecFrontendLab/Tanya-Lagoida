@@ -33,7 +33,9 @@ export const Rating: React.FC<TProps> = ({book}) => {
         </LabelRatingContainer>
         <StarsContainer>
             <StarsBox>
-                <StarComponent src={starImg} width={isMobileView ? '34px' : '24px'} height={isMobileView ? '34px' : '24px'}  alt=''/>
+
+
+
                 <StarComponent src={starImg} width={isMobileView ? '34px' : '24px'} height={isMobileView ? '34px' : '24px'}  alt=''/>
                 <StarComponent src={starImg} width={isMobileView ? '34px' : '24px'} height={isMobileView ? '34px' : '24px'}  alt=''/>
                 <StarComponent src={starImg} width={isMobileView ? '34px' : '24px'} height={isMobileView ? '34px' : '24px'}  alt=''/>

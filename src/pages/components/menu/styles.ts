@@ -5,7 +5,7 @@ import {EColors} from '../../themes/themes';
 
 export const MenuStyles = styled.aside`
     @media screen and ${device.mobileS} {
-        width: 224px;
+        width: 0;
     }
     @media screen and  ${device.tablet} {
         width: 0;
@@ -14,24 +14,25 @@ export const MenuStyles = styled.aside`
         display: block;
         width: 279px;
         height: 824px;
+        justify-self: start;
     }
 `;
 export const ShowcaseBooksBox = styled.div<{ isActive: boolean }>`
-@media screen and ${device.mobileS} {
-margin-left: 16px;
+    @media screen and ${device.mobileS} {
+        margin-left: 16px;
     }
     @media screen and  ${device.tablet} {
-       margin-left: 32px;
+        margin-left: 32px;
     }
     @media screen and  ${device.laptopL} {
- margin-left: 0;
+        margin-left: 0;
     }
     cursor: pointer;
     display: flex;
     gap: 82px;
     width: 255px;
     vertical-align: top;
-     color: ${(props) => props.isActive ? 'transparent' : EColors.Inherit};
+    color: ${(props) => props.isActive ? 'transparent' : EColors.Inherit};
     background: ${(props) => props.isActive ? `linear-gradient(231.58deg, ${EColors.Red} -53.35%, ${EColors.Yellow} 297.76%)` : EColors.Inherit};
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -45,12 +46,12 @@ export const BooksCategoriesContainer = styled.nav<{ isMenuOpen: boolean }>`
     flex-direction: column;
     padding: 16px 0 0 24px;
     @media screen and ${device.mobileS} {
-margin-left: 16px;
-width: 265px;
+        margin-left: 16px;
+        width: 265px;
     }
     @media screen and  ${device.tablet} {
-       margin-left: 32px;
-       width: 275px;
+        margin-left: 32px;
+        width: 275px;
     }
     @media screen and  ${device.laptopL} {
         margin-left: 0;
@@ -80,9 +81,17 @@ export const RulesAndContract = styled.div<{ isActive: boolean }>`
     border-bottom: ${(props) => props.isActive ? '1px solid' : 'none'};
     border-image: ${(props) => props.isActive ? `linear-gradient(231.58deg, ${EColors.Red} -53.35%, ${EColors.Yellow} 297.76%) 1 0` : 'none'};
 `;
-export const ShowMenu = styled.img<{ isMenuOpen: boolean, isActive: boolean }>`
+export const ShowMenu = styled.img<{
+    isMenuOpen: boolean, isActive: boolean,
+    isLoadingCategories: boolean,
+    isFetchingCategories: boolean,
+    isErrorCategories: boolean,
+    isLoadingBooks: boolean,
+    isFetchingBooks: boolean,
+    isErrorBooks: boolean
+}>`
     transform: ${(props) => props.isMenuOpen === false ? 'none' : 'rotate(180deg)'};
-    display: ${(props) => props.isActive ? 'block' : 'none'};
+    display: ${(props) => props.isActive && !props.isLoadingCategories && !props.isFetchingCategories && !props.isErrorCategories && !props.isLoadingBooks && !props.isFetchingBooks && !props.isErrorBooks ? 'block' : 'none'};
 `;
 export const ProfileAndExitContainer = styled.div`
     @media screen and ${device.mobileS} {
@@ -94,7 +103,7 @@ export const ProfileAndExitContainer = styled.div`
         padding: 32px 0 0 0;
         width: 288px;
         span {
-        margin-left: 16px;
+            margin-left: 16px;
         }
     }
     @media screen and  ${device.tablet} {
@@ -106,7 +115,7 @@ export const ProfileAndExitContainer = styled.div`
         padding-top: 32px;
         width: 502px;
         span {
-        margin-left: 32px;
+            margin-left: 32px;
         }
     }
     @media screen and  ${device.laptopL} {
@@ -114,7 +123,7 @@ export const ProfileAndExitContainer = styled.div`
         display: none;
     }
 `;
-export const MenuContainer = styled.div<{isMenuCollapsed: boolean}>`
+export const MenuContainer = styled.div<{ isMenuCollapsed: boolean }>`
     @media screen and ${device.mobileS} {
         width: ${(props) => props.isMenuCollapsed === false ? '288px' : '0'};
         min-height: ${(props) => props.isMenuCollapsed === false ? '442px' : '0'};

@@ -106,6 +106,11 @@ export const BookNameBlockList = styled.div`
     }
     @media screen and ${device.laptopL} {
         max-height: 92px;
+        flex-direction: column;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
 
     }
 `;
