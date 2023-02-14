@@ -108,14 +108,17 @@ export const BookAuthorBlock = styled.div`
         -webkit-box-orient: vertical;
     }
     @media screen and ${device.laptopL} {
-        display: flex;
+        //display: flex;
         text-transform: none;
         height: 36px;
-        flex-direction: column;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        //flex-direction: column;
+        //display: -webkit-box;
+        //-webkit-line-clamp: 2;
+        //-webkit-box-orient: vertical;
+        //overflow: hidden;
+        span {
+            display: inline-block;
+        }
     }
 `;
 export const ButtonContainer = styled.div`

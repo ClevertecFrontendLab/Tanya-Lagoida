@@ -9,7 +9,7 @@ import closeError from '../pages/images/close-error.svg';
 export const Error = () => {
     const isLaptopView = useMediaQuery( `${device.laptopL}`);
     return (
-        <ErrorContainer>
+        <ErrorContainer data-test-id='error'>
             <ErrorIconAndText>
                 <img src={warningIcon} alt=''/>
                 <LabelText

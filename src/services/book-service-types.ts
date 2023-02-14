@@ -9,7 +9,7 @@ export type TBooksType = {
     booking: {
         id: number
         order: boolean
-        dateOrder: string
+        dateOrder: Date
         customerId: number
         customerFirstName: string
         customerLastName: string
@@ -17,8 +17,8 @@ export type TBooksType = {
     delivery: {
         id: number
         handed: boolean
-        dateHandedFrom: string
-        dateHandedTo: string
+        dateHandedFrom: Date
+        dateHandedTo: Date
         recipientId: number
         recipientFirstName: string
         recipientLastName: string
@@ -34,7 +34,7 @@ export type TCommentsType = {
     id: number
     rating: number
     text: string
-    createdAt: string
+    createdAt: Date
     user: {
         commentUserId: number
         firstName: string
@@ -62,7 +62,7 @@ export type TBooksByIdType = {
     booking: {
         id: number
         order: boolean
-        dateOrder: string
+        dateOrder: Date
         customerId: number
         customerFirstName: string
         customerLastName: string
@@ -70,8 +70,8 @@ export type TBooksByIdType = {
     delivery: {
         id: number
         handed: boolean
-        dateHandedFrom: string
-        dateHandedTo: string
+        dateHandedFrom: Date
+        dateHandedTo: Date
         recipientId: number
         recipientFirstName: string
         recipientLastName: string
@@ -89,3 +89,4 @@ export type TBooksGenresType = {
     path: string
     id: number
 }
+

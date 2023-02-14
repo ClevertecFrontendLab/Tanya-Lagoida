@@ -12,7 +12,7 @@ import {Error} from '../../error/error';
 
 export const MainPage = () => {
     const { data: dataBooks = [], isLoading: isLoadingBooks, isFetching: isFetchingBooks, isError: isErrorBooks } = useGettingAListOfBooksQuery()
-    const { data: dataCategories = [], isLoading: isLoadingCategories, isFetching: isFetchingCategories, isError: isErrorCategories } = useGettingAListOfBookGenresQuery()
+    const { isLoading: isLoadingCategories, isFetching: isFetchingCategories, isError: isErrorCategories } = useGettingAListOfBookGenresQuery()
 
     const [isListView, setIsListView] = useState<boolean>(false);
     const handleIsListView = (value: boolean): void => setIsListView(value);

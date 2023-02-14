@@ -18,10 +18,6 @@ export const MainStyles = styled.section`
     align-items: center;
     justify-content: space-between;
     height: 100%;
-//    : last-child {
-//    justify-items: end;
-//
-//}
     @media screen and ${device.mobileS} {
         padding-top: 0;
         width: ${size.mobileS};

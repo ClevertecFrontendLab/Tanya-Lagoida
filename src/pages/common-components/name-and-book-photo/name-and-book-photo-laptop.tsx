@@ -14,6 +14,7 @@ import {
 import withoutCover from '../../images/icon-without-cover.svg';
 import {ImgContainerForSwiper} from '../../components/swiper/styles';
 import {TBooksByIdType} from '../../../services/book-service-types';
+import {dateFunc} from '../../../func/date-adding-zero-func';
 
 
 type TProps = {
@@ -56,8 +57,9 @@ export const NameBookPhotoAndAboutBookLaptop: React.FC<TProps> = ({book}) => (
                     width="350px"
                     height="52px">
                     <LabelText variantText="medium16LS">
-                        {book?.booking ? 'Забронирована' :
-                        book?.delivery ? 'Занята до 03.05' : 'Забронировать'}
+                        {book?.booking ? `Занята до ${dateFunc(book?.booking.dateOrder)}`
+                        : book?.delivery ? 'Забронирована'
+                            : 'Забронировать'}
                     </LabelText>
                 </ButtonComponent>
             </ButtonBookContainer>

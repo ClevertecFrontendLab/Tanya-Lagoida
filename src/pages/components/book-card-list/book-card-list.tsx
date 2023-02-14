@@ -2,8 +2,6 @@ import React from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 
 import {StarComponent} from '../../common-components/stars/star-component';
-import starWithoutColor from '../../images/icon_star-without-color.png';
-import starImg from '../../images/icon-star-yellow.png';
 import withoutCover from '../../images/icon-without-cover.svg';
 import {LabelText} from '../../labels/labels';
 import {StarLabel, StarsBoxBookCardTable} from '../book-card-table/styles';
@@ -20,6 +18,7 @@ import {useMediaQuery} from '../../hooks/use-media-query';
 import {device} from '../../main/styles';
 import { TBooksType } from '../../../services/book-service-types';
 import {EEndPoints} from '../../../config/endpoints';
+import {dateFunc} from '../../../func/date-adding-zero-func';
 
 type TProps = {
     dataBooks: TBooksType[]
@@ -80,22 +79,15 @@ export const BookCardList: React.FC<TProps> = ({dataBooks}) => {
                                 </StarLabel>
                                 :
                                 <StarsBoxBookCardTable>
-                                    <StarComponent src={starImg}
-                                                   width={isMobileView ? '16px' : '24px'}
-                                                   height={isMobileView ? '16px' : '24px'} alt=""/>
-                                    <StarComponent src={starImg}
-                                                   width={isMobileView ? '16px' : '24px'}
-                                                   height={isMobileView ? '16px' : '24px'} alt=""/>
-                                    <StarComponent src={starImg}
-                                                   width={isMobileView ? '16px' : '24px'}
-                                                   height={isMobileView ? '16px' : '24px'} alt=""/>
-                                    <StarComponent src={starImg}
-                                                   width={isMobileView ? '16px' : '24px'}
-                                                   height={isMobileView ? '16px' : '24px'} alt=""/>
-                                    <StarComponent src={starWithoutColor}
-                                                   width={isMobileView ? '16px' : '24px'}
-                                                   height={isMobileView ? '16px' : '24px'}
-                                                   alt=""/>
+                                    {
+                                        book?.rating ?
+                                            <StarComponent
+                                                rating={book?.rating}
+                                                width={isMobileView ? '34px' : '24px'}
+                                                height={isMobileView ? '34px' : '24px'}
+                                                alt=''/>   : null
+                                    }
+
                                 </StarsBoxBookCardTable>
                             }
                             <ButtonComponent
@@ -106,8 +98,8 @@ export const BookCardList: React.FC<TProps> = ({dataBooks}) => {
                                 height="40px"
                             >
                                 <LabelText
-                                    variantText="smallLS">{book.booking ? 'Забронирована'
-                                    : book.delivery ? 'Занята до 03.05'
+                                    variantText="smallLS">{book.booking ? `Занята до ${dateFunc(book?.booking.dateOrder)}`
+                                    : book.delivery ? 'Забронирована'
                                         : 'Забронировать'}
                                 </LabelText>
 

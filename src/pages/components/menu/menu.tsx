@@ -17,6 +17,7 @@ import {
     useGettingAListOfBookGenresQueryState,
     useGettingAListOfBooksQueryState
 } from '../../../services/book-service';
+import {categoryAmountCount} from '../../../func/category-amount-count';
 
 type TMenuProps = {
     setIsMenuCollapsed?: (value: boolean) => void
@@ -27,7 +28,7 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
     const location = useLocation();
     const isLaptopView = useMediaQuery(`${device.laptopL}`);
     const { data: dataCategories = [], isLoading: isLoadingCategories, isFetching: isFetchingCategories, isError: isErrorCategories } = useGettingAListOfBookGenresQueryState()
-    const { isLoading: isLoadingBooks, isFetching: isFetchingBooks, isError: isErrorBooks } = useGettingAListOfBooksQueryState()
+    const { data: dataBooks =[], isLoading: isLoadingBooks, isFetching: isFetchingBooks, isError: isErrorBooks } = useGettingAListOfBooksQueryState()
     const mutateMenu = [{name: 'Все книги', path: 'all', id: 999999}, ...dataCategories]
 
     const initialIsMenuOpenValue = location.pathname.includes('/books') || location.pathname === '/';
@@ -49,6 +50,8 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
         handleCloseMenu();
         handleCloseBookMenu();
     };
+
+    const amount = categoryAmountCount(dataBooks, dataCategories)
 
     return (
         <MenuStyles>
@@ -72,7 +75,15 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
                     />
                 </ShowcaseBooksBox>
             </NavLink>
-            <BooksCategoriesContainer isMenuOpen={isMenuOpen}>
+            <BooksCategoriesContainer
+                isMenuOpen={isMenuOpen}
+                isLoadingCategories={isLoadingCategories}
+                isFetchingCategories={isFetchingCategories}
+                isErrorCategories={isErrorCategories}
+                isLoadingBooks={isLoadingBooks}
+                isFetchingBooks={isFetchingBooks}
+                isErrorBooks={isErrorBooks}
+            >
                 {(!isLoadingCategories && !isFetchingCategories && !isErrorCategories && !isLoadingBooks && !isFetchingBooks && !isErrorBooks) &&
                     mutateMenu.map((bookCategory) =>
                         <NavLink key={bookCategory.id} to={`/books/${bookCategory.path}`}
@@ -84,10 +95,14 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
                                     <LabelText
                                         variantText={category === bookCategory.path ? 'medium18LS' : 'medium16'}>{bookCategory.name}</LabelText>
                                 </BookCategoriesStyle>
-                                <CategoryAmount>
-                                    <LabelText
-                                        variantText="medium14">5</LabelText>
-                                </CategoryAmount>
+                                {
+                                    bookCategory.path !== 'all' &&
+                                    <CategoryAmount >
+                                        <LabelText
+                                            variantText="medium14">{amount[bookCategory.name].length}</LabelText>
+                                    </CategoryAmount>
+                                }
+
                             </div>
                         </NavLink>
                     )

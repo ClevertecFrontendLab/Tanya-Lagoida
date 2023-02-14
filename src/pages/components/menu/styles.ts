@@ -40,11 +40,17 @@ export const ShowcaseBooksBox = styled.div<{ isActive: boolean }>`
     border-bottom: ${(props) => props.isActive ? '1px solid' : 'none'};
     border-image: ${(props) => props.isActive ? `linear-gradient(231.58deg, ${EColors.Red} -53.35%, ${EColors.Yellow} 297.76%) 1 0` : 'none'};
 `;
-export const BooksCategoriesContainer = styled.nav<{ isMenuOpen: boolean }>`
+export const BooksCategoriesContainer = styled.nav<{ isMenuOpen: boolean,
+    isLoadingCategories: boolean,
+    isFetchingCategories: boolean,
+    isErrorCategories: boolean,
+    isLoadingBooks: boolean,
+    isFetchingBooks: boolean,
+    isErrorBooks: boolean}>`
     display: ${(props) => props.isMenuOpen === false ? 'none' : 'flex'};
     gap: 14.5px;
     flex-direction: column;
-    padding: 16px 0 0 24px;
+    padding: ${(props) => !props.isLoadingCategories && !props.isFetchingCategories && !props.isErrorCategories && !props.isLoadingBooks && !props.isFetchingBooks && !props.isErrorBooks ? '16px 0 0 24px' : '0 0 0 24px'};
     @media screen and ${device.mobileS} {
         margin-left: 16px;
         width: 265px;
@@ -68,6 +74,7 @@ export const CategoryAmount = styled.span`
     color: ${EColors.Grey};
     padding-left: 6px;
     margin-top: -5px;
+
 `;
 
 export const RulesAndContract = styled.div<{ isActive: boolean }>`

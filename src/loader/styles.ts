@@ -26,16 +26,16 @@ export const LoaderContainer = styled.div`
             }
         }
         @media screen and ${device.mobileS} {
-            width: 22px;
-            height: 22px;
+            width: 48px;
+            height: 48px;
         }
         @media screen and ${device.tablet} {
-            width: 44px;
-            height: 44px;
+            width: 96px;
+            height: 96px;
         }
         @media screen and ${device.laptopL} {
-            width: 70px;
-            height: 68px;
+            width: 150px;
+            height: 150px;
         }
     }
 `

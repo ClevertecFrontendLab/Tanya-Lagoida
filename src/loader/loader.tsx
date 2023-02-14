@@ -5,8 +5,8 @@ import loader from '../pages/images/loader.svg';
 export const Loader = () =>
 
     (
-        <LoaderContainer>
-            <img src={loader} alt=''/>
+        <LoaderContainer >
+            <img src={loader} alt='' data-test-id='loader' />
 
         </LoaderContainer>
     )

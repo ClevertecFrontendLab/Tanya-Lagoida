@@ -2,9 +2,7 @@ import React, {useState} from 'react';
 
 import {ButtonComponent} from '../../components/button/button-component';
 import {useMediaQuery} from '../../hooks/use-media-query';
-import starWithoutColor from '../../images/icon_star-without-color.png';
 import hideReviews from '../../images/stroke-black.svg';
-import starImg from '../../images/icon-star-yellow.png';
 import {LabelText} from '../../labels/labels';
 import {device} from '../../main/styles';
 import {StarComponent} from '../stars/star-component';
@@ -19,6 +17,7 @@ import {
 import {TBooksByIdType} from '../../../services/book-service-types';
 import {EEndPoints} from '../../../config/endpoints';
 import withoutCover from '../../images/icon-without-cover.svg';
+import {dateFuncReviews} from '../../../func/date-func-rewiews';
 
 type TProps = {
     book?: TBooksByIdType
@@ -65,17 +64,20 @@ export const Reviews: React.FC<TProps> = ({book}) => {
                                 </UserNameAndData>
                                 <UserNameAndData>
                                     <LabelText
-                                        variantText={isMobileView ? 'medium15' : 'medium16LH24'}>{comment.createdAt}</LabelText>
+                                        variantText={isMobileView ? 'medium15' : 'medium16LH24'}>{dateFuncReviews(comment.createdAt)}</LabelText>
                                 </UserNameAndData>
                             </RightBlockUserName>
                         </ReviewsBlockInformation>
                         <StarsBox>
-                            <StarComponent src={starImg} width="24px" height="24px" alt=""/>
-                            <StarComponent src={starImg} width="24px" height="24px" alt=""/>
-                            <StarComponent src={starImg} width="24px" height="24px" alt=""/>
-                            <StarComponent src={starImg} width="24px" height="24px" alt=""/>
-                            <StarComponent src={starWithoutColor} width="24px" height="24px"
-                                           alt=""/>
+                            {
+                                comment.rating ?
+                                    <StarComponent
+                                        rating={comment?.rating}
+                                        width={isMobileView ? '34px' : '24px'}
+                                        height={isMobileView ? '34px' : '24px'}
+                                        alt=''/>   : null
+                            }
+
                         </StarsBox>
                         <ReviewsText text={comment.text}>
                             <LabelText
