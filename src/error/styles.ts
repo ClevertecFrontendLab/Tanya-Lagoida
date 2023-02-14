@@ -55,12 +55,24 @@ export const ErrorIconAndText = styled.div`
     display: flex;
     @media screen and ${device.mobileS} {
         gap: 12px;
+        img{
+            width: 24px;
+            height: 24px;
+        }
     }
     @media screen and ${device.tablet} {
         gap: 12px;
+        img{
+            width: 24px;
+            height: 24px;
+        }
     }
     @media screen and ${device.laptopL} {
         gap: 24px;
+        img{
+            width: 32px;
+            height: 32px;
+        }
     }
 
 `

@@ -12,10 +12,10 @@ export const BookCardPageContainerStyles = styled.div`
 }
 
 @media screen and ${device.mobileS} {
-        width: 320px;
+        width: 288px;
     }
     @media screen and ${device.tablet} {
-        width: 768px;
+        width: 640px;
     }
     @media screen and ${device.laptopL} {
         width: 1110px;

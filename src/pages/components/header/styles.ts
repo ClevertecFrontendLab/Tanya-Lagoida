@@ -10,6 +10,7 @@ export const HeaderStyles = styled.div`
         width: 288px;
         display: flex;
         align-items: center;
+        justify-items: start;
     }
     @media screen and ${device.tablet} {
         height: 96px;
@@ -136,11 +137,13 @@ export const BurgerMenu = styled.div<{ isMenuCollapsed: boolean }>`
 
     @media screen and ${device.mobileS} {
          margin: ${(props) => props.isMenuCollapsed ? '0 26px 0 3px' : '0 28px 0 3px'} ;
+         //padding-left: 16px;
         gap: 4px;
     }
     @media screen and ${device.tablet} {
         margin: ${(props) => props.isMenuCollapsed ? '0 26px 0 3px' : '0 28px 0 3px'} ;
         gap: 5.33px;
+        //padding-left: 30px;
     }
     @media ${device.laptopL} {
         display: none;

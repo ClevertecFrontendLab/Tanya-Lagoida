@@ -13,7 +13,6 @@ export const MenuStyles = styled.aside`
     @media screen and  ${device.laptopL} {
         display: block;
         width: 279px;
-        height: 824px;
         justify-self: start;
     }
 `;
