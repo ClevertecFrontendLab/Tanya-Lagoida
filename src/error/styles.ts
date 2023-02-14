@@ -53,6 +53,7 @@ export const ErrorContainer = styled.div`
 `
 export const ErrorIconAndText = styled.div`
     display: flex;
+    align-items: center;
     @media screen and ${device.mobileS} {
         gap: 12px;
         img{
