@@ -13,13 +13,13 @@ type TModifiedCategory = {
 export const categoryAmountCount = (booksArray: TBooksType[], categoryArray: TBooksGenresType[]) => {
     const arrObj: TArrObj = {}
 
-    categoryArray.map((category) => {
+    categoryArray.forEach((category) => {
         const key: string = category.name;
 
         arrObj[key] = []
 
-        booksArray.map((book) =>
-            book.categories.map((categoryBook) =>
+        booksArray.forEach((book) =>
+            book.categories.forEach((categoryBook) =>
                 categoryBook === category.name ? arrObj[key].push(book) : null) )
 
         return  arrObj[key].length
