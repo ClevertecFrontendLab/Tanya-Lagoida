@@ -20,6 +20,7 @@ export const NavigationStyles = styled.div`
     }
 `;
 export const SearchBookInput = styled.input<{ isSearchInputOpen: boolean }>`
+    outline:none;
     border-radius: 599px;
     border: none;
     box-shadow: 0 2px 4px ${EColors.GreyShadow1}, 0 3px 4px ${EColors.GreyShadow2}, 0 1px 5px ${EColors.GreyShadow3};
@@ -27,7 +28,8 @@ export const SearchBookInput = styled.input<{ isSearchInputOpen: boolean }>`
     align-items: center;
     background: url('../../images/search-book.svg') no-repeat left;
     padding-left: 50px;
-    caret-color: darkorange ;
+    caret-color: ${EColors.Cursor};
+
     @media screen and ${device.mobileS} {
         display: ${(props) => props.isSearchInputOpen ? 'flex' : 'none'};
         width: 288px;
@@ -106,9 +108,11 @@ export const SortBookInput = styled.div`
     justify-content: center;
     gap: 8px;
 `;
-export const SortBookImg = styled.img`
+export const SortBookImg = styled.img<{isDefaultSort: boolean}>`
     height: 16px;
     width: 16px;
+    cursor: pointer;
+    transform: ${(props) => props.isDefaultSort === true ? 'none' : 'scale(1,-1)'};
 `;
 export const SearchAndSortContainer = styled.div`
     gap: 16px;

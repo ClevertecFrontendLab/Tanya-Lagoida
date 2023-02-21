@@ -3,13 +3,6 @@ import {TBooksGenresType, TBooksType} from '../services/book-service-types';
 type TArrObj = {
     [key: string]: TBooksType[]
 }
-type TModifiedCategory = {
-     bookAmount: number
-        name: string
-        path: string
-        id: number
-    }
-
 export const categoryAmountCount = (booksArray: TBooksType[], categoryArray: TBooksGenresType[]) => {
     const arrObj: TArrObj = {}
 
@@ -25,6 +18,4 @@ export const categoryAmountCount = (booksArray: TBooksType[], categoryArray: TBo
         return  arrObj[key].length
     })
     return arrObj
-
-
 }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 
 import {IconButton} from '../../common-components/icon-button/icon-button';
 import iconSort from '../../images/icon-sort-ascending.svg';
@@ -19,11 +19,15 @@ import {
 type TProps = {
     isListView: boolean
     handleIsListView: (value: boolean) => void
+    handleSortBooks: () => void
+    isDefaultSort: boolean
+    handleInputChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
-export const Navigation: React.FC<TProps> = ({isListView, handleIsListView}) => {
+export const Navigation: React.FC<TProps> = ({isListView, handleIsListView, handleSortBooks, isDefaultSort, handleInputChange}) => {
 
     const [isSearchInputOpen, setIsSearchInputOpen] = useState<boolean>(false);
+
 
     const handleIconTableClick = (): void => {
         handleIsListView(false);
@@ -38,17 +42,27 @@ export const Navigation: React.FC<TProps> = ({isListView, handleIsListView}) => 
         setIsSearchInputOpen((previousValue) => !previousValue);
     };
 
+
     return (
         <NavigationStyles>
             <SearchAndSortContainer>
-                <SearchContainer isSearchInputOpen={isSearchInputOpen}>
-                    <SearchBookInput isSearchInputOpen={isSearchInputOpen}
-                                     placeholder="Поиск книги или автора…"/>
+                <SearchContainer
+                    isSearchInputOpen={isSearchInputOpen}>
+                    <SearchBookInput
+                        isSearchInputOpen={isSearchInputOpen}
+                        onChange={handleInputChange}
+                        data-test-id='input-search'
+                        placeholder="Поиск книги или автора…"/>
                     <img src={searchBook} alt=""/>
                 </SearchContainer>
-                <SortBookInput>
-                    <SortBookImg src={iconSort} alt=""/>
-                    <LabelText variantText="medium14Norm">По рейтингу</LabelText>
+                <SortBookInput data-test-id='sort-rating-button'>
+                    <SortBookImg
+
+                        src={iconSort} alt=""
+                        onClick={handleSortBooks}
+                        isDefaultSort={isDefaultSort}/>
+                    <LabelText
+                        variantText="medium14Norm">По рейтингу</LabelText>
                 </SortBookInput>
             </SearchAndSortContainer>
             <IconButtonSearchAndSortContainer>
@@ -61,11 +75,16 @@ export const Navigation: React.FC<TProps> = ({isListView, handleIsListView}) => 
                 <IconButton
                     variantOfIcons="secondary"
                     typeSvgIcons="buttonIconSort"
-                    isSearchInputOpen={isSearchInputOpen}/>
-                <SearchContainer isSearchInputOpen={isSearchInputOpen}>
+                    isSearchInputOpen={isSearchInputOpen}
+                    onClick={handleSortBooks}
+                    isDefaultSort={isDefaultSort}
+                />
+                <SearchContainer
+                    isSearchInputOpen={isSearchInputOpen}>
                     <SearchBookInput
                         isSearchInputOpen={isSearchInputOpen}
                         placeholder="Поиск книги или автора…"
+                        onChange={handleInputChange}
                         data-test-id="input-search"/>
                     <ButtonCloseInput
                         isSearchInputOpen={isSearchInputOpen}
@@ -93,7 +112,15 @@ export const Navigation: React.FC<TProps> = ({isListView, handleIsListView}) => 
     );
 };
 
-
+// Тег, которым вы будете оборачивать текст для подсветки совпадений поиска должен иметь атрибут data-test-id=’highlight-matches’
+// В нашем примере это span.
+//
+//
+//
+//
+//
+// Тег, в котором будет отображен текст “По запросу ничего не найдено” должен иметь атрибут data-test-id=’search-result-not-found’
+// В нашем примере это div.
 
 
 

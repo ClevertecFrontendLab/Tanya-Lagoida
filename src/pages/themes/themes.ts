@@ -14,5 +14,7 @@ export enum EColors {
     RedError = '#F42C4F',
     ErrorBack = '#FEEBEA',
     Blur = 'rgba(54, 54, 54, 0.3)',
+    Cursor = '#F83600',
+    CommonText = '#FF5253',
 
 }

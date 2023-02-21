@@ -6,6 +6,7 @@ import {TBooksByIdType, TBooksGenresType, TBooksType} from './book-service-types
 
 export const bookApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: EEndPoints.baseUrl }),
+    keepUnusedDataFor: 0,
     endpoints: (builder) => ({
         gettingAListOfBooks: builder.query<TBooksType[], void>({
             query: () => EEndPoints.gettingAListOfBooks,

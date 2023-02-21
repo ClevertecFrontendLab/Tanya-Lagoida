@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 
 import {StarComponent} from '../../common-components/stars/star-component';
 import withoutCover from '../../images/icon-without-cover.svg';
 import {LabelText} from '../../labels/labels';
-import {StarLabel, StarsBoxBookCardTable} from '../book-card-table/styles';
+import {NonCategory, StarLabel, StarsBoxBookCardTable} from '../book-card-table/styles';
 import {ButtonComponent} from '../button/button-component';
 
 import {
@@ -16,99 +16,118 @@ import {
 } from './styles';
 import {useMediaQuery} from '../../hooks/use-media-query';
 import {device} from '../../main/styles';
-import { TBooksType } from '../../../services/book-service-types';
+import {TBooksGenresType, TBooksType} from '../../../services/book-service-types';
 import {EEndPoints} from '../../../config/endpoints';
 import {dateFunc} from '../../../func/date-adding-zero-func';
 
 type TProps = {
     dataBooks: TBooksType[]
+    dataCategories: TBooksGenresType[]
+    isDefaultSort: boolean
 }
 
-export const BookCardList: React.FC<TProps> = ({dataBooks}) => {
+export const BookCardList: React.FC<TProps> = ({dataBooks, dataCategories, isDefaultSort}) => {
     const navigate = useNavigate();
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const isTabletView = useMediaQuery(`${device.tablet}`);
     const isLaptopView = useMediaQuery(`${device.laptopL}`);
     const {category} = useParams();
+    const selectedCategory = dataCategories.find((bookCategory) => bookCategory.path === category);
+    const [sortArray, setSortArray] = useState<TBooksType[]>(dataBooks);
+
+    const filteredDataBooks: TBooksType[] = [...dataBooks].sort((a, b) => isDefaultSort ? b.rating - a.rating : a.rating - b.rating).filter((book) =>
+        book.categories.find((categoryBook) => categoryBook === selectedCategory?.name)
+    );
+
+    if (filteredDataBooks.length === 0 && category !== 'all') {
+        return <NonCategory>
+            <LabelText
+                data-test-id='empty-category'
+                variantText={isMobileView ? 'medium18LS' : 'large'}>В этой категории
+                книг ещё&nbsp;нет</LabelText>
+        </NonCategory>;
+    }
 
     return (
-        <React.Fragment>{
-            dataBooks.map((book: TBooksType) =>
-                <ContainerListView key={book.id} data-test-id="card" onClick={() =>
-                    navigate(`/books/${category}/${book.id}`)}>
-                    <BookCoverListViewContainer>
-                        {
-                            book.image ?
-                            <ImgContainerList
-                                image={book.image.url}
-                                src={`${EEndPoints.baseUrl}${book.image.url}`}
-                                alt=""
-                            />
-                                :  <ImgContainerList
-                                    src={withoutCover}
-                                    alt=""
-                                />
-                        }
-                    </BookCoverListViewContainer>
-                    <RightContainerList>
-                        <NameList>
-                            <BookNameBlockList>
-                                <LabelText
-                                    variantText={isLaptopView ? 'large22LH' : isTabletView ? 'large24' : 'medium14Bold'}>{book.title}</LabelText>
-                            </BookNameBlockList>
-                            <BookAuthorBlockList>
+        <>
+            {
+                (category === 'all' ? [...dataBooks].sort((a, b) => isDefaultSort ? b.rating - a.rating : a.rating - b.rating) : filteredDataBooks)
+                    .map((book: TBooksType) =>
+                        <ContainerListView key={book.id} data-test-id="card" onClick={() =>
+                            navigate(`/books/${category}/${book.id}`)}>
+                            <BookCoverListViewContainer>
                                 {
-                                    book.authors.map((author) =>
-                                        <>
-                                            <LabelText
-                                                variantText={isMobileView ? 'small400' : 'medium16'}
-                                                key={author}>
-                                                {author},
-                                            </LabelText> <span>      </span> </>)
+                                    book.image ?
+                                        <ImgContainerList
+                                            image={book.image.url}
+                                            src={`${EEndPoints.baseUrl}${book.image.url}`}
+                                            alt=""
+                                        />
+                                        : <ImgContainerList
+                                            src={withoutCover}
+                                            alt=""
+                                        />
                                 }
-                                <span>      </span>
-                                <LabelText variantText={isLaptopView ? 'medium14Norm' : 'small400'}>
-                                    {book.issueYear}
-                                </LabelText>
-                            </BookAuthorBlockList>
-                        </NameList>
-                        <RatingAndButtonList>
-                            {book.rating === undefined ?
-                                <StarLabel>
-                                    <LabelText variantText="medium14Norm">ещё нет оценок</LabelText>
-                                </StarLabel>
-                                :
-                                <StarsBoxBookCardTable>
-                                    {
-                                        book?.rating ?
+                            </BookCoverListViewContainer>
+                            <RightContainerList>
+                                <NameList>
+                                    <BookNameBlockList>
+                                        <LabelText
+                                            variantText={isLaptopView ? 'large22LH' : isTabletView ? 'large24' : 'medium14Bold'}>{book.title}</LabelText>
+                                    </BookNameBlockList>
+                                    <BookAuthorBlockList>
+                                        {
+                                            book.authors.map((author) =>
+
+                                                <LabelText
+                                                    variantText={isMobileView ? 'small400' : 'medium16'}
+                                                    key={author}>
+                                                    {author}, &nbsp;
+                                                </LabelText>)
+                                        }
+                                        <LabelText
+                                            variantText={isLaptopView ? 'medium14Norm' : 'small400'}>
+                                            {book.issueYear}
+                                        </LabelText>
+                                    </BookAuthorBlockList>
+                                </NameList>
+                                <RatingAndButtonList>
+                                    {book.rating === null ?
+                                        <StarLabel>
+                                            <LabelText
+                                                variantText="medium14Norm">ещё нет
+                                                оценок</LabelText>
+                                        </StarLabel>
+                                        :
+                                        <StarsBoxBookCardTable>
                                             <StarComponent
                                                 rating={book?.rating}
                                                 width={isMobileView ? '34px' : '24px'}
                                                 height={isMobileView ? '34px' : '24px'}
-                                                alt=''/>   : null
+                                                alt=""/>
+                                        </StarsBoxBookCardTable>
                                     }
+                                    <ButtonComponent
+                                        status={book.booking ? 'booking'
+                                            : book.delivery ? 'delivery'
+                                                : 'inStock'}
+                                        width={isMobileView ? '186px' : '174px'}
+                                        height="40px"
+                                    >
+                                        <LabelText
+                                            variantText="smallLS">{book.booking ? `Занята до ${dateFunc(book?.booking.dateOrder)}`
+                                            : book.delivery ? 'Забронирована'
+                                                : 'Забронировать'}
+                                        </LabelText>
 
-                                </StarsBoxBookCardTable>
-                            }
-                            <ButtonComponent
-                                status={book.booking ? 'booking'
-                                    : book.delivery ? 'delivery'
-                                    : 'inStock'}
-                                width={isMobileView ? '186px' : '174px'}
-                                height="40px"
-                            >
-                                <LabelText
-                                    variantText="smallLS">{book.booking ? `Занята до ${dateFunc(book?.booking.dateOrder)}`
-                                    : book.delivery ? 'Забронирована'
-                                        : 'Забронировать'}
-                                </LabelText>
+                                    </ButtonComponent>
+                                </RatingAndButtonList>
+                            </RightContainerList>
+                        </ContainerListView>
+                    )
+            }
+        </>
 
-                            </ButtonComponent>
-                        </RatingAndButtonList>
-                    </RightContainerList>
-                </ContainerListView>
-            )
-        }</React.Fragment>
     );
 };
 

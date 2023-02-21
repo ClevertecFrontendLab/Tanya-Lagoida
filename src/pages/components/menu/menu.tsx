@@ -89,16 +89,21 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
                         <NavLink key={bookCategory.id} to={`/books/${bookCategory.path}`}
                                  onClick={handleCloseMenu}
                                  data-test-id={bookCategory.path === 'all' ?
-                                     (isLaptopView ? 'navigation-books' : 'burger-books') : ''}>
+                                     (isLaptopView ? 'navigation-books' : 'burger-books') : null}>
                             <div>
-                                <BookCategoriesStyle isActive={category === bookCategory.path}>
+                                <BookCategoriesStyle
+
+                                    isActive={category === bookCategory.path}>
                                     <LabelText
+                                        data-test-id={isLaptopView ? `navigation-${bookCategory.path}` : `burger-${bookCategory.path}`}
                                         variantText={category === bookCategory.path ? 'medium18LS' : 'medium16'}>{bookCategory.name}</LabelText>
                                 </BookCategoriesStyle>
                                 {
                                     bookCategory.path !== 'all' &&
-                                    <CategoryAmount >
+                                    <CategoryAmount
+                                        >
                                         <LabelText
+                                            data-test-id={isLaptopView ? `navigation-book-count-for-${bookCategory.path}`: `burger-book-count-for-${bookCategory.path}`}
                                             variantText="medium14">{amount[bookCategory.name].length}</LabelText>
                                     </CategoryAmount>
                                 }
