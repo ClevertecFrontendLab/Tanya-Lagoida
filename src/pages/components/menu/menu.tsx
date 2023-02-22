@@ -92,7 +92,6 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
                                      (isLaptopView ? 'navigation-books' : 'burger-books') : null}>
                             <div>
                                 <BookCategoriesStyle
-
                                     isActive={category === bookCategory.path}>
                                     <LabelText
                                         data-test-id={isLaptopView ? `navigation-${bookCategory.path}` : `burger-${bookCategory.path}`}

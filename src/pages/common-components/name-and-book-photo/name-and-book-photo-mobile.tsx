@@ -36,9 +36,9 @@ export const NameBookPhotoAndAboutBookMobile: React.FC<TProps> = ({book}) => (
         <BookNameMobile>
             <LabelText
                 data-test-id='book-title'
-                variantText="medium18">
-                {book?.title}
-            </LabelText>
+                variantText="medium18">{book?.title}</LabelText>
+
+
         </BookNameMobile>
         <AuthorName>
             {

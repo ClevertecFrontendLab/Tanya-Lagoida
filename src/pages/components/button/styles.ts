@@ -20,7 +20,7 @@ export const Button = styled.button<TButtonProps>`
     border: ${props => props.status === 'inStock' && 'none'};
 `;
 
-export const ViewIconButtonStyles = styled.button<TViewButtonProps & { isSearchInputOpen: boolean, isDefaultSort?: boolean }>`
+export const ViewIconButtonStyles = styled.button<TViewButtonProps & { isSearchInputOpen?: boolean, isDefaultSort?: boolean }>`
     background: ${({variantOfIcons}) => iconButtonBackgroundColors[variantOfIcons]};
     filter: drop-shadow(0px 2px 4px ${EColors.GreyShadow1}) drop-shadow(0px 3px 4px ${EColors.GreyShadow2}) drop-shadow(0px 1px 5px ${EColors.GreyShadow3});
     border-radius: 19px;

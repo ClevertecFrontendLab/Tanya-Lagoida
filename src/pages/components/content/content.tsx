@@ -11,19 +11,20 @@ type TProps = {
     dataBooks: TBooksType[]
     dataCategories: TBooksGenresType[]
     isDefaultSort: boolean
+    enteredText: string
 }
-export const Content: React.FC<TProps> = ({isListView, dataBooks, dataCategories, isDefaultSort,  ...restProps}) => {
+export const Content: React.FC<TProps> = ({isListView, dataBooks, dataCategories, isDefaultSort, enteredText,  ...restProps}) => {
     if (isListView) {
         return (
             <ContentStylesForDesktopListView>
-                <BookCardList dataBooks={dataBooks} dataCategories={dataCategories} isDefaultSort={isDefaultSort}/>
+                <BookCardList dataBooks={dataBooks} dataCategories={dataCategories} isDefaultSort={isDefaultSort} enteredText={enteredText}/>
             </ContentStylesForDesktopListView>
         );
     }
 
     return (
         <ContentStylesForDesktopTableView>
-            <BookCardTable dataBooks={dataBooks} dataCategories={dataCategories} isDefaultSort={isDefaultSort}/>
+            <BookCardTable dataBooks={dataBooks} dataCategories={dataCategories} isDefaultSort={isDefaultSort} enteredText={enteredText}/>
         </ContentStylesForDesktopTableView>
     );
 };

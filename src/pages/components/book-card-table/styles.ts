@@ -101,6 +101,9 @@ export const BookNameBlock = styled.div`
         vertical-align: middle;
     }
 `;
+export const EnteredText = styled.span`
+    color: ${EColors.CommonText};
+`;
 export const BookAuthorBlock = styled.div`
     color: ${EColors.DarkGrey};
     @media screen and ${device.mobileS} {

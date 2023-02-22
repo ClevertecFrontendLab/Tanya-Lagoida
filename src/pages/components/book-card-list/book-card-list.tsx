@@ -4,7 +4,12 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {StarComponent} from '../../common-components/stars/star-component';
 import withoutCover from '../../images/icon-without-cover.svg';
 import {LabelText} from '../../labels/labels';
-import {NonCategory, StarLabel, StarsBoxBookCardTable} from '../book-card-table/styles';
+import {
+    EnteredText,
+    NonCategory,
+    StarLabel,
+    StarsBoxBookCardTable
+} from '../book-card-table/styles';
 import {ButtonComponent} from '../button/button-component';
 
 import {
@@ -24,9 +29,15 @@ type TProps = {
     dataBooks: TBooksType[]
     dataCategories: TBooksGenresType[]
     isDefaultSort: boolean
+    enteredText: string
 }
 
-export const BookCardList: React.FC<TProps> = ({dataBooks, dataCategories, isDefaultSort}) => {
+export const BookCardList: React.FC<TProps> = ({
+    dataBooks,
+    dataCategories,
+    isDefaultSort,
+    enteredText
+}) => {
     const navigate = useNavigate();
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const isTabletView = useMediaQuery(`${device.tablet}`);
@@ -38,20 +49,35 @@ export const BookCardList: React.FC<TProps> = ({dataBooks, dataCategories, isDef
     const filteredDataBooks: TBooksType[] = [...dataBooks].sort((a, b) => isDefaultSort ? b.rating - a.rating : a.rating - b.rating).filter((book) =>
         book.categories.find((categoryBook) => categoryBook === selectedCategory?.name)
     );
+    const filteredDataAllBooks = [...dataBooks].sort((a, b) =>
+        isDefaultSort ? b.rating - a.rating : a.rating - b.rating);
+
+    const filteredDataAllBooksSearch = filteredDataAllBooks.filter((book) => book.title.toLowerCase().includes(enteredText.toLowerCase()))
+    const filteredAndSearchBooks = filteredDataBooks.filter((book) => book.title.toLowerCase().includes(enteredText.toLowerCase()))
 
     if (filteredDataBooks.length === 0 && category !== 'all') {
         return <NonCategory>
             <LabelText
-                data-test-id='empty-category'
+                data-test-id="empty-category"
                 variantText={isMobileView ? 'medium18LS' : 'large'}>В этой категории
-                книг ещё&nbsp;нет</LabelText>
+                книг ещё нет</LabelText>
         </NonCategory>;
     }
+
+    if (filteredDataAllBooksSearch.length === 0 && filteredAndSearchBooks.length === 0) {
+        return <NonCategory>
+            <LabelText
+                data-test-id='search-result-not-found'
+                variantText={isMobileView ? 'medium18LS' : 'large'}>По запросу ничего не найдено</LabelText>
+        </NonCategory>
+    }
+
+    const regex = new RegExp(`(${enteredText})`, 'gmiu');
 
     return (
         <>
             {
-                (category === 'all' ? [...dataBooks].sort((a, b) => isDefaultSort ? b.rating - a.rating : a.rating - b.rating) : filteredDataBooks)
+                (category === 'all' ? filteredDataAllBooksSearch : filteredAndSearchBooks)
                     .map((book: TBooksType) =>
                         <ContainerListView key={book.id} data-test-id="card" onClick={() =>
                             navigate(`/books/${category}/${book.id}`)}>
@@ -72,8 +98,23 @@ export const BookCardList: React.FC<TProps> = ({dataBooks, dataCategories, isDef
                             <RightContainerList>
                                 <NameList>
                                     <BookNameBlockList>
-                                        <LabelText
-                                            variantText={isLaptopView ? 'large22LH' : isTabletView ? 'large24' : 'medium14Bold'}>{book.title}</LabelText>
+                                        {
+                                            book.title.split(regex).map((partOfTitle) => partOfTitle.toLowerCase() === enteredText.toLowerCase()
+                                                ?
+                                                <EnteredText>
+                                                    <LabelText
+                                                        data-test-id="highlight-matches"
+                                                        variantText={isLaptopView ? 'large22LH' : isTabletView ? 'large24' : 'medium14Bold'}>
+                                                        {partOfTitle}
+                                                    </LabelText>
+                                                </EnteredText>
+                                                :
+                                                <LabelText
+                                                    variantText={isLaptopView ? 'large22LH' : isTabletView ? 'large24' : 'medium14Bold'}>
+                                                    {partOfTitle}
+                                                </LabelText>
+                                            )
+                                        }
                                     </BookNameBlockList>
                                     <BookAuthorBlockList>
                                         {

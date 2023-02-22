@@ -2,9 +2,10 @@ import React, {ChangeEvent, useState} from 'react';
 
 import {IconButton} from '../../common-components/icon-button/icon-button';
 import iconSort from '../../images/icon-sort-ascending.svg';
-import searchBook from '../../images/search-book.svg';
 import closeInput from '../../images/close-input.svg';
 import {LabelText} from '../../labels/labels';
+import searchBook from '../../images/search-book.svg';
+import searchBookActive from '../../images/icon-search-active.svg';
 
 import {
     ButtonCloseInput,
@@ -46,20 +47,21 @@ export const Navigation: React.FC<TProps> = ({isListView, handleIsListView, hand
     return (
         <NavigationStyles>
             <SearchAndSortContainer>
-                <SearchContainer
-                    isSearchInputOpen={isSearchInputOpen}>
+                <SearchContainer>
                     <SearchBookInput
+                        // onBlur={activateViewMode}
                         isSearchInputOpen={isSearchInputOpen}
                         onChange={handleInputChange}
                         data-test-id='input-search'
                         placeholder="Поиск книги или автора…"/>
                     <img src={searchBook} alt=""/>
+                    <img src={searchBookActive} alt=""/>
                 </SearchContainer>
-                <SortBookInput data-test-id='sort-rating-button'>
+                <SortBookInput
+                    data-test-id='sort-rating-button'
+                    onClick={handleSortBooks}>
                     <SortBookImg
-
                         src={iconSort} alt=""
-                        onClick={handleSortBooks}
                         isDefaultSort={isDefaultSort}/>
                     <LabelText
                         variantText="medium14Norm">По рейтингу</LabelText>
@@ -79,8 +81,7 @@ export const Navigation: React.FC<TProps> = ({isListView, handleIsListView, hand
                     onClick={handleSortBooks}
                     isDefaultSort={isDefaultSort}
                 />
-                <SearchContainer
-                    isSearchInputOpen={isSearchInputOpen}>
+                <SearchContainer>
                     <SearchBookInput
                         isSearchInputOpen={isSearchInputOpen}
                         placeholder="Поиск книги или автора…"
@@ -111,16 +112,3 @@ export const Navigation: React.FC<TProps> = ({isListView, handleIsListView, hand
         </NavigationStyles>
     );
 };
-
-// Тег, которым вы будете оборачивать текст для подсветки совпадений поиска должен иметь атрибут data-test-id=’highlight-matches’
-// В нашем примере это span.
-//
-//
-//
-//
-//
-// Тег, в котором будет отображен текст “По запросу ничего не найдено” должен иметь атрибут data-test-id=’search-result-not-found’
-// В нашем примере это div.
-
-
-

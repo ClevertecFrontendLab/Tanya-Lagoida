@@ -11,8 +11,18 @@ import {Loader} from '../../loader/loader';
 import {Error} from '../../error/error';
 
 export const MainPage = () => {
-    const { data: dataBooks = [], isLoading: isLoadingBooks, isFetching: isFetchingBooks, isError: isErrorBooks } = useGettingAListOfBooksQuery();
-    const { data: dataCategories = [], isLoading: isLoadingCategories, isFetching: isFetchingCategories, isError: isErrorCategories } = useGettingAListOfBookGenresQueryState();
+    const {
+        data: dataBooks = [],
+        isLoading: isLoadingBooks,
+        isFetching: isFetchingBooks,
+        isError: isErrorBooks
+    } = useGettingAListOfBooksQuery();
+    const {
+        data: dataCategories = [],
+        isLoading: isLoadingCategories,
+        isFetching: isFetchingCategories,
+        isError: isErrorCategories
+    } = useGettingAListOfBookGenresQueryState();
 
 
     const [isListView, setIsListView] = useState<boolean>(false);
@@ -21,11 +31,13 @@ export const MainPage = () => {
 
     const handleSortBooks = (): void => {
         setIsDefaultSort((previousValue) => !previousValue);
-    }
+    };
     const handleIsListView = (value: boolean): void => setIsListView(value);
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 
-    }
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setEnteredText(event.target.value);
+    };
+
 
     if (isLoadingBooks || isLoadingCategories || isFetchingBooks || isFetchingCategories) {
         return <Loader/>;
@@ -35,18 +47,19 @@ export const MainPage = () => {
     }
 
 
-        return (
-            (dataBooks && dataCategories) &&
-            <BlockNavigationAndContent>
-                <Navigation
-                    handleIsListView={handleIsListView}
-                    isListView={isListView}
-                    handleSortBooks={handleSortBooks}
-                    isDefaultSort={isDefaultSort}
-                    handleInputChange={handleInputChange}
-                />
-                <Content isListView={isListView} dataBooks={dataBooks} dataCategories={dataCategories} isDefaultSort={isDefaultSort}/>
-            </BlockNavigationAndContent>
-        );
+    return (
+        (dataBooks && dataCategories) &&
+        <BlockNavigationAndContent>
+            <Navigation
+                handleIsListView={handleIsListView}
+                isListView={isListView}
+                handleSortBooks={handleSortBooks}
+                isDefaultSort={isDefaultSort}
+                handleInputChange={handleInputChange}
+            />
+            <Content isListView={isListView} dataBooks={dataBooks} dataCategories={dataCategories}
+                     isDefaultSort={isDefaultSort} enteredText={enteredText}/>
+        </BlockNavigationAndContent>
+    );
 
-}
+};

@@ -29,6 +29,15 @@ export const SearchBookInput = styled.input<{ isSearchInputOpen: boolean }>`
     background: url('../../images/search-book.svg') no-repeat left;
     padding-left: 50px;
     caret-color: ${EColors.Cursor};
+    :focus::-webkit-input-placeholder {
+        color: transparent;
+    };
+    //:focus {
+    //    background: url('../../images/icon-search-active.svg') no-repeat left;
+    //
+    //
+    //
+    //}
 
     @media screen and ${device.mobileS} {
         display: ${(props) => props.isSearchInputOpen ? 'flex' : 'none'};
@@ -36,7 +45,8 @@ export const SearchBookInput = styled.input<{ isSearchInputOpen: boolean }>`
         height: 32px;
         padding: 0 16px;
         ::placeholder {
-            ${labelVariants.small400}
+            ${labelVariants.small400};
+            color: ${EColors.Grey};
         }
 
     }
@@ -45,7 +55,8 @@ export const SearchBookInput = styled.input<{ isSearchInputOpen: boolean }>`
         height: 38px;
         padding-left: 40px;
         ::placeholder {
-            ${labelVariants.medium14Norm}
+            ${labelVariants.medium14Norm};
+            color: ${EColors.Grey};
         }
     }
     @media screen and ${device.laptopL} {
@@ -53,16 +64,20 @@ export const SearchBookInput = styled.input<{ isSearchInputOpen: boolean }>`
         height: 38px;
         padding-left: 40px;
         ::placeholder {
-            ${labelVariants.medium14Norm}
+            ${labelVariants.medium14Norm};
+            color: ${EColors.Grey};
         }
     }
 `;
-export const SearchContainer = styled.div<{ isSearchInputOpen: boolean }>`
+export const SearchContainer = styled.div`
     @media screen and ${device.mobileS} {
         position: relative;
         display: flex;
         align-items: center;
         justify-content: end;
+        :active {
+            background: url('../../images/icon-search-active.svg') no-repeat left;
+        }
 
         button {
             position: absolute;
@@ -107,11 +122,14 @@ export const SortBookInput = styled.div`
     align-items: center;
     justify-content: center;
     gap: 8px;
+    cursor: pointer;
+    span{
+        color: ${EColors.Grey};
+    }
 `;
 export const SortBookImg = styled.img<{isDefaultSort: boolean}>`
     height: 16px;
     width: 16px;
-    cursor: pointer;
     transform: ${(props) => props.isDefaultSort === true ? 'none' : 'scale(1,-1)'};
 `;
 export const SearchAndSortContainer = styled.div`

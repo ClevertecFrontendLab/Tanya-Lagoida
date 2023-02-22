@@ -35,7 +35,7 @@ export const Breadcrumbs = () => {
                     <LabelText
                         data-test-id='breadcrumbs-link'
                         onClick={handleMainPage}
-                        variantText={isMobileView ? 'small500' : 'medium14Norm'}> {selectedCategory?.name} </LabelText>
+                        variantText={isMobileView ? 'small500' : 'medium14Norm'}>{selectedCategory?.name}</LabelText>
                 </CategoryContainer>
                 <ChevronContainer>
                     <LabelText
@@ -43,7 +43,7 @@ export const Breadcrumbs = () => {
                 </ChevronContainer>
                 <LabelText
                     data-test-id='book-name'
-                    variantText={isMobileView ? 'small500' : 'medium14Norm'}> {dataBookById?.title} </LabelText>
+                    variantText={isMobileView ? 'small500' : 'medium14Norm'}>{dataBookById?.title}</LabelText>
             </Container>
         </BreadcrumbsStyles>);
 };

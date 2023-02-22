@@ -9,7 +9,7 @@ type TProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     variantOfIcons: keyof typeof iconButtonBackgroundColors;
     typeSvgIcons: keyof typeof svgIcons;
     'data-test-id'?: string;
-    isSearchInputOpen: boolean;
+    isSearchInputOpen?: boolean;
     isDefaultSort?: boolean;
 };
 
