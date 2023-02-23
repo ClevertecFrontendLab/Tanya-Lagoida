@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 
 import {StarComponent} from '../../common-components/stars/star-component';
@@ -19,6 +19,7 @@ import {TBooksGenresType, TBooksType} from '../../../services/book-service-types
 import {EEndPoints} from '../../../config/endpoints';
 import {ImgContainerList} from '../book-card-list/styles';
 import {dateFunc} from '../../../func/date-adding-zero-func';
+import {bookFilterSort} from '../../common-components/book-filter-sort';
 
 type TProps = {
     dataBooks: TBooksType[]
@@ -35,41 +36,51 @@ export const BookCardTable: React.FC<TProps> = ({
     const navigate = useNavigate();
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const isLaptopView = useMediaQuery(`${device.laptopL}`);
-    const {category} = useParams();
-    const selectedCategory = dataCategories.find((bookCategory) => bookCategory.path === category);
-    const [sortArray, setSortArray] = useState<TBooksType[]>(dataBooks);
     const regex = new RegExp(`(${enteredText})`, 'gmiu');
+    const {category} = useParams();
 
-    const filteredDataBooks = [...dataBooks].sort((a, b) =>
-        isDefaultSort ? b.rating - a.rating : a.rating - b.rating).filter((book) =>
-        book.categories.find((categoryBook) => categoryBook === selectedCategory?.name)
-    );
-    const filteredDataAllBooks = [...dataBooks].sort((a, b) =>
-        isDefaultSort ? b.rating - a.rating : a.rating - b.rating);
+    const sortBook = bookFilterSort  ({dataBooks, dataCategories, isDefaultSort, enteredText})
 
-    const filteredDataAllBooksSearch = filteredDataAllBooks.filter((book) => book.title.toLowerCase().includes(enteredText.toLowerCase()))
-    const filteredAndSearchBooks = filteredDataBooks.filter((book) => book.title.toLowerCase().includes(enteredText.toLowerCase()))
 
-    if (filteredDataBooks.length === 0 && category !== 'all') {
+    if (sortBook[2].length === 0 && category !== 'all') {
         return <NonCategory>
-            <LabelText
-                data-test-id='empty-category'
-                variantText={isMobileView ? 'medium18LS' : 'large'}>В этой категории
-                книг ещё нет</LabelText>
+            {isMobileView
+                ?
+                <div>
+                    <LabelText
+                        data-test-id='empty-category'
+                        variantText={isMobileView ? 'medium18LS' : 'large'}>В этой категории книг ещё нет
+                    </LabelText>
+                </div>
+            :
+                <LabelText
+                    data-test-id='empty-category'
+                    variantText={isMobileView ? 'medium18LS' : 'large'}>В этой категории книг ещё нет</LabelText>
+            }
         </NonCategory>;
     }
 
-    if (filteredDataAllBooksSearch.length === 0 && filteredAndSearchBooks.length === 0) {
+    if (sortBook[0].length === 0 && sortBook[1].length === 0) {
         return <NonCategory>
-            <LabelText
-                data-test-id='search-result-not-found'
-                variantText={isMobileView ? 'medium18LS' : 'large'}>По запросу ничего не найдено</LabelText>
+            {isMobileView
+                ?
+                <div>
+                    <LabelText
+                        data-test-id='search-result-not-found'
+                        variantText={isMobileView ? 'medium18LS' : 'large'}>По запросу ничего не найдено
+                    </LabelText>
+                </div>
+                :
+                <LabelText
+                    data-test-id='search-result-not-found'
+                    variantText={isMobileView ? 'medium18LS' : 'large'}>По запросу ничего не найдено</LabelText>
+            }
         </NonCategory>
     }
 
     return (
         <> {
-            (category === 'all' ? filteredDataAllBooksSearch : filteredAndSearchBooks)
+            (category === 'all' ? sortBook[0] : sortBook[1])
                 .map((book: TBooksType) =>
                     <ContainerTableView
                         key={book.id}

@@ -160,15 +160,22 @@ export const NonCategory = styled.div`
 
     @media screen and ${device.mobileS} {
         margin-top: 121px;
-        align-items: center;
-        justify-content: center;
+        justify-self: center;
+        div {
+            display: flex;
+            flex-direction: column;
+            width: 200px;
+        }
+        span {
+            justify-self: center;
+            align-self: center;
+            text-align: center;
+        }
     }
     @media screen and ${device.tablet} {
         margin-top: 202px;
     }
     @media screen and ${device.laptopL} {
         margin-top: 168px;
-
-
     }
 `;

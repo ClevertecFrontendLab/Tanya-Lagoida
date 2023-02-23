@@ -9,6 +9,7 @@ import {
 } from '../../services/book-service';
 import {Loader} from '../../loader/loader';
 import {Error} from '../../error/error';
+import {useSort} from '../components/layout/layout';
 
 export const MainPage = () => {
     const {
@@ -24,14 +25,15 @@ export const MainPage = () => {
         isError: isErrorCategories
     } = useGettingAListOfBookGenresQueryState();
 
-
     const [isListView, setIsListView] = useState<boolean>(false);
-    const [isDefaultSort, setIsDefaultSort] = useState<boolean>(true);
     const [enteredText, setEnteredText] = useState<string>('');
+    const {isDefaultSort, updateSort} =  useSort()
 
     const handleSortBooks = (): void => {
-        setIsDefaultSort((previousValue) => !previousValue);
-    };
+
+        updateSort( (previousValue) => !previousValue);
+    }
+
     const handleIsListView = (value: boolean): void => setIsListView(value);
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +48,6 @@ export const MainPage = () => {
         return <Error/>;
     }
 
-
     return (
         (dataBooks && dataCategories) &&
         <BlockNavigationAndContent>
@@ -54,7 +55,6 @@ export const MainPage = () => {
                 handleIsListView={handleIsListView}
                 isListView={isListView}
                 handleSortBooks={handleSortBooks}
-                isDefaultSort={isDefaultSort}
                 handleInputChange={handleInputChange}
             />
             <Content isListView={isListView} dataBooks={dataBooks} dataCategories={dataCategories}

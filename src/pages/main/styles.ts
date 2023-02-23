@@ -35,6 +35,8 @@ export const MainStyles = styled.section`
 export const Center = styled.div`
     @media screen and ${device.mobileS} {
         display: flex;
+        flex-direction: column;
+        align-items: center;
         padding: 8px 0 62px 0;
     }
     @media screen and ${device.tablet} {
@@ -55,6 +57,7 @@ export const BlockNavigationAndContent = styled.section`
         display: flex;
         flex-direction: column;
         gap: 16px;
+        align-items: center;
     }
     @media screen and ${device.tablet} {
         display: flex;

@@ -10,19 +10,17 @@ type TProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     typeSvgIcons: keyof typeof svgIcons;
     'data-test-id'?: string;
     isSearchInputOpen?: boolean;
-    isDefaultSort?: boolean;
 };
 
 const iconColors = {
     primary: EColors.White,
     secondary: EColors.Grey,
 }
-export const IconButton:React.FC<TProps> = ({isSearchInputOpen, variantOfIcons, typeSvgIcons, 'data-test-id': dataTestId, isDefaultSort, ...restProps}) => (
+export const IconButton:React.FC<TProps> = ({isSearchInputOpen, variantOfIcons, typeSvgIcons, 'data-test-id': dataTestId, ...restProps}) => (
         <ViewIconButtonStyles
             data-test-id={dataTestId}
             variantOfIcons={variantOfIcons}
             isSearchInputOpen={isSearchInputOpen}
-            isDefaultSort={isDefaultSort}
             {...restProps} >
             <Icon
                 typeSvgIcons={typeSvgIcons}

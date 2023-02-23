@@ -42,14 +42,8 @@ export const FooterText = styled.div`
         width: 190px;
         margin-top: 16px;
         display: flex;
-        justify-content: space-evenly;
-        //flex-direction: column;
-        //align-items: center;
-        //align-content: center;
-        //justify-items: center;
-
-
-
+        flex-direction: column;
+        align-items: center;
     }
     @media screen and ${device.tablet} {
         width: 386px;
@@ -67,7 +61,6 @@ export const IconsContainer = styled.div`
     height: 24px;
     display: flex;
     justify-content: space-between;
-
 `;
 export const IconSocial = styled.img`
     height: 24px;

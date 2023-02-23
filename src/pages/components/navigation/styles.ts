@@ -26,34 +26,29 @@ export const SearchBookInput = styled.input<{ isSearchInputOpen: boolean }>`
     box-shadow: 0 2px 4px ${EColors.GreyShadow1}, 0 3px 4px ${EColors.GreyShadow2}, 0 1px 5px ${EColors.GreyShadow3};
     display: flex;
     align-items: center;
-    background: url('../../images/search-book.svg') no-repeat left;
     padding-left: 50px;
     caret-color: ${EColors.Cursor};
-    :focus::-webkit-input-placeholder {
-        color: transparent;
-    };
-    //:focus {
-    //    background: url('../../images/icon-search-active.svg') no-repeat left;
-    //
-    //
-    //
-    //}
 
     @media screen and ${device.mobileS} {
         display: ${(props) => props.isSearchInputOpen ? 'flex' : 'none'};
         width: 288px;
         height: 32px;
         padding: 0 16px;
+        :focus::-webkit-input-placeholder {
+            color: ${EColors.Grey};
+        };
         ::placeholder {
             ${labelVariants.small400};
             color: ${EColors.Grey};
         }
-
     }
     @media screen and ${device.tablet} {
         width: 274px;
         height: 38px;
         padding-left: 40px;
+        :focus::-webkit-input-placeholder {
+            color: ${EColors.Grey};
+        };
         ::placeholder {
             ${labelVariants.medium14Norm};
             color: ${EColors.Grey};
@@ -63,6 +58,9 @@ export const SearchBookInput = styled.input<{ isSearchInputOpen: boolean }>`
         width: 350px;
         height: 38px;
         padding-left: 40px;
+        :focus::-webkit-input-placeholder {
+            color: transparent;
+        };
         ::placeholder {
             ${labelVariants.medium14Norm};
             color: ${EColors.Grey};
@@ -76,14 +74,12 @@ export const SearchContainer = styled.div`
         align-items: center;
         justify-content: end;
         :active {
-            background: url('../../images/icon-search-active.svg') no-repeat left;
+            background: url('../../images/search-book.svg') no-repeat left;
         }
-
         button {
             position: absolute;
             width: 28px;
             height: 28px;
-            //margin-left: 250px;
             cursor: pointer;
             border-radius: 50%;
             background-color: white;
@@ -95,22 +91,30 @@ export const SearchContainer = styled.div`
         position: relative;
         display: flex;
         align-items: center;
-        img {
+        svg {
             position: absolute;
             width: 16px;
             height: 16px;
             margin-left: 16px;
+             fill: ${EColors.Grey};
+        }
+        input:focus + svg {
+            fill: url(#paint1_linear_20150_3410);
         }
     }
     @media screen and ${device.laptopL} {
         position: relative;
         display: flex;
         align-items: center;
-        img {
+        svg {
             position: absolute;
             width: 16px;
             height: 16px;
             margin-left: 16px;
+             fill: ${EColors.Grey};
+        }
+        input:focus + svg {
+            fill: url(#paint1_linear_20150_3410);
         }
     }
 `;
@@ -134,9 +138,6 @@ export const SortBookImg = styled.img<{isDefaultSort: boolean}>`
 `;
 export const SearchAndSortContainer = styled.div`
     gap: 16px;
-    @media screen and ${device.mobileS} {
-        display: none;
-    }
     @media screen and ${device.tablet} {
         width: 440px;
         display: flex;
@@ -167,12 +168,6 @@ export const IconButtonSearchAndSortContainer = styled.div`
         width: 80px;
         align-items: center;
     }
-    @media screen and ${device.tablet} {
-        display: none;
-    }
-    @media screen and ${device.laptopL} {
-        display: none;
-    }
 `;
 export const ButtonCloseInput = styled.button<{ isSearchInputOpen: boolean }>`
     display: ${(props) => props.isSearchInputOpen ? 'flex' : 'none'};
@@ -182,5 +177,7 @@ export const ButtonCloseInput = styled.button<{ isSearchInputOpen: boolean }>`
     img {
         position: absolute;
     }
-
+`;
+export const IconDiv = styled.div<{isDefaultSort: boolean}>`
+    transform: ${(props) => props.isDefaultSort === true ? 'none' : 'scale(1,-1)'};
 `
