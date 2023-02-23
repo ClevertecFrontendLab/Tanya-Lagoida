@@ -17,5 +17,6 @@ export const categoryAmountCount = (booksArray: TBooksType[], categoryArray: TBo
 
         return  arrObj[key].length
     })
+
     return arrObj
 }

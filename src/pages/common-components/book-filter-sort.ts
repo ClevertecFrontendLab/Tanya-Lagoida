@@ -1,5 +1,7 @@
-import {TBooksGenresType, TBooksType} from '../../services/book-service-types';
 import {useParams} from 'react-router-dom';
+import {TBooksGenresType, TBooksType} from '../../services/book-service-types';
+
+
 export type TProps = {
     dataBooks: TBooksType[]
     dataCategories: TBooksGenresType[]
@@ -7,7 +9,7 @@ export type TProps = {
     enteredText: string
 }
 
-export const bookFilterSort: ({
+export const BookFilterSort: ({
     dataBooks,
     dataCategories,
     isDefaultSort,

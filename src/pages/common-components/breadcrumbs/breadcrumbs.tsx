@@ -9,7 +9,7 @@ import {device} from '../../main/styles';
 import {BreadcrumbsStyles, CategoryContainer, ChevronContainer, Container} from './styles';
 import {
     useGettingAListOfBookGenresQueryState,
-    useGettingAListOfBooksByIdQueryState, useGettingAListOfBooksQuery
+    useGettingAListOfBooksByIdQueryState
 } from '../../../services/book-service';
 
 

@@ -24,7 +24,7 @@ import {device} from '../../main/styles';
 import {TBooksGenresType, TBooksType} from '../../../services/book-service-types';
 import {EEndPoints} from '../../../config/endpoints';
 import {dateFunc} from '../../../func/date-adding-zero-func';
-import {bookFilterSort} from '../../common-components/book-filter-sort';
+import {BookFilterSort} from '../../common-components/book-filter-sort';
 
 type TProps = {
     dataBooks: TBooksType[]
@@ -46,9 +46,10 @@ export const BookCardList: React.FC<TProps> = ({
     const regex = new RegExp(`(${enteredText})`, 'gmiu');
     const {category} = useParams();
 
-    const sortBook = bookFilterSort  ({dataBooks, dataCategories, isDefaultSort, enteredText})
+    const sortBook = BookFilterSort  ({dataBooks, dataCategories, isDefaultSort, enteredText})
 
     if (sortBook[2].length === 0 && category !== 'all') {
+
         return <NonCategory>
             {isMobileView
                 ?
@@ -67,6 +68,7 @@ export const BookCardList: React.FC<TProps> = ({
     }
 
     if (sortBook[0].length === 0 && sortBook[1].length === 0) {
+
         return <NonCategory>
             {isMobileView
                 ?
