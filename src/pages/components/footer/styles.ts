@@ -39,17 +39,11 @@ export const FooterStyles = styled.footer`
 export const FooterText = styled.div`
 
     @media screen and ${device.mobileS} {
-        width: 200px;
-        //height: 40px;
+        width: 190px;
         margin-top: 16px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        align-content: center;
-        justify-items: center;
-
-
-
     }
     @media screen and ${device.tablet} {
         width: 386px;
@@ -67,7 +61,6 @@ export const IconsContainer = styled.div`
     height: 24px;
     display: flex;
     justify-content: space-between;
-
 `;
 export const IconSocial = styled.img`
     height: 24px;

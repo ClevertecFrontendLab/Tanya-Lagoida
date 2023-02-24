@@ -1,16 +1,35 @@
 import React from 'react';
-import {Outlet} from 'react-router-dom';
+import {Outlet, useOutletContext} from 'react-router-dom';
 
 import {MainStyles} from '../../main/styles';
 import {Footer} from '../footer/footer';
 import {Header} from '../header/header';
+import {useGettingAListOfBookGenresQuery} from '../../../services/book-service';
 
-export const Layout = () => (
-    <MainStyles>
-        <div>
-            <Header/>
-            <Outlet/>
-        </div>
-        <Footer/>
-    </MainStyles>
-);
+export type TContextType = {
+    isDefaultSort: boolean,
+    updateSort: (value: (previousValue: boolean) => boolean) => void
+}
+
+export const Layout = () => {
+    const {
+        data: dataCategories = [],
+        isLoading: isLoadingCategories,
+        isFetching: isFetchingCategories,
+        isError: isErrorCategories
+    } = useGettingAListOfBookGenresQuery();
+
+    const [isDefaultSort, setIsDefaultSort] = React.useState<boolean>(true);
+
+    return (
+        <MainStyles>
+            <div>
+                <Header/>
+                <Outlet context={{isDefaultSort, updateSort: setIsDefaultSort}}/>
+            </div>
+            <Footer/>
+        </MainStyles>
+    );
+};
+
+export const useSort = () => useOutletContext<TContextType>()

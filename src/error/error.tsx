@@ -1,13 +1,15 @@
 import React from 'react';
+
+import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {ErrorContainer, ErrorIconAndText} from './styles';
 import warningIcon from '../pages/images/error-icon.svg';
 import {LabelText} from '../pages/labels/labels';
-import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {device} from '../pages/main/styles';
 import closeError from '../pages/images/close-error.svg';
 
 export const Error = () => {
     const isLaptopView = useMediaQuery( `${device.laptopL}`);
+
     return (
         <ErrorContainer data-test-id='error'>
             <ErrorIconAndText>

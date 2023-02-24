@@ -1,5 +1,5 @@
 import React from 'react';
-import {Outlet} from 'react-router-dom';
+import {Outlet, useOutletContext} from 'react-router-dom';
 
 import {Center, device} from '../../main/styles';
 import {Menu} from '../menu/menu';
@@ -10,8 +10,7 @@ export const LayoutMainPage = () => {
     return (
         <Center>
             {isLaptopView ? <Menu/> : null}
-            <Outlet/>
+            <Outlet context={useOutletContext()} />
         </Center>
     );
 };
-

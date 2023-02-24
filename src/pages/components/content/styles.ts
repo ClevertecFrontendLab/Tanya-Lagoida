@@ -4,15 +4,14 @@ import {device} from '../../main/styles';
 
 export const ContentStylesForDesktopTableView = styled.main`
     display: flex;
-
     @media screen and ${device.mobileS} {
-width: 288px;
+        width: 288px;
         flex-direction: column;
         gap: 16px;
-        //margin-bottom: 62px;
+        flex-wrap: wrap;
     }
     @media screen and ${device.tablet} {
-width: 640px;
+        width: 640px;
         gap: 35px;
         row-gap: 32px;
         flex-wrap: wrap;
@@ -26,9 +25,9 @@ width: 640px;
         flex-direction: row;
         margin-bottom: 0;
     }
-`
+`;
 export const ContentStylesForDesktopListView = styled.main`
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-`
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+`;

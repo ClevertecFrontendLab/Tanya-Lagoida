@@ -17,7 +17,10 @@ export const Footer = () => {
         <FooterStyles>
             <FooterText>
                 <LabelText variantText={isMobileView ? 'medium15' : 'medium16'} >
-                    © 2020-2023 Cleverland. Все права защищены.
+                    © 2020-2023 Cleverland.&nbsp;
+                </LabelText>
+                <LabelText variantText={isMobileView ? 'medium15' : 'medium16'} >
+                    Все права защищены.
                 </LabelText>
             </FooterText>
             <IconsContainer>

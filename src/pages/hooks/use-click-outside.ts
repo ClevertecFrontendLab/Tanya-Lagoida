@@ -14,8 +14,8 @@ export const useOutsideClick = ({menuRef, buttonRef, handler, isMenuCollapsed}: 
         const prevDocumentPointerEventsStyle = document.body.style.pointerEvents;
         const handleClickOutside = (event: MouseEvent) => {
             function assertIsNode(e: EventTarget | null): asserts e is Node {
-                if (!e || !("nodeType" in e)) {
-                    throw new Error(`Node expected`);
+                if (!e || !('nodeType' in e)) {
+                    throw new Error('Node expected');
                 }
             }
             assertIsNode(event.target);
@@ -28,6 +28,7 @@ export const useOutsideClick = ({menuRef, buttonRef, handler, isMenuCollapsed}: 
                 handler();
             }
         };
+
         if (!isMenuCollapsed) {
             if (menuRef.current && buttonRef.current) {
                 document.body.style.overflow = 'hidden';
@@ -39,6 +40,7 @@ export const useOutsideClick = ({menuRef, buttonRef, handler, isMenuCollapsed}: 
             }
             document.addEventListener('click', handleClickOutside);
         }
+
         return () => {
             if (!isMenuCollapsed) {
                 document.removeEventListener('click', handleClickOutside);

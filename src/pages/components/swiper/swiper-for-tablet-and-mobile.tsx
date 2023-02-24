@@ -24,6 +24,7 @@ export const SwiperTabletAndMobile: React.FC<TProps> = ({book}) => (
         pagination={{
             clickable: true,
             dynamicMainBullets: 8,
+            dynamicBullets: true,
 
         }}
         modules={[Pagination]}

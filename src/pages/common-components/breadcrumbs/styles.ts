@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { device } from '../../main/styles';
-import { EColors } from '../../themes/themes';
+import {device} from '../../main/styles';
+import {EColors} from '../../themes/themes';
 
 export const BreadcrumbsStyles = styled.div`
     color: ${EColors.Grey};
@@ -38,5 +38,11 @@ export const Container = styled.div`
     display: table-cell;
 `;
 export const ChevronContainer = styled.span`
-padding: 0 12px;
+    padding: 0 12px;
 `;
+export const CategoryContainer = styled.span`
+    cursor: pointer;
+`;
+
+
+

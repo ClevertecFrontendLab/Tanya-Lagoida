@@ -36,7 +36,8 @@ export const BookCoverContainer = styled.div`
     background-color: ${EColors.LightGrey};
     //margin-bottom: 16px;
     position: relative;
-    img{
+
+    img {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -65,41 +66,50 @@ export const Name = styled.div`
     flex-direction: column;
     display: flex;
 `;
+export const BookNameBlockContainer = styled.div`
+    flex-direction: column;
+    display: flex;
+    @media screen and ${device.mobileS} {
+        justify-content: start;
+        height: 54px;
+    }
+    @media screen and ${device.tablet} {
+        justify-content: start;
+        height: 36px;
+    }
+    @media screen and ${device.laptopL} {
+        justify-content: center;
+        height: 54px;
+`;
 export const BookNameBlock = styled.div`
     text-overflow: ellipsis;
     overflow: hidden;
-   @media screen and  ${device.mobileS} {
-        max-height: 54px;
-       display: -webkit-box;
-       -webkit-line-clamp: 3;
-       -webkit-box-orient: vertical;
+    @media screen and  ${device.mobileS} {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
     }
     @media screen and ${device.tablet} {
-        height: 36px;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
     }
     @media screen and ${device.laptopL} {
-        height: 54px;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-        //display: flex;
-        //span{
-        //align-self: center;
-        //}
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        vertical-align: middle;
     }
+`;
+export const EnteredText = styled.span`
+    color: ${EColors.CommonText};
 `;
 export const BookAuthorBlock = styled.div`
     color: ${EColors.DarkGrey};
-
     @media screen and ${device.mobileS} {
         text-transform: none;
-        max-height: 36px;
     }
     @media screen and ${device.tablet} {
-        height: 15px;
         text-transform: uppercase;
         overflow: hidden;
         display: -webkit-box;
@@ -108,17 +118,26 @@ export const BookAuthorBlock = styled.div`
         -webkit-box-orient: vertical;
     }
     @media screen and ${device.laptopL} {
-        //display: flex;
         text-transform: none;
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+`;
+export const BookAuthorBlockContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    @media screen and ${device.mobileS} {
         height: 36px;
-        //flex-direction: column;
-        //display: -webkit-box;
-        //-webkit-line-clamp: 2;
-        //-webkit-box-orient: vertical;
-        //overflow: hidden;
-        span {
-            display: inline-block;
-        }
+    }
+    @media screen and ${device.tablet} {
+        height: 15px;
+    }
+    @media screen and ${device.laptopL} {
+        height: 36px;
     }
 `;
 export const ButtonContainer = styled.div`
@@ -128,8 +147,35 @@ export const ButtonContainer = styled.div`
 export const StarsBoxBookCardTable = styled.div`
     display: flex;
     gap: 6px;
-`
+`;
 export const StarLabel = styled.div`
     color: ${EColors.Grey};
     height: 24px;
-`
+`;
+export const NonCategory = styled.div`
+    color: ${EColors.Grey};
+    width: inherit;
+    display: flex;
+    justify-content: center;
+
+    @media screen and ${device.mobileS} {
+        margin-top: 121px;
+        justify-self: center;
+        div {
+            display: flex;
+            flex-direction: column;
+            width: 200px;
+        }
+        span {
+            justify-self: center;
+            align-self: center;
+            text-align: center;
+        }
+    }
+    @media screen and ${device.tablet} {
+        margin-top: 202px;
+    }
+    @media screen and ${device.laptopL} {
+        margin-top: 168px;
+    }
+`;

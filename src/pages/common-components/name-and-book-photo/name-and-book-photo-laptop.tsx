@@ -36,9 +36,10 @@ export const NameBookPhotoAndAboutBookLaptop: React.FC<TProps> = ({book}) => (
         <RightContainerBook>
             <NameAndAuthorContainer>
                 <BookName>
-                    <LabelText variantText="large">
-                        {book?.title}
-                    </LabelText>
+                    <LabelText
+                        data-test-id='book-title'
+                        variantText="large">{book?.title}</LabelText>
+
                 </BookName>
                 <AuthorName>
                     {

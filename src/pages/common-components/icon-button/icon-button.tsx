@@ -9,7 +9,7 @@ type TProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     variantOfIcons: keyof typeof iconButtonBackgroundColors;
     typeSvgIcons: keyof typeof svgIcons;
     'data-test-id'?: string;
-    isSearchInputOpen: boolean;
+    isSearchInputOpen?: boolean;
 };
 
 const iconColors = {
@@ -20,7 +20,8 @@ export const IconButton:React.FC<TProps> = ({isSearchInputOpen, variantOfIcons, 
         <ViewIconButtonStyles
             data-test-id={dataTestId}
             variantOfIcons={variantOfIcons}
-            isSearchInputOpen={isSearchInputOpen} {...restProps} >
+            isSearchInputOpen={isSearchInputOpen}
+            {...restProps} >
             <Icon
                 typeSvgIcons={typeSvgIcons}
                 color={iconColors[variantOfIcons]}/>

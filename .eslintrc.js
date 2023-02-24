@@ -16,7 +16,7 @@ module.exports = {
         'import/no-extraneous-dependencies': [
             'error',
             {
-                // TODO: добавить после cypess 'cypress/**/*.ts',
+                // TODO: добавить после cypress 'cypress/**/*.ts',
                 devDependencies: ['**/*.test.{ts,tsx,js,jsx}'],
             },
         ],
