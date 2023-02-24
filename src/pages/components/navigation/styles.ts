@@ -20,7 +20,7 @@ export const NavigationStyles = styled.div`
     }
 `;
 export const SearchBookInput = styled.input<{ isSearchInputOpen: boolean }>`
-    outline:none;
+    outline: none;
     border-radius: 599px;
     border: none;
     box-shadow: 0 2px 4px ${EColors.GreyShadow1}, 0 3px 4px ${EColors.GreyShadow2}, 0 1px 5px ${EColors.GreyShadow3};
@@ -36,7 +36,9 @@ export const SearchBookInput = styled.input<{ isSearchInputOpen: boolean }>`
         padding: 0 16px;
         :focus::-webkit-input-placeholder {
             color: ${EColors.Grey};
-        };
+        }
+
+    ;
         ::placeholder {
             ${labelVariants.small400};
             color: ${EColors.Grey};
@@ -48,7 +50,9 @@ export const SearchBookInput = styled.input<{ isSearchInputOpen: boolean }>`
         padding-left: 40px;
         :focus::-webkit-input-placeholder {
             color: ${EColors.Grey};
-        };
+        }
+
+    ;
         ::placeholder {
             ${labelVariants.medium14Norm};
             color: ${EColors.Grey};
@@ -60,7 +64,9 @@ export const SearchBookInput = styled.input<{ isSearchInputOpen: boolean }>`
         padding-left: 40px;
         :focus::-webkit-input-placeholder {
             color: transparent;
-        };
+        }
+
+    ;
         ::placeholder {
             ${labelVariants.medium14Norm};
             color: ${EColors.Grey};
@@ -76,6 +82,7 @@ export const SearchContainer = styled.div`
         :active {
             background: url('../../images/search-book.svg') no-repeat left;
         }
+
         button {
             position: absolute;
             width: 28px;
@@ -96,7 +103,7 @@ export const SearchContainer = styled.div`
             width: 16px;
             height: 16px;
             margin-left: 16px;
-             fill: ${EColors.Grey};
+            fill: ${EColors.Grey};
         }
         input:focus + svg {
             fill: url(#paint1_linear_20150_3410);
@@ -111,7 +118,7 @@ export const SearchContainer = styled.div`
             width: 16px;
             height: 16px;
             margin-left: 16px;
-             fill: ${EColors.Grey};
+            fill: ${EColors.Grey};
         }
         input:focus + svg {
             fill: url(#paint1_linear_20150_3410);
@@ -127,11 +134,12 @@ export const SortBookInput = styled.div`
     justify-content: center;
     gap: 8px;
     cursor: pointer;
-    span{
+
+    span {
         color: ${EColors.Grey};
     }
 `;
-export const SortBookImg = styled.img<{isDefaultSort: boolean}>`
+export const SortBookImg = styled.img<{ isDefaultSort: boolean }>`
     height: 16px;
     width: 16px;
     transform: ${(props) => props.isDefaultSort === true ? 'none' : 'scale(1,-1)'};
@@ -178,6 +186,6 @@ export const ButtonCloseInput = styled.button<{ isSearchInputOpen: boolean }>`
         position: absolute;
     }
 `;
-export const IconDiv = styled.div<{isDefaultSort: boolean}>`
+export const IconDiv = styled.div<{ isDefaultSort: boolean }>`
     transform: ${(props) => props.isDefaultSort === true ? 'none' : 'scale(1,-1)'};
-`
+`;
