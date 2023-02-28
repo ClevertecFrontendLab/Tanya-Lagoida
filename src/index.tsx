@@ -11,6 +11,7 @@ import './index.css';
 
 import {store} from './store/store';
 import { BookPage } from './pages/components/book-card-page/book-page';
+import {LoginToPersonalAccount} from './authorization/login-to-personal-account';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -19,9 +20,16 @@ root.render(
         <Provider store={store}>
             <HashRouter>
                 <Routes>
+                    <Route path="/auth" element={<LoginToPersonalAccount/>}/>
+                    <Route path="/registration" element={<LoginToPersonalAccount/>}/>
+                    <Route path="/forgot-pass" element={<LoginToPersonalAccount/>}/>
                     <Route path="/" element={<Layout/>}>
+
                         <Route element={<LayoutMainPage/>}>
+                            {/*<Route path="/" element={<Navigate to=<LoginToPersonalAccount/>/>}/>*/}
+                            {/*
                             <Route path="/" element={<Navigate to="/books/all"/>}/>
+                            */}
                             <Route path="/books/:category" element={<MainPage/>}/>
                             <Route path="/terms" element={<Terms contentView="terms"/>}/>
                             <Route path="/contract" element={<Terms contentView="contract"/>}/>
