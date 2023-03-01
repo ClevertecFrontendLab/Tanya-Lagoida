@@ -2,12 +2,14 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 import {EEndPoints} from '../config/endpoints';
 import {TAuthorizationRequest, TAuthorizationResponse} from './login-service-types';
+import {RootState} from '../store/store';
 
 
 export const userApi = createApi({
     reducerPath: 'userApi',
-    baseQuery: fetchBaseQuery({baseUrl: EEndPoints.baseUrl}),
-    // keepUnusedDataFor: 0,
+    baseQuery: fetchBaseQuery({
+        baseUrl: EEndPoints.baseUrl
+    }),
     endpoints: (builder) => ({
         authorization: builder.mutation<TAuthorizationResponse, TAuthorizationRequest>({
             query: (body) => ({

@@ -41,7 +41,7 @@ export const TextFields = styled.div`
 
     position: relative;
 
-     input:focus + label{
+     input:focus + label {
         display: block;
         position: absolute;
         top: 6px;
@@ -52,6 +52,14 @@ export const TextFields = styled.div`
         font-weight: 500;
         line-height: 16px;
     }
+    img {
+        cursor: pointer;
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        width: 24px;
+        height: 24px;
+    }
 `;
 export const AssistiveText = styled.div`
     margin: 2px 0 0 12px;
@@ -60,8 +68,10 @@ export const AssistiveText = styled.div`
     @media screen and ${device.mobileS} {
         width: 240px;
     }
-
 `;
+export const AssistiveTextError = styled(AssistiveText)`
+color: ${EColors.RedError};
+`
 export const AssistiveTextAll = styled.div`
     margin: 2px 0 0 12px;
     width: 400px;
@@ -71,10 +81,12 @@ export const AssistiveTextAll = styled.div`
         width: 240px;
         margin: 2px 0 0 0;
     }
-
 `;
-export const InputStyles = styled.input`
-    //display: block;
+export const AssistiveTextAllError = styled(AssistiveTextAll)`
+    color: ${EColors.Inherit};
+`
+export const InputStyles = styled.input<{error: any}>`
+    padding-top: 12px;
     outline: none;
     cursor: pointer;
     padding-left: 12px;
@@ -82,8 +94,9 @@ export const InputStyles = styled.input`
     width: 416px;
     height: 56px;
     background: ${EColors.LightGrey};
-    border-radius: 4px;
-    border-bottom: 1px solid ${EColors.GreyBorder};
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom: ${(props) => props.error && props.error.status === 400 ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
     @media screen and ${device.mobileS} {
         width: 256px;
     }

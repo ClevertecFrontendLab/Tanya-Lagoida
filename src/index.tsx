@@ -26,10 +26,10 @@ root.render(
                     <Route path="/" element={<Layout/>}>
 
                         <Route element={<LayoutMainPage/>}>
-                            {/*<Route path="/" element={<Navigate to=<LoginToPersonalAccount/>/>}/>*/}
                             {/*
-                            <Route path="/" element={<Navigate to="/books/all"/>}/>
+                            <Route path="/" element={<Navigate to=<LoginToPersonalAccount/>/>}/>
                             */}
+                            <Route path="/" element={<Navigate to="/books/all"/>}/>
                             <Route path="/books/:category" element={<MainPage/>}/>
                             <Route path="/terms" element={<Terms contentView="terms"/>}/>
                             <Route path="/contract" element={<Terms contentView="contract"/>}/>
