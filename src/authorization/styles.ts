@@ -22,7 +22,7 @@ export const AllForm = styled.div`
     background: linear-gradient(231.58deg, #F83600 -53.35%, #F9D423 297.76%);
     width: 100vw;
     height: 100vh;
-`
+`;
 export const LoginContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -36,12 +36,15 @@ export const LoginContainer = styled.div`
 `;
 export const HeaderLogin = styled.div`
     color: ${EColors.White};
-`
+`;
 export const TextFields = styled.div`
-
     position: relative;
+    input::placeholder {
+        color: transparent;
+    }
 
-     input:focus + label {
+    input:focus ~ label,
+    input:not(:placeholder-shown) ~ label {
         display: block;
         position: absolute;
         top: 6px;
@@ -52,6 +55,7 @@ export const TextFields = styled.div`
         font-weight: 500;
         line-height: 16px;
     }
+
     img {
         cursor: pointer;
         position: absolute;
@@ -61,31 +65,39 @@ export const TextFields = styled.div`
         height: 24px;
     }
 `;
-export const AssistiveText = styled.div`
+export const AssistiveTextBox = styled.div`
+    display: flex;
+    align-items: start;
     margin: 2px 0 0 12px;
     width: 400px;
     height: 16px;
     @media screen and ${device.mobileS} {
         width: 240px;
     }
+`
+export const AssistiveTextBoxStepOne = styled(AssistiveTextBox)`
+
+    @media screen and ${device.mobileS} {
+        height: 32px;
+        margin: 2px 0 -6px 12px;
+        display: flex;
+        align-items: start;
+    }
+`
+export const AssistiveText = styled.span`
+    letter-spacing: 0.2px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    color: ${EColors.Grey};
 `;
 export const AssistiveTextError = styled(AssistiveText)`
-color: ${EColors.RedError};
-`
-export const AssistiveTextAll = styled.div`
-    margin: 2px 0 0 12px;
-    width: 400px;
-    height: 16px;
-    color: ${EColors.Grey};
-    @media screen and ${device.mobileS} {
-        width: 240px;
-        margin: 2px 0 0 0;
-    }
+    color: ${EColors.RedError};
 `;
-export const AssistiveTextAllError = styled(AssistiveTextAll)`
+export const AssistiveTextAllError = styled(AssistiveText)`
     color: ${EColors.Inherit};
-`
-export const InputStyles = styled.input<{error: any}>`
+`;
+export const InputStyles = styled.input<{ error: any }>`
     padding-top: 12px;
     outline: none;
     cursor: pointer;
@@ -99,6 +111,10 @@ export const InputStyles = styled.input<{error: any}>`
     border-bottom: ${(props) => props.error && props.error.status === 400 ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
     @media screen and ${device.mobileS} {
         width: 256px;
+    }
+
+    ::placeholder {
+        padding-top: 0;
     }
 `;
 export const LabelBox = styled.label`
@@ -140,10 +156,13 @@ export const BottomFrame = styled.div`
         gap: 4px;
     }
 `;
-export const Registration = styled.div`
+export const Registration = styled.button`
     display: flex;
     gap: 12px;
     align-items: center;
+    border: none;
+    background: none;
+    cursor: pointer;
 
     span {
         color: ${EColors.Inherit};

@@ -1,62 +1,54 @@
 import React, {useState} from 'react';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {
-    BaseQueryFn,
-    FetchArgs,
-    FetchBaseQueryError, FetchBaseQueryMeta,
-    MutationDefinition
-} from '@reduxjs/toolkit/query';
-import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
-import {Navigate, NavLink} from 'react-router-dom';
 import {
     AllForm,
-    AssistiveText,
-    AssistiveTextAllError, AssistiveTextBox, AssistiveTextError,
-    BottomFrame,
+    AssistiveText, AssistiveTextBox, AssistiveTextBoxStepOne,
+    AssistiveTextError, BottomFrame,
     ButtonAndBottomFrame,
     FormAllContainer,
     FormContainer,
     HeaderLogin,
     InputStyles,
     LabelBox,
-    LoginContainer,
-    Registration,
+    LoginContainer, Registration,
     TextFields
-} from './styles';
+} from '../authorization/styles';
 import {LabelText} from '../pages/labels/labels';
-import {ButtonComponent} from '../pages/components/button/button-component';
-import arrow from '../pages/images/arrow.svg';
-import eye from '../pages/images/Eye.svg';
 import eyeClosed from '../pages/images/eye-closed.svg';
-
+import eye from '../pages/images/Eye.svg';
+import {ButtonComponent} from '../pages/components/button/button-component';
+import {Navigate, NavLink} from 'react-router-dom';
+import arrow from '../pages/images/arrow.svg';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {device} from '../pages/main/styles';
-
+import {SubmitHandler, useForm} from 'react-hook-form';
 import {TAuthorizationRequest, TAuthorizationResponse} from '../services/login-service-types';
-import {userReceived} from '../store/auth-slice';
 import {useAppDispatch} from '../store/store';
-import {LoginFailed} from './login-failed';
-
+import {
+    BaseQueryFn,
+    FetchArgs,
+    FetchBaseQueryError, FetchBaseQueryMeta,
+    MutationDefinition
+} from '@reduxjs/toolkit/query';
+import {userReceived} from '../store/auth-slice';
+import {LoginFailed} from '../authorization/login-failed';
+import {
+    ButtonAndBottomFrameRegistration,
+    FormRegistrationAllContainer,
+    RegistrationContainer,
+    TitleForm
+} from './styles';
 
 type TFormComponentTypes = {
     error: any
     // error: FetchBaseQueryError | SerializedError | undefined
-    authorization: MutationTrigger<MutationDefinition<TAuthorizationRequest, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, { shout?: boolean }, FetchBaseQueryMeta>, never, TAuthorizationResponse, 'userApi'>>
+    registration: any
 }
 
-export const FormComponent: React.FC<TFormComponentTypes> = ({authorization, error}) => {
+export const RegistrationForm: React.FC<TFormComponentTypes> = ({error}) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const {register, handleSubmit} = useForm<TAuthorizationRequest>();
     const dispatch = useAppDispatch();
     const [passwordType, setPasswordType] = useState('password');
-
-    const togglePassword = () => {
-        if (passwordType === 'password') {
-            setPasswordType('text');
-            return;
-        }
-        setPasswordType('password');
-    };
 
     const onSubmit: SubmitHandler<TAuthorizationRequest> = async (data) => {
         try {
@@ -67,6 +59,14 @@ export const FormComponent: React.FC<TFormComponentTypes> = ({authorization, err
         } catch (error) {
             console.log(error);
         }
+    };
+
+    const togglePassword = () => {
+        if (passwordType === 'password') {
+            setPasswordType('text');
+            return;
+        }
+        setPasswordType('password');
     };
 
     if (error && error.status !== 400) {
@@ -80,23 +80,36 @@ export const FormComponent: React.FC<TFormComponentTypes> = ({authorization, err
 
     return (
         <AllForm>
-            <LoginContainer>
+            <RegistrationContainer>
                 <HeaderLogin>
                     <LabelText
                         variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>
                 </HeaderLogin>
-                <FormAllContainer>
-                    <LabelText
-                        variantText="large24">Вход в личный кабинет</LabelText>
+                <FormRegistrationAllContainer>
+                    <TitleForm>
+                        <LabelText
+                            variantText="large24">Регистрация
+                        </LabelText>
+                        <LabelText
+                            variantText="medium14Bold">1 шаг из 3
+                        </LabelText>
+                    </TitleForm>
                     <FormContainer
                         onSubmit={handleSubmit(onSubmit)}>
                         <TextFields>
                             <InputStyles {...register('identifier', {required: true})}
                                          error={error} placeholder="Логин"/>
-                            <LabelBox htmlFor="identifier">Логин</LabelBox>
-                            <AssistiveTextBox>
-                                <AssistiveText/>
-                            </AssistiveTextBox>
+                            <LabelBox htmlFor="identifier">Придумайте логин для входа</LabelBox>
+                            <AssistiveTextBoxStepOne>
+                                <AssistiveText>
+                                    Используйте для логина <AssistiveTextError>
+                                    латинский алфавит
+                                </AssistiveTextError> и <AssistiveTextError>
+                                         цифры
+                                    </AssistiveTextError>
+                                </AssistiveText>
+                            </AssistiveTextBoxStepOne>
+
                         </TextFields>
                         <TextFields>
                             <InputStyles type={passwordType}
@@ -105,50 +118,44 @@ export const FormComponent: React.FC<TFormComponentTypes> = ({authorization, err
                             <LabelBox htmlFor="password">Пароль</LabelBox>
                             <img src={passwordType === 'password' ? eyeClosed : eye} alt=""
                                  onClick={togglePassword}/>
-                            <AssistiveTextBox>
-                                {error && error.status === 400
-                                    ? <AssistiveTextError>
-                                        <LabelText variantText="small500">Неверный логин или
-                                            пароль!</LabelText>
-                                    </AssistiveTextError>
-                                    : <AssistiveTextError/>
-                                }
-                            </AssistiveTextBox>
-                            <AssistiveTextBox>
-                                {error && error.status === 400
-                                    ? <AssistiveTextAllError>
-                                        <LabelText variantText="small500">Восстановить?</LabelText>
-                                    </AssistiveTextAllError>
-                                    :
-                                    <AssistiveText>
-                                        Забыли логин или пароль?
-                                    </AssistiveText>
-                                }
-                            </AssistiveTextBox>
+
+                            <AssistiveTextBoxStepOne>
+                            <AssistiveText>
+                                Пароль <AssistiveTextError>
+                                не менее 8 символов
+                            </AssistiveTextError>
+                                , с <AssistiveTextError>
+                                заглавной буквой
+                            </AssistiveTextError> и <AssistiveTextError>
+                                цифрой
+                            </AssistiveTextError>
+                            </AssistiveText>
+                            </AssistiveTextBoxStepOne>
                         </TextFields>
-                        <ButtonAndBottomFrame>
+                        <ButtonAndBottomFrameRegistration>
                             <ButtonComponent
                                 type="submit"
                                 height={isMobileView ? '40px' : '52px'}
                                 width={isMobileView ? '255px' : '416px'}
                                 status="inStock"><LabelText
-                                variantText={isMobileView ? 'smallLS' : 'medium16LS'}>вход</LabelText>
+                                variantText={isMobileView ? 'smallLS' : 'medium16LS'}>следующий
+                                шаг</LabelText>
                             </ButtonComponent>
                             <BottomFrame>
                                 <LabelText
-                                    variantText={isMobileView ? 'medium15LH' : 'medium16LH24'}>Нет
-                                    учётной записи?</LabelText>
+                                    variantText={isMobileView ? 'medium15LH' : 'medium16LH24'}>Есть
+                                    учётная запись?</LabelText>
                                 <NavLink to="/registration">
                                     <Registration>
-                                        <LabelText variantText="smallLS">Регистрация</LabelText>
+                                        <LabelText variantText="smallLS">войти</LabelText>
                                         <img src={arrow} alt=""/>
                                     </Registration>
                                 </NavLink>
                             </BottomFrame>
-                        </ButtonAndBottomFrame>
+                        </ButtonAndBottomFrameRegistration>
                     </FormContainer>
-                </FormAllContainer>
-            </LoginContainer>
+                </FormRegistrationAllContainer>
+            </RegistrationContainer>
         </AllForm>
     );
 };

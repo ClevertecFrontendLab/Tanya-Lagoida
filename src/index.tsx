@@ -12,6 +12,8 @@ import './index.css';
 import {store} from './store/store';
 import { BookPage } from './pages/components/book-card-page/book-page';
 import {LoginToPersonalAccount} from './authorization/login-to-personal-account';
+import {RegistrationForm} from './registration/registration';
+import {RegistrationContainer} from './registration/registration-container';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -21,7 +23,7 @@ root.render(
             <HashRouter>
                 <Routes>
                     <Route path="/auth" element={<LoginToPersonalAccount/>}/>
-                    <Route path="/registration" element={<LoginToPersonalAccount/>}/>
+                    <Route path="/registration" element={<RegistrationContainer/>}/>
                     <Route path="/forgot-pass" element={<LoginToPersonalAccount/>}/>
                     <Route path="/" element={<Layout/>}>
 
