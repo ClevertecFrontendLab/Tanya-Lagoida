@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {
     BaseQueryFn,
@@ -46,7 +47,7 @@ type TFormComponentTypes = {
 
 export const FormComponent: React.FC<TFormComponentTypes> = ({authorization, error}) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
-    const {register, handleSubmit} = useForm<TAuthorizationRequest>();
+    const {register, handleSubmit,  formState: {touchedFields}} = useForm<TAuthorizationRequest>();
     const dispatch = useAppDispatch();
     const [passwordType, setPasswordType] = useState('password');
 
@@ -91,17 +92,24 @@ export const FormComponent: React.FC<TFormComponentTypes> = ({authorization, err
                     <FormContainer
                         onSubmit={handleSubmit(onSubmit)}>
                         <TextFields>
-                            <InputStyles {...register('identifier', {required: true})}
-                                         error={error} placeholder="Логин"/>
+                            <InputStyles
+                                type='text'
+                                id='identifier'
+                                {...register('identifier', {required: true})}
+                                error={error}
+                                placeholder="Логин"/>
                             <LabelBox htmlFor="identifier">Логин</LabelBox>
                             <AssistiveTextBox>
                                 <AssistiveText/>
                             </AssistiveTextBox>
                         </TextFields>
                         <TextFields>
-                            <InputStyles type={passwordType}
-                                         id="password" {...register('password', {required: true})}
-                                         error={error} placeholder="Пароль"/>
+                            <InputStyles
+
+                                type={passwordType}
+                                id="password" {...register('password', {required: true})}
+                                error={error}
+                                placeholder="Пароль"/>
                             <LabelBox htmlFor="password">Пароль</LabelBox>
                             <img src={passwordType === 'password' ? eyeClosed : eye} alt=""
                                  onClick={togglePassword}/>

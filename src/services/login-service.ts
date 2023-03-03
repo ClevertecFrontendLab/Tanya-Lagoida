@@ -1,7 +1,11 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 import {EEndPoints} from '../config/endpoints';
-import {TAuthorizationRequest, TAuthorizationResponse} from './login-service-types';
+import {
+    TAuthorizationRequest,
+    TAuthorizationResponse,
+    TRegistrationRequest
+} from './login-service-types';
 import {RootState} from '../store/store';
 
 
@@ -18,8 +22,12 @@ export const userApi = createApi({
                 body,
             }),
         }),
-        registration: builder.mutation({
-            query: (id) => `${EEndPoints.registration}/${id}`
+        registration: builder.mutation<TAuthorizationResponse, TRegistrationRequest>({
+            query: (body) => ({
+                url: EEndPoints.registration,
+                method: 'POST',
+                body,
+            }),
         }),
         passwordReset: builder.mutation({
             query: (id) => `${EEndPoints.passwordReset}/${id}`

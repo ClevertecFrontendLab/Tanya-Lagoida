@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import {device} from '../pages/main/styles';
-import {ButtonAndBottomFrame, FormAllContainer, LoginContainer} from '../authorization/styles';
+import {
+    ButtonAndBottomFrame,
+    FormAllContainer,
+    InputStyles,
+    LoginContainer
+} from '../authorization/styles';
 import {EColors} from '../pages/themes/themes';
 
 export const RegistrationContainer = styled(LoginContainer)`
@@ -25,4 +30,8 @@ export const ButtonAndBottomFrameRegistration = styled(ButtonAndBottomFrame)`
     @media screen and ${device.mobileS} {
         margin-top: 24px;
     }
+`
+export const InputStylesSteps = styled(InputStyles)<{errors: any}>`
+    border-bottom: ${(props) => props.errors && props.errors.status === 400 ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
+
 `

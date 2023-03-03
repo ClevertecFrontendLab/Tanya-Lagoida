@@ -7,6 +7,7 @@ import {TButtonProps} from './button-component';
 import {iconButtonBackgroundColors, TViewButtonProps} from './view-icon-button';
 
 export const Button = styled.button<TButtonProps>`
+    cursor: pointer;
     text-transform: uppercase;
     background: ${props => props.status === 'inStock'
         ? `linear-gradient(231.58deg, ${EColors.Red} -53.35%, ${EColors.Yellow} 297.76%)`

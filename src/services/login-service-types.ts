@@ -19,4 +19,11 @@ export type TAuthorizationResponse = {
     jwt: string
     user: TUserType
 }
-
+export type TRegistrationRequest = {
+    email: string
+    username: string
+    password: string
+    firstName: string
+    lastName: string
+    phone: string
+}

@@ -97,7 +97,7 @@ export const AssistiveTextError = styled(AssistiveText)`
 export const AssistiveTextAllError = styled(AssistiveText)`
     color: ${EColors.Inherit};
 `;
-export const InputStyles = styled.input<{ error: any }>`
+export const InputStyles = styled.input<{ error?: any }>`
     padding-top: 12px;
     outline: none;
     cursor: pointer;
@@ -111,10 +111,6 @@ export const InputStyles = styled.input<{ error: any }>`
     border-bottom: ${(props) => props.error && props.error.status === 400 ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
     @media screen and ${device.mobileS} {
         width: 256px;
-    }
-
-    ::placeholder {
-        padding-top: 0;
     }
 `;
 export const LabelBox = styled.label`

@@ -1,5 +1,5 @@
 import React from 'react';
-import {useAuthorizationMutation, useRegistrationMutation} from '../services/login-service';
+import {useRegistrationMutation} from '../services/login-service';
 import {Loader} from '../loader/loader';
 import {RegistrationForm} from './registration';
 
