@@ -12,8 +12,10 @@ import './index.css';
 import {store} from './store/store';
 import { BookPage } from './pages/components/book-card-page/book-page';
 import {LoginToPersonalAccount} from './authorization/login-to-personal-account';
-import {RegistrationForm} from './registration/registration';
 import {RegistrationContainer} from './registration/registration-container';
+import {
+    PasswordResetContainer
+} from './password-recovery/password-reset-container';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -24,7 +26,7 @@ root.render(
                 <Routes>
                     <Route path="/auth" element={<LoginToPersonalAccount/>}/>
                     <Route path="/registration" element={<RegistrationContainer/>}/>
-                    <Route path="/forgot-pass" element={<LoginToPersonalAccount/>}/>
+                    <Route path="/forgot-pass" element={<PasswordResetContainer/>}/>
                     <Route path="/" element={<Layout/>}>
 
                         <Route element={<LayoutMainPage/>}>

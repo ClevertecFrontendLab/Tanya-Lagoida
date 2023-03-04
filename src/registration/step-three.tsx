@@ -81,7 +81,7 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
                     {...register('email', {
                         required: true,
                         minLength: 20,
-                        pattern: /^.*[A-ZА-ЯЁ]+.*\d+|.*\d+.*[A-ZА-ЯЁ]+$/
+                        pattern: /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i
                     })}
                     placeholder="E-mail"/>
                 <LabelBox htmlFor="email">E-mail</LabelBox>

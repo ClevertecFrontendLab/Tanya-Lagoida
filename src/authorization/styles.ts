@@ -42,7 +42,12 @@ export const TextFields = styled.div`
     input::placeholder {
         color: transparent;
     }
-
+    input ~ label {
+        letter-spacing: 0.1px;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+    }
     input:focus ~ label,
     input:not(:placeholder-shown) ~ label {
         display: block;
@@ -55,7 +60,6 @@ export const TextFields = styled.div`
         font-weight: 500;
         line-height: 16px;
     }
-
     img {
         cursor: pointer;
         position: absolute;

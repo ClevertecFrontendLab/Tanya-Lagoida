@@ -122,7 +122,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                             height={isMobileView ? '40px' : '52px'}
                             width={isMobileView ? '255px' : '416px'}
                             status="inStock"><LabelText
-                            variantText={isMobileView ? 'smallLS' : 'medium16LS'}>последний
+                            variantText={isMobileView ? 'smallLS' : 'medium16LS'}>следующий
                             шаг</LabelText>
                         </ButtonComponent>
                         :

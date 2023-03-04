@@ -45,7 +45,7 @@ type TFormComponentTypes = {
     authorization: MutationTrigger<MutationDefinition<TAuthorizationRequest, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, { shout?: boolean }, FetchBaseQueryMeta>, never, TAuthorizationResponse, 'userApi'>>
 }
 
-export const FormComponent: React.FC<TFormComponentTypes> = ({authorization, error}) => {
+export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({authorization, error}) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const {register, handleSubmit,  formState: {touchedFields}} = useForm<TAuthorizationRequest>();
     const dispatch = useAppDispatch();
@@ -124,9 +124,11 @@ export const FormComponent: React.FC<TFormComponentTypes> = ({authorization, err
                             </AssistiveTextBox>
                             <AssistiveTextBox>
                                 {error && error.status === 400
-                                    ? <AssistiveTextAllError>
+                                    ? <NavLink to="/forgot-pass">
+                                    <AssistiveTextAllError>
                                         <LabelText variantText="small500">Восстановить?</LabelText>
                                     </AssistiveTextAllError>
+                                    </NavLink>
                                     :
                                     <AssistiveText>
                                         Забыли логин или пароль?

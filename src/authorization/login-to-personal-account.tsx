@@ -1,7 +1,7 @@
 import React from 'react';
 import {useAuthorizationMutation} from '../services/login-service';
 import {Loader} from '../loader/loader';
-import {FormComponent} from './form-component';
+import {FormAuthorizationComponent} from './form-authorization-component';
 
 export const LoginToPersonalAccount = () => {
     const [authorization, {isLoading, isError, error}] = useAuthorizationMutation();
@@ -10,11 +10,11 @@ export const LoginToPersonalAccount = () => {
     if (isLoading) {
         return <>
              <Loader />
-            <FormComponent authorization={authorization} error={error}/>
+            <FormAuthorizationComponent authorization={authorization} error={error}/>
         </>
     }
 
     return (
-        <FormComponent authorization={authorization} error={error}/>
+        <FormAuthorizationComponent authorization={authorization} error={error}/>
     );
 };
