@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {HashRouter, Navigate, Route, Routes} from 'react-router-dom';
+import {HashRouter, Navigate, Route, Routes, useSearchParams} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {Layout} from './pages/components/layout/layout';
 import {LayoutMainPage} from './pages/components/layout/layout-main-page';
@@ -16,6 +16,7 @@ import {RegistrationContainer} from './registration/registration-container';
 import {
     PasswordResetContainer
 } from './password-recovery/password-reset-container';
+import {PasswordRecoveryContainer} from './password-recovery/password-recovery-container';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -26,13 +27,13 @@ root.render(
                 <Routes>
                     <Route path="/auth" element={<LoginToPersonalAccount/>}/>
                     <Route path="/registration" element={<RegistrationContainer/>}/>
+                    {/*
                     <Route path="/forgot-pass" element={<PasswordResetContainer/>}/>
+                    */}
+                    <Route path="/forgot-pass" element={<PasswordRecoveryContainer/>}/>
                     <Route path="/" element={<Layout/>}>
 
                         <Route element={<LayoutMainPage/>}>
-                            {/*
-                            <Route path="/" element={<Navigate to=<LoginToPersonalAccount/>/>}/>
-                            */}
                             <Route path="/" element={<Navigate to="/books/all"/>}/>
                             <Route path="/books/:category" element={<MainPage/>}/>
                             <Route path="/terms" element={<Terms contentView="terms"/>}/>

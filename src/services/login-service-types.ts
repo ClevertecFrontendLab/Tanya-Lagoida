@@ -27,3 +27,14 @@ export type TRegistrationRequest = {
     lastName: string
     phone: string
 }
+export type TPasswordResetRequest = {
+    email: string
+}
+export type TPasswordResetResponse = {
+    ok: boolean
+}
+export type TPasswordRecoveryRequest = {
+    password: string
+    passwordConfirmation: string
+    code: string
+}

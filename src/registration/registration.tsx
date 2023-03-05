@@ -8,7 +8,9 @@ import {
 import {LabelText} from '../pages/labels/labels';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {device} from '../pages/main/styles';
-import {LoginFailed} from '../authorization/login-failed';
+import {
+    ErrorsContainer
+} from '../authorization/errors-container';
 import {
     FormRegistrationAllContainer,
     RegistrationContainer,
@@ -30,7 +32,7 @@ export const RegistrationForm: React.FC<TFormComponentTypes> = ({error, registra
     const [stepRegistration, setStepRegistration] = useState<number>(1);
 
     if (error && error.status !== 400) {
-        return <LoginFailed/>;
+        return <ErrorsContainer title='Вход не выполнен' text='Что-то пошло не так. Попробуйте ещё раз' textButton='повторить'/>;
     }
 
     const user = localStorage.getItem('user');

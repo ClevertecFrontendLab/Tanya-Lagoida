@@ -5,20 +5,22 @@ import {useForm} from 'react-hook-form';
 import {
     AssistiveText,
     AssistiveTextBoxStepOne, AssistiveTextError, BottomFrame, FormContainer,
-    InputStyles,
     LabelBox, Registration,
     TextFields
 } from '../authorization/styles';
 import eyeClosed from '../pages/images/eye-closed.svg';
-import eye from '../pages/images/Eye.svg';
+import eye from '../pages/images/eye.svg';
 import {ButtonAndBottomFrameRegistration, InputStylesSteps} from './styles';
 import {ButtonComponent} from '../pages/components/button/button-component';
 import {LabelText} from '../pages/labels/labels';
-import arrow from '../pages/images/arrow.svg';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {device} from '../pages/main/styles';
 
 import {TRegistrationRequest} from '../services/login-service-types';
+import {Arrow} from '../pages/images/arrow';
+import {EColors} from '../pages/themes/themes';
+import {EyeClosed} from '../pages/images/eye-closed';
+import {Eye} from '../pages/images/eye';
 
 type TFormComponentTypes = {
     setStepRegistration: (prevState: (prevState: number) => number) => void
@@ -32,7 +34,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
         register,
         handleSubmit,
         formState: { isDirty, isValid, errors }
-    } = useForm<TRegistrationRequest>({mode: 'onChange'});
+    } = useForm<TRegistrationRequest>({mode: 'onChange', shouldFocusError: false});
     const [passwordType, setPasswordType] = useState('password');
 
     const onSubmitIncreaseStep = () => {
@@ -92,14 +94,19 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     id="password"
                     {...register('password', {
                         required: true,
-                        minLength: 20,
+                        minLength: 8,
                         pattern: /^.*[A-ZА-ЯЁ]+.*\d+|.*\d+.*[A-ZА-ЯЁ]+$/
                     })}
                     placeholder="Пароль"/>
                 <LabelBox htmlFor="password">Пароль</LabelBox>
-                <img src={passwordType === 'password' ? eyeClosed : eye} alt=""
-                     onClick={togglePassword}/>
-
+                <button onClick={togglePassword}>
+                    {
+                        passwordType === 'password' ?
+                            <EyeClosed/>
+                            :
+                            <Eye/>
+                    }
+                </button>
                 <AssistiveTextBoxStepOne>
                     <AssistiveText>
                         Пароль <AssistiveTextError>
@@ -142,7 +149,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     <NavLink to="/auth">
                         <Registration>
                             <LabelText variantText="smallLS">войти</LabelText>
-                            <img src={arrow} alt=""/>
+                            <Arrow stroke={EColors.Inherit} />
                         </Registration>
                     </NavLink>
                 </BottomFrame>

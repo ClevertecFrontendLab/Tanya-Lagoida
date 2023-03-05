@@ -11,11 +11,12 @@ import {
 import {ButtonAndBottomFrameRegistration, InputStylesSteps} from './styles';
 import {ButtonComponent} from '../pages/components/button/button-component';
 import {LabelText} from '../pages/labels/labels';
-import arrow from '../pages/images/arrow.svg';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {device} from '../pages/main/styles';
 
 import {TRegistrationRequest} from '../services/login-service-types';
+import {EColors} from '../pages/themes/themes';
+import {Arrow} from '../pages/images/arrow';
 
 type TFormComponentTypes = {
     setStepRegistration: (prevState: (prevState: number) => number) => void
@@ -30,7 +31,7 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
         register,
         handleSubmit,
         formState: { isDirty, isValid, errors }
-    } = useForm<TRegistrationRequest>({mode: 'onChange'});
+    } = useForm<TRegistrationRequest>({mode: 'onChange', shouldFocusError: false});
 
     const onSubmitIncreaseStep = () => {
         setStepRegistration((prevState) => prevState + 1);
@@ -108,7 +109,7 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
                     <NavLink to="/auth">
                         <Registration>
                             <LabelText variantText="smallLS">войти</LabelText>
-                            <img src={arrow} alt=""/>
+                            <Arrow stroke={EColors.Inherit} />
                         </Registration>
                     </NavLink>
                 </BottomFrame>

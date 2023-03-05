@@ -3,12 +3,11 @@ import {device} from '../pages/main/styles';
 import {
     ButtonAndBottomFrame,
     FormAllContainer,
-    InputStyles,
-    LoginContainer
+    InputStyles
 } from '../authorization/styles';
 import {EColors} from '../pages/themes/themes';
 
-export const RegistrationContainer = styled(LoginContainer)`
+export const RegistrationContainer = styled.div`
     gap: 46px;
     @media screen and ${device.mobileS} {
         gap: 8px;

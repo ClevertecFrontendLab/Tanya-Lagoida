@@ -4,7 +4,7 @@ import {
     AssistiveTextBox,
     ButtonAndBottomFrame,
     FormAllContainer,
-    FormContainer, LoginContainer
+    FormContainer,
 } from '../authorization/styles';
 import {device} from '../pages/main/styles';
 
@@ -62,9 +62,13 @@ export const AssistiveTextBoxReset = styled(AssistiveTextBox)`
 export const ButtonAndBottomFrameReset = styled(ButtonAndBottomFrame)`
     margin-top: 0;
 `
-export const LoginContainerReset = styled(LoginContainer)`
-    gap: 81px;
+export const FormAllContainerPasswordRecovery = styled(FormAllContainer)`
+    --height: -490px;
+    padding: 48px 56px;
+    margin-top: calc(var(--height) / 2);
     @media screen and ${device.mobileS} {
-        gap: 11px;
+        --height: -480px;
+        padding: 24px 16px;
     }
+
 `

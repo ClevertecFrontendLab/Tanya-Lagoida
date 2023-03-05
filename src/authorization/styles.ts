@@ -3,8 +3,12 @@ import {device} from '../pages/main/styles';
 import {EColors} from '../pages/themes/themes';
 
 export const FormAllContainer = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -264px;
     width: 528px;
-    height: 466px;
+    --height: -466px;
     background: ${EColors.White};
     border-radius: 16px;
     display: flex;
@@ -12,42 +16,47 @@ export const FormAllContainer = styled.div`
     align-items: flex-start;
     padding: 48px 56px;
     gap: 32px;
+    margin-top: calc(var(--height) / 2);
     @media screen and ${device.mobileS} {
+        margin-left: -144px;
         width: 288px;
-        height: 456px;
+        --height: -456px;
         padding: 24px 16px;
+        //top: 56px;
+        margin-top: 0;
     }
 `;
 export const AllForm = styled.div`
     background: linear-gradient(231.58deg, #F83600 -53.35%, #F9D423 297.76%);
     width: 100vw;
     height: 100vh;
-`;
-export const LoginContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 59px;
-    padding-top: 180px;
-    @media screen and ${device.mobileS} {
-        gap: 12px;
-        padding-top: 16px;
-    }
+    position: relative;
 `;
 export const HeaderLogin = styled.div`
     color: ${EColors.White};
+    position: absolute;
+    top: 180px;
+    left: 50%;
+    margin-left: -90.5px;
+    @media screen and ${device.mobileS} {
+        top: 16px;
+        margin-left: -51px;
+    }
 `;
 export const TextFields = styled.div`
     position: relative;
+
     input::placeholder {
         color: transparent;
     }
+
     input ~ label {
         letter-spacing: 0.1px;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 400;
-        line-height: 24px;
+        line-height: 18px;
     }
+
     input:focus ~ label,
     input:not(:placeholder-shown) ~ label {
         display: block;
@@ -60,15 +69,24 @@ export const TextFields = styled.div`
         font-weight: 500;
         line-height: 16px;
     }
-    img {
+
+    input:focus ~ button,
+    input:not(:placeholder-shown) ~ button {
+        display: block;
         cursor: pointer;
         position: absolute;
         right: 16px;
         top: 16px;
         width: 24px;
         height: 24px;
+        border: none;
+        background: none;
+    }
+    button {
+        display: none;
     }
 `;
+
 export const AssistiveTextBox = styled.div`
     display: flex;
     align-items: start;
@@ -78,7 +96,7 @@ export const AssistiveTextBox = styled.div`
     @media screen and ${device.mobileS} {
         width: 240px;
     }
-`
+`;
 export const AssistiveTextBoxStepOne = styled(AssistiveTextBox)`
 
     @media screen and ${device.mobileS} {
@@ -87,7 +105,7 @@ export const AssistiveTextBoxStepOne = styled(AssistiveTextBox)`
         display: flex;
         align-items: start;
     }
-`
+`;
 export const AssistiveText = styled.span`
     letter-spacing: 0.2px;
     font-size: 12px;
@@ -101,7 +119,7 @@ export const AssistiveTextError = styled(AssistiveText)`
 export const AssistiveTextAllError = styled(AssistiveText)`
     color: ${EColors.Inherit};
 `;
-export const InputStyles = styled.input<{ error?: any }>`
+export const InputStyles = styled.input<{ error?: any, errorBorder?: any, errorBorderPass?: any }>`
     padding-top: 12px;
     outline: none;
     cursor: pointer;
@@ -112,7 +130,7 @@ export const InputStyles = styled.input<{ error?: any }>`
     background: ${EColors.LightGrey};
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-    border-bottom: ${(props) => props.error && props.error.status === 400 ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
+    border-bottom: ${(props) => (props.error && props.error.status === 400) || props.errorBorder || props.errorBorderPass ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
     @media screen and ${device.mobileS} {
         width: 256px;
     }

@@ -3,10 +3,9 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {EEndPoints} from '../config/endpoints';
 import {
     TAuthorizationRequest,
-    TAuthorizationResponse,
+    TAuthorizationResponse, TPasswordRecoveryRequest, TPasswordResetRequest, TPasswordResetResponse,
     TRegistrationRequest
 } from './login-service-types';
-import {RootState} from '../store/store';
 
 
 export const userApi = createApi({
@@ -29,11 +28,20 @@ export const userApi = createApi({
                 body,
             }),
         }),
-        passwordReset: builder.mutation({
-            query: (id) => `${EEndPoints.passwordReset}/${id}`
+        passwordReset: builder.mutation<TPasswordResetResponse, TPasswordResetRequest>({
+            query: (body) => ({
+                url: EEndPoints.passwordReset,
+                method: 'POST',
+                body,
+            }),
         }),
-        passwordRecovery: builder.mutation({
-            query: (id) => `${EEndPoints.passwordRecovery}/${id}`
+        passwordRecovery: builder.mutation<TAuthorizationResponse, TPasswordRecoveryRequest>({
+            query: (body) => ({
+                    url: EEndPoints.passwordRecovery,
+                    method: 'POST',
+                    body,
+                }
+            )
         }),
     }),
 });

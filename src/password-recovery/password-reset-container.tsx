@@ -1,20 +1,20 @@
 import React from 'react';
 
-import {useRegistrationMutation} from '../services/login-service';
+import {usePasswordResetMutation} from '../services/login-service';
 import {Loader} from '../loader/loader';
 import {PasswordReset} from './password-reset';
 
 export const PasswordResetContainer = () => {
-    const [registration, {isLoading, isError, error}] = useRegistrationMutation();
+    const [passwordReset, {isLoading, isError, error, data}] = usePasswordResetMutation();
 
     if (isLoading) {
         return <>
             <Loader />
-            <PasswordReset registration={registration} error={error}/>
+            <PasswordReset/>
         </>
     }
 
     return (
-        <PasswordReset error={error} registration={registration} />
+        <PasswordReset error={error} passwordReset={passwordReset} data={data}/>
     );
 };

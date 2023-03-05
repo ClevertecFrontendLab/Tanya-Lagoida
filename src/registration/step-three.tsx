@@ -12,13 +12,14 @@ import {
 import {ButtonAndBottomFrameRegistration} from './styles';
 import {ButtonComponent} from '../pages/components/button/button-component';
 import {LabelText} from '../pages/labels/labels';
-import arrow from '../pages/images/arrow.svg';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {device} from '../pages/main/styles';
 
 import {TRegistrationRequest} from '../services/login-service-types';
 import {userReceived} from '../store/auth-slice';
 import {useAppDispatch} from '../store/store';
+import {EColors} from '../pages/themes/themes';
+import {Arrow} from '../pages/images/arrow';
 
 type TFormComponentTypes = {
     error: any
@@ -35,7 +36,7 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
         register,
         handleSubmit,
         formState: { isDirty, isValid, errors }
-    } = useForm<TRegistrationRequest>({mode: 'onChange'});
+    } = useForm<TRegistrationRequest>({mode: 'onChange', shouldFocusError: false});
     const onSubmit: SubmitHandler<TRegistrationRequest> = async (data) => {
         try {
             const response = await registration(data).unwrap();
@@ -106,7 +107,7 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
                     <NavLink to="/auth">
                         <Registration>
                             <LabelText variantText="smallLS">войти</LabelText>
-                            <img src={arrow} alt=""/>
+                            <Arrow stroke={EColors.Inherit} />
                         </Registration>
                     </NavLink>
                 </BottomFrame>
