@@ -6,6 +6,7 @@ import {
     InputStyles
 } from '../authorization/styles';
 import {EColors} from '../pages/themes/themes';
+import MaskedInput from 'react-text-mask';
 
 export const RegistrationContainer = styled.div`
     gap: 46px;
@@ -30,7 +31,25 @@ export const ButtonAndBottomFrameRegistration = styled(ButtonAndBottomFrame)`
         margin-top: 24px;
     }
 `
-export const InputStylesSteps = styled(InputStyles)<{errors: any}>`
-    border-bottom: ${(props) => props.errors && props.errors.status === 400 ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
+export const InputStylesSteps = styled(InputStyles)<{errors?: any, errorBorder?: any}>`
+    border-bottom: ${(props) => (props.errors && props.errors.status === 400) || props.errorBorder ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
+    z-index: -1;
+
+`
+export const MaskedInputStyles = styled(MaskedInput)<{errorborder?: any}>`
+    padding-top: 12px;
+    outline: none;
+    cursor: pointer;
+    padding-left: 12px;
+    border: none;
+    width: 416px;
+    height: 56px;
+    background: ${EColors.LightGrey};
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom: ${(props) => props.errorborder ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
+    @media screen and ${device.mobileS} {
+        width: 256px;
+    }
 
 `

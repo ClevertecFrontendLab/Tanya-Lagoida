@@ -54,15 +54,13 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
     const dispatch = useAppDispatch();
     const [passwordType, setPasswordType] = useState('password');
 
-    const togglePassword = () => {
+    const togglePassword = (event: any) => {
+        event.preventDefault()
         if (passwordType === 'password') {
             setPasswordType('text');
-            // return;
         } else if (passwordType === 'text') {
             setPasswordType('password');
-
         }
-        // setPasswordType('password');
     };
 
     const onSubmit: SubmitHandler<TAuthorizationRequest> = async (data) => {
@@ -144,9 +142,11 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                                     </AssistiveTextAllError>
                                 </NavLink>
                                 :
+                                <NavLink to="/forgot-pass">
                                 <AssistiveText>
                                     Забыли логин или пароль?
                                 </AssistiveText>
+                                </NavLink>
                             }
                         </AssistiveTextBox>
                     </TextFields>

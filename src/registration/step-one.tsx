@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {MouseEventHandler, useState} from 'react';
 
 import {NavLink} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
@@ -8,8 +8,7 @@ import {
     LabelBox, Registration,
     TextFields
 } from '../authorization/styles';
-import eyeClosed from '../pages/images/eye-closed.svg';
-import eye from '../pages/images/eye.svg';
+import checkPassword from '../pages/images/Icon_Other.svg';
 import {ButtonAndBottomFrameRegistration, InputStylesSteps} from './styles';
 import {ButtonComponent} from '../pages/components/button/button-component';
 import {LabelText} from '../pages/labels/labels';
@@ -33,73 +32,89 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
     const {
         register,
         handleSubmit,
-        formState: { isDirty, isValid, errors }
-    } = useForm<TRegistrationRequest>({mode: 'onChange', shouldFocusError: false});
+        formState: {isDirty, isValid, errors, }
+    } = useForm<TRegistrationRequest>({mode: 'onChange',  shouldFocusError: false, criteriaMode: 'all'});
     const [passwordType, setPasswordType] = useState('password');
+    console.log(errors);
 
     const onSubmitIncreaseStep = () => {
         setStepRegistration((prevState: number) => prevState + 1);
     };
 
-    const togglePassword = () => {
+    const togglePassword = (event: any) => {
+        event.stopPropagation();
         if (passwordType === 'password') {
             setPasswordType('text');
-            return;
+        } else if (passwordType === 'text') {
+            setPasswordType('password');
         }
-        setPasswordType('password');
     };
-
 
     return (
         <FormContainer
             onSubmit={handleSubmit(onSubmitIncreaseStep)}>
             <TextFields>
                 <InputStylesSteps
+                    errorBorder={errors.username}
                     errors={errors}
                     type="text"
                     id="username"
                     {...register('username', {
                         required: true,
-                        pattern: /^[A-Za-z0-9]+$/
+                        pattern: /^[A-Za-z0-9]+$/,
+                        validate: {
+                            matchLetterPattern: (value) => /[A-Za-z]/.test(value),
+                            matchNumberPattern: (value) => /\d/.test(value)
+                        }
                     })}
                     placeholder="Придумайте логин для входа"/>
                 <LabelBox htmlFor="username">Придумайте логин для
                     входа</LabelBox>
+
+
                 <AssistiveTextBoxStepOne>
-
-
-                    <AssistiveText>
-                        Используйте для логина {
-                        errors.username ? <AssistiveTextError>
-                                латинский алфавит
-                            </AssistiveTextError> :
-                            <AssistiveText>латинский алфавит</AssistiveText>
-                    } и {
-                        errors.username ? <AssistiveTextError>
-                                цифры
-                            </AssistiveTextError> :
-                            <AssistiveText>цифры</AssistiveText>
+                    {
+                        errors?.username?.types?.pattern ?
+                            <AssistiveTextError>
+                                Используйте для логина латинский алфавит и цифры
+                            </AssistiveTextError>
+                            :
+                            <AssistiveText>
+                                Используйте для логина {
+                                errors?.username?.types?.matchLetterPattern ? <AssistiveTextError>
+                                        латинский алфавит
+                                    </AssistiveTextError> :
+                                    <AssistiveText>латинский алфавит</AssistiveText>
+                            } и {
+                                errors?.username?.types?.matchNumberPattern ? <AssistiveTextError>
+                                        цифры
+                                    </AssistiveTextError> :
+                                    <AssistiveText>цифры</AssistiveText>
+                            }
+                            </AssistiveText>
                     }
-
-
-                    </AssistiveText>
-
-
                 </AssistiveTextBoxStepOne>
             </TextFields>
-            <TextFields>
+            <TextFields errorForStyle={errors.password}>
                 <InputStylesSteps
+                    errorBorder={errors.password}
                     errors={errors}
                     type={passwordType}
                     id="password"
                     {...register('password', {
                         required: true,
-                        minLength: 8,
-                        pattern: /^.*[A-ZА-ЯЁ]+.*\d+|.*\d+.*[A-ZА-ЯЁ]+$/
+                        validate: {
+                            checkLength: (value) => value.length >= 8,
+                            matchLetterPattern: (value) => /[A-ZА-ЯЁ]/.test(value),
+                            matchNumberPattern: (value) => /\d/.test(value)
+                        }
                     })}
                     placeholder="Пароль"/>
                 <LabelBox htmlFor="password">Пароль</LabelBox>
-                <button onClick={togglePassword}>
+                <img src={checkPassword} alt=""/>
+                <button
+                    type="button"
+                    onClick={togglePassword}>
                     {
                         passwordType === 'password' ?
                             <EyeClosed/>
@@ -107,18 +122,39 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                             <Eye/>
                     }
                 </button>
-                <AssistiveTextBoxStepOne>
-                    <AssistiveText>
-                        Пароль <AssistiveTextError>
-                        не менее 8 символов
-                    </AssistiveTextError>
-                        , с <AssistiveTextError>
-                        заглавной буквой
-                    </AssistiveTextError> и <AssistiveTextError>
-                        цифрой
-                    </AssistiveTextError>
-                    </AssistiveText>
-                </AssistiveTextBoxStepOne>
+
+                    {/*errors.password ?*/}
+                    {/*    <AssistiveTextBoxStepOne>*/}
+                    {/*        <AssistiveTextError>*/}
+                    {/*            Пароль не менее 8 символов, с заглавной буквой и цифрой*/}
+                    {/*        </AssistiveTextError>*/}
+                    {/*    </AssistiveTextBoxStepOne> :*/}
+                        <AssistiveTextBoxStepOne>
+                            <AssistiveText>
+                                Пароль {
+                                errors?.password?.types?.checkLength ? <AssistiveTextError>
+                                        не менее 8 символов
+                                    </AssistiveTextError>
+                                    : <AssistiveText>
+                                        не менее 8 символов
+                                    </AssistiveText>
+                            }
+                                , с { errors?.password?.types?.matchLetterPattern ? <AssistiveTextError>
+                                заглавной буквой
+                            </AssistiveTextError> : <AssistiveText>
+                                заглавной буквой
+                            </AssistiveText>
+                            } и { errors?.password?.types?.matchNumberPattern ? <AssistiveTextError>
+                                цифрой
+                            </AssistiveTextError> : <AssistiveText>
+                                цифрой
+                            </AssistiveText>
+                            }
+                            </AssistiveText>
+                        </AssistiveTextBoxStepOne>
+
+
+
             </TextFields>
             <ButtonAndBottomFrameRegistration>
                 {
@@ -149,7 +185,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     <NavLink to="/auth">
                         <Registration>
                             <LabelText variantText="smallLS">войти</LabelText>
-                            <Arrow stroke={EColors.Inherit} />
+                            <Arrow stroke={EColors.Inherit}/>
                         </Registration>
                     </NavLink>
                 </BottomFrame>

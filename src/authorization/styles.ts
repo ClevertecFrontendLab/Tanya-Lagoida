@@ -23,7 +23,7 @@ export const FormAllContainer = styled.div`
         --height: -456px;
         padding: 24px 16px;
         //top: 56px;
-        margin-top: 0;
+        //margin-top: 0;
     }
 `;
 export const AllForm = styled.div`
@@ -43,7 +43,7 @@ export const HeaderLogin = styled.div`
         margin-left: -51px;
     }
 `;
-export const TextFields = styled.div`
+export const TextFields = styled.div<{errorForStyle?: any}>`
     position: relative;
 
     input::placeholder {
@@ -72,18 +72,35 @@ export const TextFields = styled.div`
 
     input:focus ~ button,
     input:not(:placeholder-shown) ~ button {
+        z-index: 5;
         display: block;
-        cursor: pointer;
         position: absolute;
-        right: 16px;
         top: 16px;
+        right: 16px;
+        cursor: pointer;
         width: 24px;
         height: 24px;
         border: none;
         background: none;
+
+    }
+
+    input:not(:placeholder-shown) ~ img {
+        z-index: 5;
+        display: ${(props) => !props.errorForStyle && 'block'};
+        position: absolute;
+        top: 16px;
+        right: 44px;
+        width: 24px;
+        height: 24px;
+
+    }
+    img {
+        display: none;
     }
     button {
         display: none;
+
     }
 `;
 

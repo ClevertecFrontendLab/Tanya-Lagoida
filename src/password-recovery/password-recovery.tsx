@@ -141,6 +141,10 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                     </TextFields>
                     <TextFields>
                         <InputStyles
+                            onFocusCapture={event => {
+                                event.stopPropagation();
+                                event.preventDefault()
+                            }}
                             errorBorder={errors.passwordConfirmation}
                             type={passwordType}
                             id="passwordConfirmation"

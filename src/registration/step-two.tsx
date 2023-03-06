@@ -44,6 +44,7 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
 
             <TextFields>
                 <InputStylesSteps
+                    errorBorder={errors.firstName}
                     errors={errors}
                     type="text"
                     id="firstName"
@@ -62,6 +63,7 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
             </TextFields>
             <TextFields>
                 <InputStylesSteps
+                    errorBorder={errors.lastName}
                     errors={errors}
                     type="text"
                     id="lastName"
