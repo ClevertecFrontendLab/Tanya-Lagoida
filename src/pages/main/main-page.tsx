@@ -54,11 +54,6 @@ export const MainPage = () => {
         return <Error/>;
     }
 
-    const user = localStorage.getItem('user');
-    if (!user) {
-        return <Navigate to='/auth' />
-    }
-
     return (
         (dataBooks && dataCategories) &&
         <BlockNavigationAndContent>

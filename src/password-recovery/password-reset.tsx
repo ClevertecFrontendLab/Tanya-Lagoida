@@ -28,6 +28,7 @@ import {
 import {Arrow} from '../pages/images/arrow';
 import {EColors} from '../pages/themes/themes';
 import {MessageContainer} from '../authorization/message-container';
+import {useAppSelector} from '../store/store';
 
 type TFormComponentTypes = {
     error?: any
@@ -41,6 +42,7 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
     data
 }) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
+    const isAuth = useAppSelector((state) => state.userSlice.isAuth);
     const {
         register,
         handleSubmit,
@@ -60,8 +62,7 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
         }
     };
 
-    const user = localStorage.getItem('user');
-    if (user) {
+    if (isAuth) {
         return <Navigate to="/"/>;
     }
 

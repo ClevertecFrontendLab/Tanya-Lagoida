@@ -8,7 +8,7 @@ import {
     MutationDefinition
 } from '@reduxjs/toolkit/query';
 import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
-import {Navigate, NavLink} from 'react-router-dom';
+import {Navigate, NavLink, useNavigate} from 'react-router-dom';
 import {
     AllForm,
     AssistiveText,
@@ -31,7 +31,7 @@ import {device} from '../pages/main/styles';
 
 import {TAuthorizationRequest, TAuthorizationResponse} from '../services/login-service-types';
 import {userReceived} from '../store/auth-slice';
-import {useAppDispatch} from '../store/store';
+import {useAppDispatch, useAppSelector} from '../store/store';
 import {EColors} from '../pages/themes/themes';
 import {Arrow} from '../pages/images/arrow';
 import {ErrorsContainer} from './errors-container';
@@ -53,6 +53,8 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
     const {register, handleSubmit, formState: {touchedFields}} = useForm<TAuthorizationRequest>({mode: 'onBlur', reValidateMode: 'onBlur', shouldFocusError: false});
     const dispatch = useAppDispatch();
     const [passwordType, setPasswordType] = useState('password');
+    const navigate = useNavigate();
+    const isAuth = useAppSelector((state) => state.userSlice.isAuth);
 
     const togglePassword = (event: any) => {
         event.preventDefault()
@@ -68,6 +70,7 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
             const response = await authorization(data).unwrap();
             localStorage.setItem('token', JSON.stringify(response.jwt));
             localStorage.setItem('user', JSON.stringify(response.user));
+            navigate('/');
             dispatch(userReceived(response.user));
         } catch (error) {
             console.log(error);
@@ -80,8 +83,8 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                                 textButton="повторить"/>;
     }
 
-    const user = localStorage.getItem('user');
-    if (user) {
+
+    if (isAuth) {
         return <Navigate to="/"/>;
     }
 

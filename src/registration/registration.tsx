@@ -19,24 +19,30 @@ import {
 import {StepOne} from './step-one';
 import {StepTwo} from './step-two';
 import {StepThree} from './step-three';
+import {TRegistrationRequest} from '../services/login-service-types';
+import {
+    RegistrationUnsuccessfulMessageSameLogin
+} from './registration-unsuccessful-message-same-login';
+import {RegistrationSuccessfulMessage} from './registration-successful-message';
+import {useAppSelector} from '../store/store';
 
 type TFormComponentTypes = {
     error: any
     // error: FetchBaseQueryError | SerializedError | undefined
     registration: any
+    isError: any
 }
 
-export const RegistrationForm: React.FC<TFormComponentTypes> = ({error, registration}) => {
+export const RegistrationForm: React.FC<TFormComponentTypes> = ({error, registration, isError}) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
+    const isAuth = useAppSelector((state) => state.userSlice.isAuth);
 
     const [stepRegistration, setStepRegistration] = useState<number>(1);
+    const [state, setState] = useState<
+        {email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null}>
+    ({email: null, username: null, password: null, firstName: null, lastName: null, phone: null});
 
-    if (error && error.status !== 400) {
-        return <ErrorsContainer title='Вход не выполнен' text='Что-то пошло не так. Попробуйте ещё раз' textButton='повторить'/>;
-    }
-
-    const user = localStorage.getItem('user');
-    if (user) {
+    if (isAuth) {
         return <Navigate to="/"/>;
     }
 
@@ -60,15 +66,18 @@ export const RegistrationForm: React.FC<TFormComponentTypes> = ({error, registra
                         stepRegistration === 1
                             ?
                             <StepOne
-                                setStepRegistration={setStepRegistration}/>
+                                setStepRegistration={setStepRegistration} setState={setState} state={state}/>
                             : stepRegistration === 2
                                 ?
                                 <StepTwo
-                                    setStepRegistration={setStepRegistration}/>
+                                    setStepRegistration={setStepRegistration} setState={setState} state={state}/>
                                 :
                                 <StepThree
                                     error={error}
-                                    registration={registration}/>
+                                    isError={isError}
+                                    registration={registration}
+                                    state={state}
+                                />
                     }
                 </FormRegistrationAllContainer>
             </RegistrationContainer>

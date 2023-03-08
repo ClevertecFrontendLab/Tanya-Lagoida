@@ -19,6 +19,10 @@ export const Button = styled.button<TButtonProps>`
     width: ${(props) => props.width};
     height: ${(props) => props.height};
     border: ${props => props.status === 'inStock' && 'none'};
+    :disabled {
+        background: ${(props) => props.error && EColors.GreyBox};
+        color: ${(props) => props.error && EColors.White};
+    }
 `;
 
 export const ViewIconButtonStyles = styled.button<TViewButtonProps & { isSearchInputOpen?: boolean }>`

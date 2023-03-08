@@ -24,6 +24,7 @@ import {
 import {MessageContainer} from '../authorization/message-container';
 import {EyeClosed} from '../pages/images/eye-closed';
 import {Eye} from '../pages/images/eye';
+import {useAppSelector} from '../store/store';
 
 type TFormComponentTypes = {
     error?: any
@@ -47,6 +48,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
     } = useForm<TPasswordRecoveryRequest>({ shouldFocusError: false});
     const [passwordType, setPasswordType] = useState('password');
     const [passwordTypeTwo, setPasswordTypeTwo] = useState('password');
+    const isAuth = useAppSelector((state) => state.userSlice.isAuth);
 
     const togglePassword = () => {
         if (passwordType === 'password') {
@@ -80,16 +82,15 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
         }
     };
 
-    const user = localStorage.getItem('user');
-    if (user) {
+    if (isAuth) {
         return <Navigate to="/"/>;
     }
 
-    if (data) {
-        return <MessageContainer
-            text="Перейдите в вашу почту, чтобы воспользоваться подсказками по восстановлению пароля"
-            title="Письмо выслано"/>;
-    }
+    // if (data) {
+    //     return <MessageContainer
+    //         text="Перейдите в вашу почту, чтобы воспользоваться подсказками по восстановлению пароля"
+    //         title="Письмо выслано"/>;
+    // }
 
     return (
         <AllForm>
@@ -188,14 +189,29 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
 
                     </TextFields>
                     <ButtonAndBottomFrame>
-                        <ButtonComponent
-                            type="submit"
-                            height={isMobileView ? '40px' : '52px'}
-                            width={isMobileView ? '255px' : '416px'}
-                            status="inStock"><LabelText
-                            variantText={isMobileView ? 'smallLS' : 'medium16LS'}>сохранить
-                            изменения</LabelText>
-                        </ButtonComponent>
+                        {
+                            errors.password || errors.passwordConfirmation ?
+                                <ButtonComponent
+                                    disabled={true}
+                                    error = {errors}
+                                    type="submit"
+                                    height={isMobileView ? '40px' : '52px'}
+                                    width={isMobileView ? '255px' : '416px'}
+                                    status="inStock"><LabelText
+                                    variantText={isMobileView ? 'smallLS' : 'medium16LS'}>сохранить
+                                    изменения</LabelText>
+                                </ButtonComponent>
+                                :
+                                <ButtonComponent
+                                    type="submit"
+                                    height={isMobileView ? '40px' : '52px'}
+                                    width={isMobileView ? '255px' : '416px'}
+                                    status="inStock"><LabelText
+                                    variantText={isMobileView ? 'smallLS' : 'medium16LS'}>сохранить
+                                    изменения</LabelText>
+                                </ButtonComponent>
+                        }
+
                         <BottomFrame>
                             <LabelText
                                 variantText={isMobileView ?'medium15LH' : 'medium16LH24'}>После сохранения войдите в библиотеку,

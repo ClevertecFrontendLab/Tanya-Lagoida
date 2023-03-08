@@ -20,27 +20,44 @@ import {Arrow} from '../pages/images/arrow';
 
 type TFormComponentTypes = {
     setStepRegistration: (prevState: (prevState: number) => number) => void
+    setState: any
+    state:   {email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null}
 }
 
 export const StepTwo: React.FC<TFormComponentTypes> = ({
-    setStepRegistration,
+    setStepRegistration, state, setState
 }) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
 
     const {
         register,
+        getValues,
         handleSubmit,
         formState: { isDirty, isValid, errors }
-    } = useForm<TRegistrationRequest>({mode: 'onChange', shouldFocusError: false});
+    } = useForm<{firstName: string, lastName: string}>({mode: 'onChange', shouldFocusError: false});
 
     const onSubmitIncreaseStep = () => {
         setStepRegistration((prevState) => prevState + 1);
     };
 
+    const onSubmitTwo = (): void => {
+
+        const firstName = getValues("firstName");
+        const lastName = getValues("lastName");
+
+        console.log(firstName);
+        console.log(lastName);
+        setState({...state, firstName, lastName})
+        onSubmitIncreaseStep()
+    }
+
+    console.log(state);
+
+
 
     return (
         <FormContainer
-            onSubmit={handleSubmit(onSubmitIncreaseStep)}>
+            onSubmit={handleSubmit(onSubmitTwo)}>
 
             <TextFields>
                 <InputStylesSteps
@@ -85,6 +102,7 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
                     errors.firstName || errors.lastName ?
                         <ButtonComponent
                             disabled={true}
+                            error = {errors}
                             type="submit"
                             height={isMobileView ? '40px' : '52px'}
                             width={isMobileView ? '255px' : '416px'}
@@ -101,7 +119,6 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
                             variantText={isMobileView ? 'smallLS' : 'medium16LS'}>последний
                             шаг</LabelText>
                         </ButtonComponent>
-
                 }
 
                 <BottomFrame>

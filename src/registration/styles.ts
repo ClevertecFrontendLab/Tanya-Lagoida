@@ -6,7 +6,7 @@ import {
     InputStyles
 } from '../authorization/styles';
 import {EColors} from '../pages/themes/themes';
-import MaskedInput from 'react-text-mask';
+import InputMask from 'react-input-mask';
 
 export const RegistrationContainer = styled.div`
     gap: 46px;
@@ -36,7 +36,7 @@ export const InputStylesSteps = styled(InputStyles)<{errors?: any, errorBorder?:
     z-index: -1;
 
 `
-export const MaskedInputStyles = styled(MaskedInput)<{errorborder?: any}>`
+export const MaskedInputStyles = styled(InputMask)<{errorborder?: any}>`
     padding-top: 12px;
     outline: none;
     cursor: pointer;

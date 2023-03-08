@@ -23,22 +23,39 @@ import {Eye} from '../pages/images/eye';
 
 type TFormComponentTypes = {
     setStepRegistration: (prevState: (prevState: number) => number) => void
+    setState: any
+    state: { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null }
 }
 
 export const StepOne: React.FC<TFormComponentTypes> = ({
-    setStepRegistration
+    setStepRegistration, setState, state
 }) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const {
         register,
+        getValues,
         handleSubmit,
-        formState: {isDirty, isValid, errors, }
-    } = useForm<TRegistrationRequest>({mode: 'onChange',  shouldFocusError: false, criteriaMode: 'all'});
+        formState: {isDirty, isValid, errors,}
+    } = useForm<{ username: string, password: string }>({
+        mode: 'onChange',
+        shouldFocusError: false,
+        criteriaMode: 'all'
+    });
     const [passwordType, setPasswordType] = useState('password');
     console.log(errors);
 
     const onSubmitIncreaseStep = () => {
         setStepRegistration((prevState: number) => prevState + 1);
+    };
+
+    const onSubmitOne = (): void => {
+
+        const username = getValues('username');
+        const password = getValues('password');
+
+        setState({...state, username, password});
+
+        onSubmitIncreaseStep();
     };
 
     const togglePassword = (event: any) => {
@@ -52,7 +69,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
 
     return (
         <FormContainer
-            onSubmit={handleSubmit(onSubmitIncreaseStep)}>
+            onSubmit={handleSubmit(onSubmitOne)}>
             <TextFields>
                 <InputStylesSteps
                     errorBorder={errors.username}
@@ -123,51 +140,51 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     }
                 </button>
 
-                    {/*errors.password ?*/}
-                    {/*    <AssistiveTextBoxStepOne>*/}
-                    {/*        <AssistiveTextError>*/}
-                    {/*            Пароль не менее 8 символов, с заглавной буквой и цифрой*/}
-                    {/*        </AssistiveTextError>*/}
-                    {/*    </AssistiveTextBoxStepOne> :*/}
-                        <AssistiveTextBoxStepOne>
-                            <AssistiveText>
-                                Пароль {
-                                errors?.password?.types?.checkLength ? <AssistiveTextError>
-                                        не менее 8 символов
-                                    </AssistiveTextError>
-                                    : <AssistiveText>
-                                        не менее 8 символов
-                                    </AssistiveText>
-                            }
-                                , с { errors?.password?.types?.matchLetterPattern ? <AssistiveTextError>
-                                заглавной буквой
-                            </AssistiveTextError> : <AssistiveText>
-                                заглавной буквой
+                {/*errors.password ?*/}
+                {/*    <AssistiveTextBoxStepOne>*/}
+                {/*        <AssistiveTextError>*/}
+                {/*            Пароль не менее 8 символов, с заглавной буквой и цифрой*/}
+                {/*        </AssistiveTextError>*/}
+                {/*    </AssistiveTextBoxStepOne> :*/}
+                <AssistiveTextBoxStepOne>
+                    <AssistiveText>
+                        Пароль {
+                        errors?.password?.types?.checkLength ? <AssistiveTextError>
+                                не менее 8 символов
+                            </AssistiveTextError>
+                            : <AssistiveText>
+                                не менее 8 символов
                             </AssistiveText>
-                            } и { errors?.password?.types?.matchNumberPattern ? <AssistiveTextError>
-                                цифрой
-                            </AssistiveTextError> : <AssistiveText>
-                                цифрой
-                            </AssistiveText>
-                            }
-                            </AssistiveText>
-                        </AssistiveTextBoxStepOne>
-
+                    }
+                        , с {errors?.password?.types?.matchLetterPattern ? <AssistiveTextError>
+                        заглавной буквой
+                    </AssistiveTextError> : <AssistiveText>
+                        заглавной буквой
+                    </AssistiveText>
+                    } и {errors?.password?.types?.matchNumberPattern ? <AssistiveTextError>
+                        цифрой
+                    </AssistiveTextError> : <AssistiveText>
+                        цифрой
+                    </AssistiveText>
+                    }
+                    </AssistiveText>
+                </AssistiveTextBoxStepOne>
 
 
             </TextFields>
             <ButtonAndBottomFrameRegistration>
                 {
-                    errors.password || errors.username ?
+                    errors.username || errors.password ?
                         <ButtonComponent
-                            disabled={true}
-                            type="submit"
-                            height={isMobileView ? '40px' : '52px'}
-                            width={isMobileView ? '255px' : '416px'}
-                            status="inStock"><LabelText
-                            variantText={isMobileView ? 'smallLS' : 'medium16LS'}>следующий
-                            шаг</LabelText>
-                        </ButtonComponent>
+                        disabled={true}
+                        error = {errors}
+                        type="submit"
+                        height={isMobileView ? '40px' : '52px'}
+                        width={isMobileView ? '255px' : '416px'}
+                        status="inStock"><LabelText
+                        variantText={isMobileView ? 'smallLS' : 'medium16LS'}>следующий
+                        шаг</LabelText>
+                    </ButtonComponent>
                         :
                         <ButtonComponent
                             type="submit"

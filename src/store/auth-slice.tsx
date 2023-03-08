@@ -3,16 +3,22 @@ import {TUserType} from '../services/login-service-types';
 
 type AuthState = {
     user: TUserType | null,
+    isAuth: boolean
 }
-
+const token = localStorage.getItem('token');
 export const userSlice = createSlice({
+
     name: 'user',
-    initialState: {user: null} as AuthState,
+    initialState: {
+        user: null,
+        isAuth: !!token,
+    } as AuthState,
     reducers: {
         userReceived(state, action) {
             return {
                 ...state,
-                user: action.payload
+                user: action.payload,
+                isAuth: true
             };
         },
     },
