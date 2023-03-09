@@ -46,6 +46,7 @@ export const RegistrationForm: React.FC<TFormComponentTypes> = ({error, registra
         return <Navigate to="/"/>;
     }
 
+
     return (
         <AllForm>
             <RegistrationContainer>
@@ -66,7 +67,9 @@ export const RegistrationForm: React.FC<TFormComponentTypes> = ({error, registra
                         stepRegistration === 1
                             ?
                             <StepOne
-                                setStepRegistration={setStepRegistration} setState={setState} state={state}/>
+                                setStepRegistration={setStepRegistration} setState={setState}
+                                registration={registration}
+                                state={state}/>
                             : stepRegistration === 2
                                 ?
                                 <StepTwo

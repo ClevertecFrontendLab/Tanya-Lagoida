@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {Navigate, NavLink} from 'react-router-dom';
 import {SubmitHandler, useForm} from 'react-hook-form';
@@ -39,8 +39,12 @@ type TFormComponentTypes = {
 export const PasswordReset: React.FC<TFormComponentTypes> = ({
     error,
     passwordReset,
+
     data
 }) => {
+
+
+
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const isAuth = useAppSelector((state) => state.userSlice.isAuth);
     const {

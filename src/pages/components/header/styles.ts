@@ -1,9 +1,25 @@
 import styled from 'styled-components';
 
-import {labelVariants} from '../../labels/labels';
-import {device} from '../../main/styles';
-import {EColors} from '../../themes/themes';
+import { labelVariants } from '../../labels/labels';
+import { device } from '../../main/styles';
+import { EColors } from '../../themes/themes';
 
+export const HeaderStylesContainer = styled.div<{ isPersonMenuClose: boolean }>`
+@media screen and ${device.mobileS} {
+      width: 0;
+      padding: 0;
+    }
+    @media screen and ${device.tablet} {
+    width: 0;
+      padding: 0;
+    }
+    @media screen and ${device.laptopL} {
+      padding: 0 165px;
+box-shadow: ${(props) => !props.isPersonMenuClose && '4px 4px 4px rgba(54, 54, 54, 0.05), -4px 4px 4px rgba(54, 54, 54, 0.05)'};
+width: 1440px;
+    }
+
+`
 export const HeaderStyles = styled.div`
     @media screen and ${device.mobileS} {
         height: 76px;
@@ -20,12 +36,13 @@ export const HeaderStyles = styled.div`
 
     }
     @media screen and ${device.laptopL} {
-        height: 58px;
+        height: 105px;
         width: 1110px;
         display: flex;
         flex-direction: row;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
+        padding: 41px 0 24px 0;
     }
 `;
 export const Logo = styled.img`
@@ -93,6 +110,10 @@ export const LogoAndLibrary = styled.div`
         justify-content: space-between;
     }
 `;
+
+export const PersonContainer = styled.div`
+position: relative;
+`
 export const Person = styled.div`
     @media screen and ${device.mobileS} {
         display: none;
@@ -110,6 +131,8 @@ export const Person = styled.div`
         gap: 16px;
         align-items: center;
         width: 300px;
+        position: relative;
+        cursor: pointer;
     }
 `;
 export const LogoBox = styled.div`
@@ -200,3 +223,29 @@ export const LineThree = styled.div<{ isMenuCollapsed: boolean }>`
         border-color: ${(props) => props.isMenuCollapsed ? `${EColors.Inherit}` : 'none'};
     }
 `;
+export const ProfileAndExit = styled.div<{ isPersonMenuClose: boolean }>`
+@media screen and ${device.mobileS} {
+        display: none;
+
+    }
+    @media screen and ${device.tablet} {
+       display: none;
+    }
+    @media screen and ${device.laptopL} {
+    background-color: ${EColors.White};
+       z-index: 20;
+     position: absolute;
+    width: 270px;
+    height: 152px;
+    top: 72px;
+    right: 0;
+    display: ${(props) => props.isPersonMenuClose ? 'none' : 'flex'};
+    flex-direction: column;
+    gap: 32px;
+    padding: 32px 24px;
+    align-items: end;
+    box-shadow: ${(props) => !props.isPersonMenuClose && '4px 4px 4px rgba(54, 54, 54, 0.05), -4px 4px 4px rgba(54, 54, 54, 0.05)'};
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    }
+`

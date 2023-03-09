@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, { useRef, useState } from 'react';
 
-import {Navigate, useSearchParams} from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import {SubmitHandler, useForm} from 'react-hook-form';
 
 import {ButtonComponent} from '../pages/components/button/button-component';
@@ -18,18 +18,33 @@ import {
     LabelBox,
     TextFields
 } from '../authorization/styles';
-import {
-    AssistiveTextBoxReset, ButtonAndBottomFrameReset, FormAllContainerPasswordRecovery,
+import {FormAllContainerPasswordRecovery,
 } from './styles';
-import {MessageContainer} from '../authorization/message-container';
 import {EyeClosed} from '../pages/images/eye-closed';
 import {Eye} from '../pages/images/eye';
 import {useAppSelector} from '../store/store';
+import checkPassword from '../pages/images/Icon_Other.svg';
+import { PasswordRecoverySuccessMessage } from './password-recovery-success-message';
+import { PasswordRecoveryUnSuccessMessage } from './password-recovery-unsuccess-message';
 
 type TFormComponentTypes = {
     error?: any
     passwordRecovery?: any
     data?: any
+}
+type TStateType = {
+    passwordConfirmation: string | null
+    passwordValue: string | null
+}
+const InitState = {
+    passwordConfirmation: null,
+    passwordValue: null
+}
+
+function useQuery() {
+    const { search } = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
 export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
@@ -43,40 +58,55 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
         handleSubmit,
         formState: {errors},
         clearErrors,
+        watch,
+        getValues
 
+    } = useForm<TPasswordRecoveryRequest>({ mode: 'onChange', criteriaMode: 'all', shouldFocusError: false});
 
-    } = useForm<TPasswordRecoveryRequest>({ shouldFocusError: false});
+    const [state, setState] = useState<TStateType>(InitState);
+    const passwordConfirmation = getValues('passwordConfirmation');
+    const passwordValue = getValues('password');
+    // const query = useQuery();
+    const location = useLocation();
+
     const [passwordType, setPasswordType] = useState('password');
     const [passwordTypeTwo, setPasswordTypeTwo] = useState('password');
     const isAuth = useAppSelector((state) => state.userSlice.isAuth);
+    const password = useRef({});
+    password.current = watch("password", "");
 
     const togglePassword = () => {
         if (passwordType === 'password') {
             setPasswordType('text');
-
         } else if (passwordType === 'text') {
             setPasswordType('password');
-
         }
-
     };
     const togglePasswordTwo = () => {
         if (passwordTypeTwo === 'password') {
             setPasswordTypeTwo('text');
-
         } else if (passwordTypeTwo === 'text') {
             setPasswordTypeTwo('password');
-
         }
-
     };
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+    // const code = query.get("code");
+    console.log(location);
+    const code = searchParams.get("code")
+    console.log(code);
 
-    const code = searchParams.get('code');
+    // console.log(query.get("code"));
 
     const onSubmit: SubmitHandler<TPasswordRecoveryRequest> = async (data) => {
+        setState((InitState):TStateType => {
+            state.passwordConfirmation = passwordConfirmation
+            state.passwordValue = passwordValue
+            return state
+        })
+        const request = {...data, code}
         try {
-            await passwordRecovery(data).unwrap();
+            await passwordRecovery(request).unwrap();
+            return <PasswordRecoverySuccessMessage />
         } catch (error) {
             console.log(error);
         }
@@ -86,11 +116,9 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
         return <Navigate to="/"/>;
     }
 
-    // if (data) {
-    //     return <MessageContainer
-    //         text="Перейдите в вашу почту, чтобы воспользоваться подсказками по восстановлению пароля"
-    //         title="Письмо выслано"/>;
-    // }
+    if (error) {
+        return <PasswordRecoverySuccessMessage />
+    }
 
     return (
         <AllForm>
@@ -103,26 +131,29 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                     variantText="large24">Восстановление пароля</LabelText>
                 <FormContainer
                     onSubmit={handleSubmit(onSubmit)}>
-                    <TextFields>
+                    <TextFields errorForStyle={errors.password}>
                         <InputStyles
-
-                            // errorBorderPass={errors.password}
+                            errorBorder={errors.password}
+                            error={errors}
                             type={passwordType}
                             id="password"
                             aria-invalid={errors.password ? 'true' : 'false'}
-                            onClick={() => {
-                                if (errors.password) {
-                                    clearErrors('password');
-                                }
-                            }}
+                            // onClick={() => {
+                            //     if (errors.password) {
+                            //         clearErrors('password');
+                            //     }
+                            // }}
                             {...register('password', {
                                 required: true,
-                                minLength: 8,
-                                pattern: /^.*[A-ZА-ЯЁ]+.*\d+|.*\d+.*[A-ZА-ЯЁ]+$/
+                                validate: {
+                                    checkLength: (value) => value.length >= 8,
+                                    matchLetterPattern: (value) => /[A-ZА-ЯЁ]/.test(value),
+                                    matchNumberPattern: (value) => /\d/.test(value)
+                                }
                             })}
-
-                            placeholder="password"/>
+                            placeholder="Пароль"/>
                         <LabelBox htmlFor="password">Новый пароль</LabelBox>
+                        <img src={checkPassword} alt=""/>
                         <button
                             type="button"
                             onClick={togglePassword}>
@@ -134,10 +165,27 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                             }
                         </button>
                         <AssistiveTextBoxStepOne>
-                                    <AssistiveText>
-                                        Пароль не менее 8 символов, с заглавной буквой и цифрой
+                            <AssistiveText>
+                                Пароль {
+                                errors?.password?.types?.checkLength ? <AssistiveTextError>
+                                        не менее 8 символов
+                                    </AssistiveTextError>
+                                    : <AssistiveText>
+                                        не менее 8 символов
                                     </AssistiveText>
-
+                            }
+                                , с {errors?.password?.types?.matchLetterPattern ? <AssistiveTextError>
+                                заглавной буквой
+                            </AssistiveTextError> : <AssistiveText>
+                                заглавной буквой
+                            </AssistiveText>
+                            } и {errors?.password?.types?.matchNumberPattern ? <AssistiveTextError>
+                                цифрой
+                            </AssistiveTextError> : <AssistiveText>
+                                цифрой
+                            </AssistiveText>
+                            }
+                            </AssistiveText>
                         </AssistiveTextBoxStepOne>
                     </TextFields>
                     <TextFields>
@@ -147,10 +195,10 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                                 event.preventDefault()
                             }}
                             errorBorder={errors.passwordConfirmation}
-                            type={passwordType}
+                            type={passwordTypeTwo}
                             id="passwordConfirmation"
                             aria-invalid={errors.passwordConfirmation ? 'true' : 'false'}
-                            onClick={() => {
+                            onClick ={() => {
                                 if (errors.passwordConfirmation) {
                                     clearErrors('passwordConfirmation');
                                 }
@@ -158,7 +206,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                             {...register('passwordConfirmation', {
                                 required: true,
                                 minLength: 8,
-                                pattern: /^.*[A-ZА-ЯЁ]+.*\d+|.*\d+.*[A-ZА-ЯЁ]+$/
+                                validate: value => value === password.current,
                             })}
 
                             placeholder="passwordConfirmation"/>
@@ -190,7 +238,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                     </TextFields>
                     <ButtonAndBottomFrame>
                         {
-                            errors.password || errors.passwordConfirmation ?
+                            errors.passwordConfirmation ?
                                 <ButtonComponent
                                     disabled={true}
                                     error = {errors}

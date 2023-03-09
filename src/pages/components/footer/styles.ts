@@ -46,14 +46,15 @@ export const FooterText = styled.div`
         align-items: center;
     }
     @media screen and ${device.tablet} {
-        width: 386px;
+        width: 400px;
         margin-top: 0;
         display: flex;
         align-items: center;
     }
     @media screen and ${device.laptopL} {
-        width: 386px;
+        width: 400px;
         margin-top: 0;
+
     }
 `;
 export const IconsContainer = styled.div`

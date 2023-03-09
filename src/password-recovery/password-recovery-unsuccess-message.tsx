@@ -8,12 +8,11 @@ import {ButtonComponent} from '../pages/components/button/button-component';
 import {AllForm, HeaderLogin} from '../authorization/styles';
 import {MessageContainerBox} from '../authorization/errors-container-styles';
 
-export const RegistrationUnsuccessfulMessage = () => {
+export const PasswordRecoveryUnSuccessMessage = () => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
 
     return (
         <AllForm>
-
             <HeaderLogin>
                 <LabelText
                     variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>
@@ -21,21 +20,19 @@ export const RegistrationUnsuccessfulMessage = () => {
             <MessageContainerBox>
                 <LabelText variantText={isMobileView ? 'medium18LS' : 'large24'}>Данные не сохранились</LabelText>
                 <div>
-                    <LabelText variantText={isMobileView ? 'medium15LH' : 'medium16LH24'}>Что-то пошло не так и ваша регистрация не завершилась. Попробуйте ещё раз</LabelText>
+                    <LabelText variantText={isMobileView ? 'medium15LH' : 'medium16LH24'}>Что-то пошло не так. Попробуйте ещё раз</LabelText>
                 </div>
-                {/*
-                <NavLink to="/registration">
-                */}
+                <NavLink to="/forgot-pass">
                     <ButtonComponent
                         height={isMobileView ? '40px' : '52px'}
                         width={isMobileView ? '256px' : '410px'}
                         status="inStock"><LabelText
                         variantText={isMobileView ? 'smallLS' : 'medium16LS'}>повторить</LabelText>
                     </ButtonComponent>
-                {/*
                 </NavLink>
-                */}
             </MessageContainerBox>
+
+
         </AllForm>
     )
 }

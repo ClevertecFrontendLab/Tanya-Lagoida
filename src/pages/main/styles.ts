@@ -19,15 +19,12 @@ export const MainStyles = styled.section`
     justify-content: space-between;
     height: 100%;
     @media screen and ${device.mobileS} {
-        padding-top: 0;
         width: ${size.mobileS};
     }
     @media screen and ${device.tablet} {
-        padding-top: 0;
         width: ${size.tablet};
     }
     @media screen and ${device.laptopL} {
-        padding-top: 32px;
         width: ${size.laptopL};
     }
 `;
@@ -47,8 +44,9 @@ export const Center = styled.div`
         display: flex;
         flex-direction: row;
         gap: 6px;
-        padding: 62px 0;
+        padding: 47px 0 62px 0;
         justify-content: start;
+        margin-left: 165px;
 
     }
 `;

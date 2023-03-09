@@ -55,15 +55,8 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
     const onSubmit: SubmitHandler<{ phone: string, email: string }> = async (data) => {
 
         const requestData = {...state, ...data};
-
-
         try {
-           const response = await registration(requestData).unwrap();
-            console.log(response);
-            if (response) {
-                return <RegistrationSuccessfulMessage/>;
-            }
-
+          await registration(requestData).unwrap();
         } catch (error) {
             console.log(error);
         }

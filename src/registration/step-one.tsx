@@ -20,15 +20,17 @@ import {Arrow} from '../pages/images/arrow';
 import {EColors} from '../pages/themes/themes';
 import {EyeClosed} from '../pages/images/eye-closed';
 import {Eye} from '../pages/images/eye';
+import { RegistrationSuccessfulMessage } from './registration-successful-message';
 
 type TFormComponentTypes = {
+    registration: any
     setStepRegistration: (prevState: (prevState: number) => number) => void
     setState: any
     state: { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null }
 }
 
 export const StepOne: React.FC<TFormComponentTypes> = ({
-    setStepRegistration, setState, state
+    setStepRegistration, setState, registration, state
 }) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const {
@@ -66,6 +68,10 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
             setPasswordType('password');
         }
     };
+
+    if (registration) {
+        return <RegistrationSuccessfulMessage/>;
+    }
 
     return (
         <FormContainer
@@ -169,8 +175,6 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     }
                     </AssistiveText>
                 </AssistiveTextBoxStepOne>
-
-
             </TextFields>
             <ButtonAndBottomFrameRegistration>
                 {

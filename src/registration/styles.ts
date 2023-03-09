@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import InputMask from 'react-input-mask';
 import {device} from '../pages/main/styles';
 import {
     ButtonAndBottomFrame,
@@ -6,7 +7,7 @@ import {
     InputStyles
 } from '../authorization/styles';
 import {EColors} from '../pages/themes/themes';
-import InputMask from 'react-input-mask';
+
 
 export const RegistrationContainer = styled.div`
     gap: 46px;

@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {NavLink, useLocation, useParams} from 'react-router-dom';
+import React, { useState } from 'react';
+import { Navigate, NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import {LabelText} from '../../labels/labels';
+import { LabelText } from '../../labels/labels';
 import menu from '../../images/stroke.svg';
 
 import {
@@ -11,25 +11,29 @@ import {
     RulesAndContract,
     ShowcaseBooksBox, ShowMenu
 } from './styles';
-import {useMediaQuery} from '../../hooks/use-media-query';
-import {device} from '../../main/styles';
+import { useMediaQuery } from '../../hooks/use-media-query';
+import { device } from '../../main/styles';
 import {
     useGettingAListOfBookGenresQueryState,
     useGettingAListOfBooksQueryState
 } from '../../../services/book-service';
-import {categoryAmountCount} from '../../../func/category-amount-count';
+import { categoryAmountCount } from '../../../func/category-amount-count';
+import { useAppDispatch } from '../../../store/store';
+import { userReceived } from '../../../store/auth-slice';
 
 type TMenuProps = {
     setIsMenuCollapsed?: (value: boolean) => void
 }
 
-export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
-    const {category} = useParams();
+export const Menu: React.FC<TMenuProps> = ({ setIsMenuCollapsed }) => {
+    const { category } = useParams();
     const location = useLocation();
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const isLaptopView = useMediaQuery(`${device.laptopL}`);
-    const { data: dataCategories = [], isLoading: isLoadingCategories, isFetching: isFetchingCategories, isError: isErrorCategories } = useGettingAListOfBookGenresQueryState()
-    const { data: dataBooks =[], isLoading: isLoadingBooks, isFetching: isFetchingBooks, isError: isErrorBooks } = useGettingAListOfBooksQueryState()
-    const mutateMenu = [{name: 'Все книги', path: 'all', id: 999999}, ...dataCategories]
+    const { data: dataCategories = [], isLoading: isLoadingCategories, isFetching: isFetchingCategories, isError: isErrorCategories } = useGettingAListOfBookGenresQueryState();
+    const { data: dataBooks = [], isLoading: isLoadingBooks, isFetching: isFetchingBooks, isError: isErrorBooks } = useGettingAListOfBooksQueryState();
+    const mutateMenu = [{ name: 'Все книги', path: 'all', id: 999999 }, ...dataCategories];
 
     const initialIsMenuOpenValue = location.pathname.includes('/books') || location.pathname === '/';
 
@@ -51,7 +55,16 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
         handleCloseBookMenu();
     };
 
-    const amount = categoryAmountCount(dataBooks, dataCategories)
+    const handleExitFromUser = () => {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        dispatch();
+        // return <Navigate to="/auth"/>
+        navigate('/auth');
+    };
+
+
+    const amount = categoryAmountCount(dataBooks, dataCategories);
 
     return (
         <MenuStyles>
@@ -85,31 +98,31 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
                 isErrorBooks={isErrorBooks}
             >
                 {(!isLoadingCategories && !isFetchingCategories && !isErrorCategories && !isLoadingBooks && !isFetchingBooks && !isErrorBooks) &&
-                    mutateMenu.map((bookCategory) =>
-                        <NavLink key={bookCategory.id} to={`/books/${bookCategory.path}`}
-                                 onClick={handleCloseMenu}
-                                 data-test-id={bookCategory.path === 'all' ?
-                                     (isLaptopView ? 'navigation-books' : 'burger-books') : null}>
-                            <div>
-                                <BookCategoriesStyle
-                                    isActive={category === bookCategory.path}>
+                mutateMenu.map((bookCategory) =>
+                    <NavLink key={bookCategory.id} to={`/books/${bookCategory.path}`}
+                             onClick={handleCloseMenu}
+                             data-test-id={bookCategory.path === 'all' ?
+                                 (isLaptopView ? 'navigation-books' : 'burger-books') : null}>
+                        <div>
+                            <BookCategoriesStyle
+                                isActive={category === bookCategory.path}>
+                                <LabelText
+                                    data-test-id={isLaptopView ? `navigation-${bookCategory.path}` : `burger-${bookCategory.path}`}
+                                    variantText={category === bookCategory.path ? 'medium18LS' : 'medium16'}>{bookCategory.name}</LabelText>
+                            </BookCategoriesStyle>
+                            {
+                                bookCategory.path !== 'all' &&
+                                <CategoryAmount
+                                >
                                     <LabelText
-                                        data-test-id={isLaptopView ? `navigation-${bookCategory.path}` : `burger-${bookCategory.path}`}
-                                        variantText={category === bookCategory.path ? 'medium18LS' : 'medium16'}>{bookCategory.name}</LabelText>
-                                </BookCategoriesStyle>
-                                {
-                                    bookCategory.path !== 'all' &&
-                                    <CategoryAmount
-                                        >
-                                        <LabelText
-                                            data-test-id={isLaptopView ? `navigation-book-count-for-${bookCategory.path}`: `burger-book-count-for-${bookCategory.path}`}
-                                            variantText="medium14">{amount[bookCategory.name].length}</LabelText>
-                                    </CategoryAmount>
-                                }
+                                        data-test-id={isLaptopView ? `navigation-book-count-for-${bookCategory.path}` : `burger-book-count-for-${bookCategory.path}`}
+                                        variantText="medium14">{amount[bookCategory.name].length}</LabelText>
+                                </CategoryAmount>
+                            }
 
-                            </div>
-                        </NavLink>
-                    )
+                        </div>
+                    </NavLink>
+                )
                 }
             </BooksCategoriesContainer>
             <MenuTermsContainer>
@@ -128,7 +141,11 @@ export const Menu: React.FC<TMenuProps> = ({setIsMenuCollapsed}) => {
             </MenuTermsContainer>
             <ProfileAndExitContainer>
                 <LabelText variantText="medium18LS">Профиль</LabelText>
-                <LabelText variantText="medium18LS">Выход</LabelText>
+                <NavLink to="/auth">
+                    <div onClick={handleExitFromUser}>
+                        <LabelText variantText="medium18LS">Выход</LabelText>
+                    </div>
+                </NavLink>
             </ProfileAndExitContainer>
         </MenuStyles>
     );

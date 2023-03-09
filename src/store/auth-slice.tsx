@@ -16,7 +16,6 @@ export const userSlice = createSlice({
     reducers: {
         userReceived(state, action) {
             return {
-                ...state,
                 user: action.payload,
                 isAuth: true
             };
