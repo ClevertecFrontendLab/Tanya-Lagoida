@@ -10,11 +10,11 @@ export const LoginToPersonalAccount = () => {
     if (isLoading) {
         return <>
              <Loader />
-            <FormAuthorizationComponent authorization={authorization} error={error}/>
+            <FormAuthorizationComponent data-test-id='auth' authorization={authorization} error={error}/>
         </>
     }
 
     return (
-        <FormAuthorizationComponent authorization={authorization} error={error}/>
+        <FormAuthorizationComponent data-test-id='auth' authorization={authorization} error={error}/>
     );
 };

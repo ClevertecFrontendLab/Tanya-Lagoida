@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {NavLink} from 'react-router-dom';
 import {LabelText} from '../pages/labels/labels';
@@ -17,10 +17,10 @@ export const PasswordRecoverySuccessMessage = () => {
                 <LabelText
                     variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>
             </HeaderLogin>
-            <MessageContainerBox>
+            <MessageContainerBox data-test-id='status-block'>
                 <LabelText variantText={isMobileView ? 'medium18LS' : 'large24'}>Новые данные сохранены</LabelText>
                 <div>
-                    <LabelText variantText={isMobileView ? 'medium15LH' : 'medium16LH24'}>Зайдите в личный кабинет, используя свои логин и новый пароль</LabelText>
+                    <LabelText variantText={isMobileView ? 'medium15LH' : 'medium16LH24'}>Зайдите в личный кабинет, используя свои логин и новый пароль</LabelText>
                 </div>
                 <NavLink to="/auth">
                     <ButtonComponent
@@ -31,8 +31,6 @@ export const PasswordRecoverySuccessMessage = () => {
                     </ButtonComponent>
                 </NavLink>
             </MessageContainerBox>
-
-
         </AllForm>
-    );
-};
+    )
+}

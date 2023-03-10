@@ -20,7 +20,7 @@ import {Arrow} from '../pages/images/arrow';
 import {EColors} from '../pages/themes/themes';
 import {EyeClosed} from '../pages/images/eye-closed';
 import {Eye} from '../pages/images/eye';
-import { RegistrationSuccessfulMessage } from './registration-successful-message';
+import {RegistrationSuccessfulMessage} from './registration-successful-message';
 
 type TFormComponentTypes = {
     registration: any
@@ -30,33 +30,40 @@ type TFormComponentTypes = {
 }
 
 export const StepOne: React.FC<TFormComponentTypes> = ({
-    setStepRegistration, setState, registration, state
+    setStepRegistration,
+    setState,
+    registration,
+    state,
+
 }) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const {
         register,
         getValues,
+        getFieldState,
         handleSubmit,
+        trigger,
+        clearErrors,
+        setValue,
         formState: {isDirty, isValid, errors,}
     } = useForm<{ username: string, password: string }>({
-        mode: 'onChange',
+        // mode: 'onChange',
         shouldFocusError: false,
         criteriaMode: 'all'
     });
     const [passwordType, setPasswordType] = useState('password');
     console.log(errors);
+    const [isTotalErrorRed, setIsTotalErrorRed] = useState<boolean>(false);
+    console.log(isTotalErrorRed);
 
     const onSubmitIncreaseStep = () => {
         setStepRegistration((prevState: number) => prevState + 1);
     };
 
     const onSubmitOne = (): void => {
-
         const username = getValues('username');
         const password = getValues('password');
-
         setState({...state, username, password});
-
         onSubmitIncreaseStep();
     };
 
@@ -69,14 +76,10 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
         }
     };
 
-    if (registration) {
-        return <RegistrationSuccessfulMessage/>;
-    }
-
     return (
         <FormContainer
             onSubmit={handleSubmit(onSubmitOne)}>
-            <TextFields>
+            <TextFields errorForStyle={errors.username}>
                 <InputStylesSteps
                     errorBorder={errors.username}
                     errors={errors}
@@ -90,19 +93,37 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                             matchNumberPattern: (value) => /\d/.test(value)
                         }
                     })}
+                    onClick={() => {
+                        if (errors.username) {
+                            setIsTotalErrorRed(false);
+                            clearErrors('username');
+                        }
+                    }}
+                    onBlur={async () => {
+                        setIsTotalErrorRed(true);
+                        await trigger('username');
+                    }}
+                    onChange={async (event) => {
+                        if (!errors.password) {
+                            setIsTotalErrorRed(false);
+                        }
+                        setValue('username', event.currentTarget.value);
+                        await trigger('username');
+                    }}
                     placeholder="Придумайте логин для входа"/>
                 <LabelBox htmlFor="username">Придумайте логин для
                     входа</LabelBox>
 
-
-                <AssistiveTextBoxStepOne>
-                    {
-                        errors?.username?.types?.pattern ?
-                            <AssistiveTextError>
+                {
+                    isTotalErrorRed ?
+                        <AssistiveTextBoxStepOne isTotalErrorRed={isTotalErrorRed}>
+                            <AssistiveTextError data-test-id='hint'>
                                 Используйте для логина латинский алфавит и цифры
                             </AssistiveTextError>
-                            :
-                            <AssistiveText>
+                        </AssistiveTextBoxStepOne>
+                        :
+                        <AssistiveTextBoxStepOne >
+                            <AssistiveText data-test-id='hint'>
                                 Используйте для логина {
                                 errors?.username?.types?.matchLetterPattern ? <AssistiveTextError>
                                         латинский алфавит
@@ -115,8 +136,8 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                                     <AssistiveText>цифры</AssistiveText>
                             }
                             </AssistiveText>
-                    }
-                </AssistiveTextBoxStepOne>
+                        </AssistiveTextBoxStepOne>
+                }
             </TextFields>
             <TextFields errorForStyle={errors.password}>
                 <InputStylesSteps
@@ -132,28 +153,39 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                             matchNumberPattern: (value) => /\d/.test(value)
                         }
                     })}
+                    onClick={() => {
+                        if (errors.password) {
+                            setIsTotalErrorRed(false);
+                            clearErrors('password');
+                        }
+                    }}
+                    onBlur={async () => {
+                        setIsTotalErrorRed(true);
+                        await trigger('password');
+                    }}
                     placeholder="Пароль"/>
                 <LabelBox htmlFor="password">Пароль</LabelBox>
-                <img src={checkPassword} alt=""/>
+                <img src={checkPassword} alt="" data-test-id='checkmark'/>
                 <button
                     type="button"
                     onClick={togglePassword}>
                     {
                         passwordType === 'password' ?
-                            <EyeClosed/>
+                            <EyeClosed data-test-id='eye-closed'/>
                             :
-                            <Eye/>
+                            <Eye data-test-id='eye-opened'/>
                     }
                 </button>
-
-                {/*errors.password ?*/}
-                {/*    <AssistiveTextBoxStepOne>*/}
-                {/*        <AssistiveTextError>*/}
-                {/*            Пароль не менее 8 символов, с заглавной буквой и цифрой*/}
-                {/*        </AssistiveTextError>*/}
-                {/*    </AssistiveTextBoxStepOne> :*/}
-                <AssistiveTextBoxStepOne>
-                    <AssistiveText>
+                {
+                    isTotalErrorRed ?
+                        <AssistiveTextBoxStepOne isTotalErrorRed={isTotalErrorRed}>
+                            <AssistiveTextError data-test-id='hint'>
+                                Пароль не менее 8 символов, с заглавной буквой и цифрой
+                            </AssistiveTextError>
+                        </AssistiveTextBoxStepOne>
+                        :
+                <AssistiveTextBoxStepOne isTotalErrorRed={isTotalErrorRed}>
+                    <AssistiveText data-test-id='hint'>
                         Пароль {
                         errors?.password?.types?.checkLength ? <AssistiveTextError>
                                 не менее 8 символов
@@ -175,20 +207,21 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     }
                     </AssistiveText>
                 </AssistiveTextBoxStepOne>
+                }
             </TextFields>
             <ButtonAndBottomFrameRegistration>
                 {
                     errors.username || errors.password ?
                         <ButtonComponent
-                        disabled={true}
-                        error = {errors}
-                        type="submit"
-                        height={isMobileView ? '40px' : '52px'}
-                        width={isMobileView ? '255px' : '416px'}
-                        status="inStock"><LabelText
-                        variantText={isMobileView ? 'smallLS' : 'medium16LS'}>следующий
-                        шаг</LabelText>
-                    </ButtonComponent>
+                            disabled={true}
+                            error={errors}
+                            type="submit"
+                            height={isMobileView ? '40px' : '52px'}
+                            width={isMobileView ? '255px' : '416px'}
+                            status="inStock"><LabelText
+                            variantText={isMobileView ? 'smallLS' : 'medium16LS'}>следующий
+                            шаг</LabelText>
+                        </ButtonComponent>
                         :
                         <ButtonComponent
                             type="submit"

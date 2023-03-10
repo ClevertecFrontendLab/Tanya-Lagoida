@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
+import {HashRouter, Navigate, Route, Routes, useSearchParams} from 'react-router-dom';
 import { LoginToPersonalAccount } from '../../authorization/login-to-personal-account';
 import { RegistrationContainer } from '../../registration/registration-container';
 import { PasswordRecoveryContainer } from '../../password-recovery/password-recovery-container';
@@ -19,14 +19,14 @@ function PrivateOutlet() {
 }
 
 export const RoutesComponent = () => {
+    const [searchParams] = useSearchParams();
+    const code = searchParams.get("code")
+
     return (
         <Routes>
             <Route path="/auth" element={<LoginToPersonalAccount/>}/>
             <Route path="/registration" element={<RegistrationContainer/>}/>
-            {/*     <Route path="/forgot-pass" element={<PasswordResetContainer/>}/>
-*/}
-
-               <Route path="/forgot-pass" element={<PasswordRecoveryContainer/>}/>
+            <Route path="/forgot-pass" element={<PasswordResetContainer/>}/>
 
             <Route path="/" element={<PrivateOutlet/>}>
                 <Route element={<LayoutMainPage/>}>

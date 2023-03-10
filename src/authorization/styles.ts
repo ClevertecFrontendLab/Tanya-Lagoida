@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import {device} from '../pages/main/styles';
 import {EColors} from '../pages/themes/themes';
 
-export const FormAllContainer = styled.div`
+export const FormAllContainer = styled.form`
     position: absolute;
     top: 50%;
     left: 50%;
@@ -43,7 +43,7 @@ export const HeaderLogin = styled.div`
         margin-left: -51px;
     }
 `;
-export const TextFields = styled.div<{errorForStyle?: any}>`
+export const TextFields = styled.div<{ errorForStyle?: any }>`
     position: relative;
 
     input::placeholder {
@@ -56,7 +56,6 @@ export const TextFields = styled.div<{errorForStyle?: any}>`
         font-weight: 400;
         line-height: 18px;
     }
-
     input:focus ~ label,
     input:not(:placeholder-shown) ~ label {
         display: block;
@@ -69,7 +68,6 @@ export const TextFields = styled.div<{errorForStyle?: any}>`
         font-weight: 500;
         line-height: 16px;
     }
-
     input:focus ~ button,
     input:not(:placeholder-shown) ~ button {
         z-index: 5;
@@ -82,9 +80,7 @@ export const TextFields = styled.div<{errorForStyle?: any}>`
         height: 24px;
         border: none;
         background: none;
-
     }
-
     input:not(:placeholder-shown) ~ img {
         z-index: 5;
         display: ${(props) => !props.errorForStyle && 'block'};
@@ -93,17 +89,22 @@ export const TextFields = styled.div<{errorForStyle?: any}>`
         right: 44px;
         width: 24px;
         height: 24px;
-
     }
     img {
         display: none;
     }
     button {
         display: none;
-
     }
+    //  input:not(:focus) ~ div span {
+    //     color: ${EColors.RedError};
+    //     //color: ${(props) => props.errorForStyle && `${EColors.RedError}`};
+    // }
+    // input:not(:focus) {
+    //     border-bottom: 1px solid ${EColors.RedError};
+    //     //border-bottom: ${(props) => props.errorForStyle && `1px solid ${EColors.RedError}`};
+    // }
 `;
-
 export const AssistiveTextBox = styled.div`
     display: flex;
     align-items: start;
@@ -114,7 +115,8 @@ export const AssistiveTextBox = styled.div`
         width: 240px;
     }
 `;
-export const AssistiveTextBoxStepOne = styled(AssistiveTextBox)`
+export const AssistiveTextBoxStepOne = styled(AssistiveTextBox)<{ isTotalErrorRed?: boolean }>`
+    color: ${(props) => props.isTotalErrorRed ? `${EColors.RedError}` : `${EColors.GreyBorder}`};
 
     @media screen and ${device.mobileS} {
         height: 32px;

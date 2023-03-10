@@ -23,29 +23,39 @@ import {TRegistrationRequest} from '../services/login-service-types';
 import {
     RegistrationUnsuccessfulMessageSameLogin
 } from './registration-unsuccessful-message-same-login';
-import {RegistrationSuccessfulMessage} from './registration-successful-message';
 import {useAppSelector} from '../store/store';
+import {RegistrationUnsuccessfulMessage} from './registration-unsuccessful-message';
+import {RegistrationSuccessfulMessage} from './registration-successful-message';
 
 type TFormComponentTypes = {
     error: any
     // error: FetchBaseQueryError | SerializedError | undefined
     registration: any
     isError: any
+    setIsSuccessMessage?: any
+    setIsUnSuccessMessage?: any
+    setIsUnSuccessMessageSameLogin?: any
 }
 
-export const RegistrationForm: React.FC<TFormComponentTypes> = ({error, registration, isError}) => {
+export const RegistrationForm: React.FC<TFormComponentTypes> = ({
+    error,
+    registration,
+    isError,
+    setIsSuccessMessage,
+    setIsUnSuccessMessage,
+    setIsUnSuccessMessageSameLogin,
+}) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const isAuth = useAppSelector((state) => state.userSlice.isAuth);
 
     const [stepRegistration, setStepRegistration] = useState<number>(1);
     const [state, setState] = useState<
-        {email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null}>
+        { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null }>
     ({email: null, username: null, password: null, firstName: null, lastName: null, phone: null});
 
     if (isAuth) {
         return <Navigate to="/"/>;
     }
-
 
     return (
         <AllForm>
@@ -54,7 +64,7 @@ export const RegistrationForm: React.FC<TFormComponentTypes> = ({error, registra
                     <LabelText
                         variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>
                 </HeaderLogin>
-                <FormRegistrationAllContainer>
+                <FormRegistrationAllContainer data-test-id='register-form'>
                     <TitleForm>
                         <LabelText
                             variantText="large24">Регистрация
@@ -73,13 +83,17 @@ export const RegistrationForm: React.FC<TFormComponentTypes> = ({error, registra
                             : stepRegistration === 2
                                 ?
                                 <StepTwo
-                                    setStepRegistration={setStepRegistration} setState={setState} state={state}/>
+                                    setStepRegistration={setStepRegistration} setState={setState}
+                                    state={state}/>
                                 :
                                 <StepThree
                                     error={error}
                                     isError={isError}
                                     registration={registration}
                                     state={state}
+                                    setIsSuccessMessage={setIsSuccessMessage}
+                                    setIsUnSuccessMessage={setIsUnSuccessMessage}
+                                    setIsUnSuccessMessageSameLogin={setIsUnSuccessMessageSameLogin}
                                 />
                     }
                 </FormRegistrationAllContainer>

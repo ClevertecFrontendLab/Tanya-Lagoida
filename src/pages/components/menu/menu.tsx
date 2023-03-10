@@ -58,8 +58,7 @@ export const Menu: React.FC<TMenuProps> = ({ setIsMenuCollapsed }) => {
     const handleExitFromUser = () => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
-        dispatch();
-        // return <Navigate to="/auth"/>
+        dispatch(userReceived({user: null, isAuth: false}));
         navigate('/auth');
     };
 
@@ -143,7 +142,7 @@ export const Menu: React.FC<TMenuProps> = ({ setIsMenuCollapsed }) => {
                 <LabelText variantText="medium18LS">Профиль</LabelText>
                 <NavLink to="/auth">
                     <div onClick={handleExitFromUser}>
-                        <LabelText variantText="medium18LS">Выход</LabelText>
+                        <LabelText variantText="medium18LS" data-test-id='exit-button'>Выход</LabelText>
                     </div>
                 </NavLink>
             </ProfileAndExitContainer>

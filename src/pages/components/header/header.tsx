@@ -41,8 +41,7 @@ export const Header = () => {
     const handleExitFromUser = () => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
-        dispatch(userReceived(null));
-        // return <Navigate to="/auth"/>
+        dispatch(userReceived({user: null, isAuth: false}));
         navigate('/auth');
     };
 

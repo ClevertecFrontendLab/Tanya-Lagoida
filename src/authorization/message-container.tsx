@@ -22,7 +22,7 @@ export const MessageContainer: React.FC<TErrorsType> = ({title, text}) => {
                     <LabelText
                         variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>
                 </HeaderLogin>
-                <MessageContainerBox>
+                <MessageContainerBox data-test-id='status-block'>
                     <LabelText variantText={isMobileView ? 'medium18LS' : 'large24'}>{title}</LabelText>
                     <div>
                         <LabelText variantText={isMobileView ? 'medium15LH' : 'medium16LH24'}>{text}</LabelText>

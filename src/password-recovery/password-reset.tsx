@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import {Navigate, NavLink} from 'react-router-dom';
+import {Navigate, NavLink, useSearchParams} from 'react-router-dom';
 import {SubmitHandler, useForm} from 'react-hook-form';
 
 import {ButtonComponent} from '../pages/components/button/button-component';
@@ -29,6 +29,7 @@ import {Arrow} from '../pages/images/arrow';
 import {EColors} from '../pages/themes/themes';
 import {MessageContainer} from '../authorization/message-container';
 import {useAppSelector} from '../store/store';
+import {PasswordRecoveryContainer} from './password-recovery-container';
 
 type TFormComponentTypes = {
     error?: any
@@ -43,8 +44,8 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
     data
 }) => {
 
-
-
+    const [searchParams] = useSearchParams();
+    const code = searchParams.get('code');
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const isAuth = useAppSelector((state) => state.userSlice.isAuth);
     const {
@@ -71,9 +72,13 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
     }
 
     if (data) {
-        return <MessageContainer
+        return <MessageContainer data-test-id='status-block'
             text="Перейдите в вашу почту, чтобы воспользоваться подсказками по восстановлению пароля"
             title="Письмо выслано"/>;
+    }
+
+    if (code) {
+        return <PasswordRecoveryContainer code={code}/>
     }
 
     return (
@@ -82,7 +87,7 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                 <LabelText
                     variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>
             </HeaderLogin>
-            <FormAllContainerPasswordReset>
+            <FormAllContainerPasswordReset data-test-id='send-email-form'>
                 <NavLink to="/auth">
                     <LoginToPersonalAccount>
                         <Arrow stroke={EColors.GreyBorder}/>
@@ -115,18 +120,18 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                                 {
                                     errors.email
                                         ?
-                                        <AssistiveTextError>
+                                        <AssistiveTextError data-test-id='hint'>
                                             Введите корректный e-mail
                                         </AssistiveTextError>
                                         :
                                         error ?
-                                            <AssistiveTextError>
+                                            <AssistiveTextError data-test-id='hint'>
                                                 error
                                             </AssistiveTextError> : ''
                                 }
                             </AssistiveTextBox>
                             <AssistiveTextBoxReset>
-                                <AssistiveText>
+                                <AssistiveText data-test-id='hint'>
                                     На этот email будет отправлено письмо с инструкциями по
                                     восстановлению пароля
                                 </AssistiveText>

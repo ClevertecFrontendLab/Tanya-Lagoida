@@ -40,6 +40,7 @@ import {Eye} from '../pages/images/eye';
 
 
 type TFormComponentTypes = {
+   'data-test-id'?: string
     error: any
     // error: FetchBaseQueryError | SerializedError | undefined
     authorization: MutationTrigger<MutationDefinition<TAuthorizationRequest, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, { shout?: boolean }, FetchBaseQueryMeta>, never, TAuthorizationResponse, 'userApi'>>
@@ -71,7 +72,7 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
             localStorage.setItem('token', JSON.stringify(response.jwt));
             localStorage.setItem('user', JSON.stringify(response.user));
             navigate('/');
-            dispatch(userReceived(response.user));
+            dispatch(userReceived({user:response.user, isAuth: true}));
         } catch (error) {
             console.log(error);
         }
@@ -94,7 +95,7 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                 <LabelText
                     variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>
             </HeaderLogin>
-            <FormAllContainer>
+            <FormAllContainer data-test-id='auth-form'>
                 <LabelText
                     variantText="large24">Вход в личный кабинет</LabelText>
                 <FormContainer
@@ -123,14 +124,14 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                             onClick={togglePassword}>
                             {
                                 passwordType === 'password' ?
-                                    <EyeClosed/>
+                                    <EyeClosed data-test-id='eye-closed'/>
                                     :
-                                    <Eye/>
+                                    <Eye data-test-id='eye-opened'/>
                             }
                         </button>
                         <AssistiveTextBox>
                             {error && error.status === 400
-                                ? <AssistiveTextError>
+                                ? <AssistiveTextError >
                                     <LabelText variantText="small500">Неверный логин или
                                         пароль!</LabelText>
                                 </AssistiveTextError>

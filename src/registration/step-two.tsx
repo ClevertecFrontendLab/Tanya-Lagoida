@@ -14,7 +14,6 @@ import {LabelText} from '../pages/labels/labels';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {device} from '../pages/main/styles';
 
-import {TRegistrationRequest} from '../services/login-service-types';
 import {EColors} from '../pages/themes/themes';
 import {Arrow} from '../pages/images/arrow';
 
@@ -31,20 +30,19 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
 
     const {
         register,
+        clearErrors,
         getValues,
         handleSubmit,
-        formState: { isDirty, isValid, errors }
-    } = useForm<{firstName: string, lastName: string}>({mode: 'onChange', shouldFocusError: false});
+        formState: { isDirty, errors }
+    } = useForm<{firstName: string, lastName: string}>({mode: 'onBlur', shouldFocusError: false});
 
     const onSubmitIncreaseStep = () => {
         setStepRegistration((prevState) => prevState + 1);
     };
 
     const onSubmitTwo = (): void => {
-
         const firstName = getValues("firstName");
         const lastName = getValues("lastName");
-
         console.log(firstName);
         console.log(lastName);
         setState({...state, firstName, lastName})
@@ -53,14 +51,17 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
 
     console.log(state);
 
-
-
     return (
         <FormContainer
             onSubmit={handleSubmit(onSubmitTwo)}>
 
             <TextFields>
                 <InputStylesSteps
+                    onClick={() => {
+                        if (errors.firstName) {
+                            clearErrors('firstName');
+                        }
+                    }}
                     errorBorder={errors.firstName}
                     errors={errors}
                     type="text"
@@ -72,7 +73,7 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
                 <AssistiveTextBoxStepOne>
                     {
                         errors.firstName ?
-                            <AssistiveTextError>Поле не может быть пустым</AssistiveTextError>
+                            <AssistiveTextError data-test-id='hint'>Поле не может быть пустым</AssistiveTextError>
                             : <AssistiveText/>
                     }
 
@@ -80,6 +81,11 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
             </TextFields>
             <TextFields>
                 <InputStylesSteps
+                    onClick={() => {
+                        if (errors.lastName) {
+                            clearErrors('lastName');
+                        }
+                    }}
                     errorBorder={errors.lastName}
                     errors={errors}
                     type="text"
@@ -91,7 +97,7 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
                 <AssistiveTextBoxStepOne>
                     {
                         errors.lastName ?
-                            <AssistiveTextError>Поле не может быть пустым</AssistiveTextError>
+                            <AssistiveTextError data-test-id='hint'>Поле не может быть пустым</AssistiveTextError>
                             : <AssistiveText/>
                     }
 

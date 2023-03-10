@@ -32,8 +32,8 @@ export const ButtonAndBottomFrameRegistration = styled(ButtonAndBottomFrame)`
         margin-top: 24px;
     }
 `
-export const InputStylesSteps = styled(InputStyles)<{errors?: any, errorBorder?: any}>`
-    border-bottom: ${(props) => (props.errors && props.errors.status === 400) || props.errorBorder ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
+export const InputStylesSteps = styled(InputStyles)<{errors?: any, errorBorder?: any, isTotalErrorRed?: boolean}>`
+    border-bottom: ${(props) => (props.errors && props.errors.status === 400) || props.errorBorder || props.isTotalErrorRed ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
     z-index: -1;
 
 `

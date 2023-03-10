@@ -31,6 +31,7 @@ export const userApi = createApi({
         passwordReset: builder.mutation<TPasswordResetResponse, TPasswordResetRequest>({
             query: (body) => ({
                 url: EEndPoints.passwordReset,
+                // query: (code) => `EEndPoints.passwordReset?${code}=`,
                 method: 'POST',
                 body,
             }),

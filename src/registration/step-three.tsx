@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React from 'react';
 
 import {NavLink} from 'react-router-dom';
 import {Controller, SubmitHandler, useForm} from 'react-hook-form';
@@ -15,22 +15,16 @@ import {LabelText} from '../pages/labels/labels';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {device} from '../pages/main/styles';
 
-
-import {userReceived} from '../store/auth-slice';
-import {useAppDispatch} from '../store/store';
 import {EColors} from '../pages/themes/themes';
 import {Arrow} from '../pages/images/arrow';
-import {RegistrationSuccessfulMessage} from './registration-successful-message';
-
-import {
-    RegistrationUnsuccessfulMessageSameLogin
-} from './registration-unsuccessful-message-same-login';
-import {RegistrationUnsuccessfulMessage} from './registration-unsuccessful-message';
 
 type TFormComponentTypes = {
     isError: any
     error: any
     registration: any
+    setIsSuccessMessage: any
+    setIsUnSuccessMessage: any
+    setIsUnSuccessMessageSameLogin: any
     state: { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null }
 }
 
@@ -38,9 +32,12 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
     isError, error,
     registration,
     state,
+    setIsSuccessMessage,
+    setIsUnSuccessMessage,
+    setIsUnSuccessMessageSameLogin,
 }) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
-    const dispatch = useAppDispatch();
+
     const {
         register,
         control,
@@ -56,18 +53,18 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
 
         const requestData = {...state, ...data};
         try {
-          await registration(requestData).unwrap();
+            await registration(requestData).unwrap();
+            setIsSuccessMessage(true);
+
         } catch (error) {
             console.log(error);
+            setIsUnSuccessMessageSameLogin(true);
+            // if (error && error.status === 400) {
+            //     setIsUnSuccessMessageSameLogin(true);
+            // } else setIsUnSuccessMessage(true);
         }
     };
 
-    if (error && error.status === 400) {
-        return <RegistrationUnsuccessfulMessageSameLogin/>;
-    }
-    if (error && error.status !== 400) {
-        return <RegistrationUnsuccessfulMessage/>;
-    }
 
 
     console.log(errors);
@@ -91,7 +88,7 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
                         <MaskedInputStyles
                             mask="+375 (99) 999-99-99"
                             inputMode="tel"
-                            maskChar=""
+                            maskChar="x"
                             placeholder="Номер телефона"
                             id="phone"
                             errorborder={errors.phone}
@@ -116,12 +113,12 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
                             // ).ref}
 
                             {...register('phone', {
-                                required: true,
+                                    required: true,
 
-                                // validate: {
-                                //     phonePattern: (value) => /^\+375\s\(25|29|44|33\)\s\d\d\d-\d\d-\d\d$/gmui.test(value)
-                                // }
-                                pattern: /^\+375\s\((25|29|44|33)\)\s\d\d\d-\d\d-\d\d$/gmui
+                                    // validate: {
+                                    //     phonePattern: (value) => /^\+375\s\(25|29|44|33\)\s\d\d\d-\d\d-\d\d$/gmui.test(value)
+                                    // }
+                                    pattern: /^\+375\s\((25|29|44|33)\)\s\d\d\d-\d\d-\d\d$/gmui
                                 }
                             )}
                         />
@@ -132,11 +129,11 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
                 <AssistiveTextBoxStepOne>
                     {
                         errors.phone ?
-                            <AssistiveTextError>
+                            <AssistiveTextError data-test-id='hint'>
                                 В формате +375 (xx) xxx-xx-xx
                             </AssistiveTextError>
                             :
-                            <AssistiveText>
+                            <AssistiveText data-test-id='hint'>
                                 В формате +375 (xx) xxx-xx-xx
                             </AssistiveText>
                     }
@@ -156,9 +153,9 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
 
                 <AssistiveTextBoxStepOne>
                     {
-                        errors.email ? <AssistiveTextError>Введите корректный e-mail
+                        errors.email ? <AssistiveTextError data-test-id='hint'>Введите корректный e-mail
                             </AssistiveTextError> :
-                            <AssistiveText>Введите корректный e-mail
+                            <AssistiveText data-test-id='hint'>Введите корректный e-mail
                             </AssistiveText>
                     }
 
