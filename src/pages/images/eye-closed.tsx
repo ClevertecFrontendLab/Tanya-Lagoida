@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const EyeClosed = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg data-test-id="eye-closed" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M18.8577 11.9348L20.9961 15.6387" stroke="#363636" strokeWidth="2"
               strokeLinecap="round" strokeLinejoin="round"/>
         <path d="M14.4546 13.9935L15.1215 17.7757" stroke="#363636" strokeWidth="2"

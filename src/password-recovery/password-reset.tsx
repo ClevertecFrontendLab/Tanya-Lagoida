@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {Navigate, NavLink, useSearchParams} from 'react-router-dom';
 import {SubmitHandler, useForm} from 'react-hook-form';
@@ -55,7 +55,6 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
         clearErrors,
     } = useForm<TPasswordResetRequest>({
         mode: 'onBlur',
-        reValidateMode: 'onBlur',
         shouldFocusError: false
     });
 
@@ -72,22 +71,23 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
     }
 
     if (data) {
-        return <MessageContainer data-test-id='status-block'
+        return <MessageContainer
             text="Перейдите в вашу почту, чтобы воспользоваться подсказками по восстановлению пароля"
             title="Письмо выслано"/>;
     }
 
     if (code) {
-        return <PasswordRecoveryContainer code={code}/>
+        return <PasswordRecoveryContainer code={code}/>;
     }
 
     return (
-        <AllForm data-test-id='auth'>
+        <AllForm data-test-id="auth">
             <HeaderLogin>
                 <LabelText
                     variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>
             </HeaderLogin>
-            <FormAllContainerPasswordReset data-test-id='send-email-form'  onSubmit={handleSubmit(onSubmit)}>
+            <FormAllContainerPasswordReset data-test-id="send-email-form"
+                                           onSubmit={handleSubmit(onSubmit)}>
                 <NavLink to="/auth">
                     <LoginToPersonalAccount>
                         <Arrow stroke={EColors.GreyBorder}/>
@@ -104,7 +104,7 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                                 id="email"
                                 aria-invalid={errors.email ? 'true' : 'false'}
                                 onClick={() => {
-                                    if (errors.email) {
+                                    if (errors) {
                                         clearErrors('email');
                                     }
                                 }}
@@ -112,25 +112,30 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                                     required: true,
                                     pattern: /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i,
                                 })}
-
                                 placeholder="Email"/>
                             <LabelBox htmlFor="email">Email</LabelBox>
                             <AssistiveTextBox>
+
                                 {
-                                    errors.email
-                                        ?
-                                        <AssistiveTextError data-test-id='hint'>
-                                            Введите корректный e-mail
+                                    errors.email?.type === 'required' ?
+                                        <AssistiveTextError data-test-id="hint">
+                                            Поле не может быть пустым
                                         </AssistiveTextError>
                                         :
+                                        errors.email?.type === 'pattern' ?
+                                    <AssistiveTextError data-test-id="hint">
+                                        Введите корректный e-mail
+                                    </AssistiveTextError>
+                                    :
                                         error ?
-                                            <AssistiveTextError data-test-id='hint'>
+                                            <AssistiveTextError data-test-id="hint">
                                                 error
-                                            </AssistiveTextError> : ''
+                                            </AssistiveTextError>
+                                            : null
                                 }
                             </AssistiveTextBox>
                             <AssistiveTextBoxReset>
-                                <AssistiveText data-test-id='hint'>
+                                <AssistiveText data-test-id="hint">
                                     На этот email будет отправлено письмо с инструкциями по
                                     восстановлению пароля
                                 </AssistiveText>

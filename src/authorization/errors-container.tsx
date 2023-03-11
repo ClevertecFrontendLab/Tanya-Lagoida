@@ -19,7 +19,7 @@ export const ErrorsContainer: React.FC<TErrorsType> = ({title, textButton, text}
     const isMobileView = useMediaQuery(`${device.mobileS}`);
 
     return (
-        <AllForm>
+        <AllForm data-test-id="hint">
 
                 <HeaderLogin>
                     <LabelText

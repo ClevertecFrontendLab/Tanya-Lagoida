@@ -14,7 +14,7 @@ export const RegistrationUnsuccessfulMessageSameLogin = () => {
     }
 
     return (
-        <AllForm>
+        <AllForm >
 
             <HeaderLogin>
                 <LabelText

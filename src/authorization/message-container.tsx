@@ -17,7 +17,7 @@ export const MessageContainer: React.FC<TErrorsType> = ({title, text}) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
 
     return (
-        <AllForm>
+        <AllForm >
                 <HeaderLogin>
                     <LabelText
                         variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>

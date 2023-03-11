@@ -20,7 +20,7 @@ export const PasswordRecoveryUnSuccessMessage: React.FC<TPropsType> = ({code}) =
     }
 
     return (
-        <AllForm>
+        <AllForm >
             <HeaderLogin>
                 <LabelText
                     variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>

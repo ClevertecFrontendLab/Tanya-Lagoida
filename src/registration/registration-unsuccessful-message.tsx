@@ -45,13 +45,13 @@ export const RegistrationUnsuccessfulMessage: React.FC<TPropsTypes> = ({
     };
 
     return (
-        <AllForm>
+        <AllForm >
 
             <HeaderLogin>
                 <LabelText
                     variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>
             </HeaderLogin>
-            <MessageContainerBox data-test-id="status-block">
+            <MessageContainerBox data-test-id='status-block'>
                 <LabelText variantText={isMobileView ? 'medium18LS' : 'large24'}>Данные не
                     сохранились</LabelText>
                 <div>

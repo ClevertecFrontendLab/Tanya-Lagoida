@@ -66,10 +66,8 @@ export const TextFields = styled.div<{ errorForStyle?: any }>`
         font-weight: 500;
         line-height: 16px;
     }
-    input:focus ~ button,
-    input:not(:placeholder-shown) ~ button {
+     button {
         z-index: 5;
-        display: block;
         position: absolute;
         top: 16px;
         right: 16px;
@@ -79,20 +77,13 @@ export const TextFields = styled.div<{ errorForStyle?: any }>`
         border: none;
         background: none;
     }
-    input:not(:placeholder-shown) ~ img {
+    img {
         z-index: 5;
-        display: ${(props) => !props.errorForStyle && 'block'};
         position: absolute;
         top: 16px;
         right: 44px;
         width: 24px;
         height: 24px;
-    }
-    img {
-        display: none;
-    }
-    button {
-        display: none;
     }
 `;
 export const AssistiveTextBox = styled.div`
@@ -155,6 +146,7 @@ export const LabelBox = styled.label`
     font-size: 14px;
     font-weight: 400;
     line-height: 18px;
+    //z-index: -3;
 
 `;
 

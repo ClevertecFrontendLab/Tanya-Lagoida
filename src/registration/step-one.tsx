@@ -43,7 +43,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
         trigger,
         clearErrors,
         setValue,
-        formState: { errors }
+        formState: { errors, isValid}
     } = useForm<{ username: string, password: string }>({
         shouldFocusError: false,
         criteriaMode: 'all'
@@ -51,6 +51,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
     const [passwordType, setPasswordType] = useState('password');
     const [isTotalErrorRedUsername, setIsTotalErrorRedUsername] = useState<boolean | undefined>(false);
     const [isTotalErrorRedPassword, setIsTotalErrorRedPassword] = useState<boolean | undefined>(false);
+    const [isCheckmark, setIsCheckmark] = useState<boolean>(false);
 
     const onSubmitIncreaseStep = () => {
         setStepRegistration((prevState: number) => prevState + 1);
@@ -69,6 +70,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
             setPasswordType('password');
         }
     };
+
 
     return (
         <FormContainer
@@ -113,7 +115,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                         if (!errors.username) {
                             setIsTotalErrorRedUsername(false);
                         }
-                        setValue('username', event.currentTarget.value);
+                        setValue('username', event.currentTarget.value, { shouldDirty: true });
                         await trigger('username');
                     }}
                     placeholder="Придумайте логин для входа"/>
@@ -121,6 +123,11 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     входа</LabelBox>
 
                 {
+                    errors.username?.type === 'required' ?
+                        <AssistiveTextError data-test-id="hint">
+                            Поле не может быть пустым
+                        </AssistiveTextError>
+                        :
                     isTotalErrorRedUsername ?
                         <AssistiveTextBoxStepOne isTotalErrorRedUsername={isTotalErrorRedUsername}>
                             <AssistiveTextError data-test-id='hint'>
@@ -169,20 +176,32 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                         setIsTotalErrorRedPassword(true);
                         await trigger('password');
                         const {error: userPasswordError} = getFieldState('password');
-                        if ((!userPasswordError) ) {
+                        if (!userPasswordError) {
                             setIsTotalErrorRedPassword(false);
                         }
                     }}
+
                     onChange={async (event) => {
-                        if (!errors.password) {
+                        setValue('password', event.currentTarget.value, { shouldDirty: true });
+                        await trigger('password');
+                        const {isDirty, error} = getFieldState('password');
+                        if (!error) {
                             setIsTotalErrorRedPassword(false);
                         }
-                        setValue('password', event.currentTarget.value);
-                        await trigger('password');
+                        if (isDirty && !error){
+                            setIsCheckmark(true);
+                        }
+                        if (isDirty && error){
+                            setIsCheckmark(false);
+                        }
                     }}
                     placeholder="Пароль"/>
                 <LabelBox htmlFor="password">Пароль</LabelBox>
-                <img src={checkPassword} alt="" data-test-id='checkmark'/>
+                {
+                    isCheckmark ?
+                        <img src={checkPassword} alt="" data-test-id='checkmark'/> : null
+                }
+
                 <button
                     type="button"
                     onClick={togglePassword}>
@@ -194,6 +213,11 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     }
                 </button>
                 {
+                    errors.password?.type === 'required' ?
+                        <AssistiveTextError data-test-id="hint">
+                            Поле не может быть пустым
+                        </AssistiveTextError>
+                        :
                     isTotalErrorRedPassword ?
                         <AssistiveTextBoxStepOne isTotalErrorRedPassword={isTotalErrorRedPassword}>
                             <AssistiveTextError data-test-id='hint'>

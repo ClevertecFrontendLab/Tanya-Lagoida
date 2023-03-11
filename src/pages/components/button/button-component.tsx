@@ -7,10 +7,11 @@ export type TButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     width?: string
     height?: string
     error?: any
+    dataTestId?: string
 }
-export const ButtonComponent: React.FC<TButtonProps > = ({ error, status, height = '40px', width = '150px', children, ...restProps}) => (
+export const ButtonComponent: React.FC<TButtonProps > = ({ dataTestId, error, status, height = '40px', width = '150px', children, ...restProps}) => (
 
-        <Button width={width} height={height}
+        <Button data-test-id={dataTestId} width={width} height={height}
             type='button'
                 error={error}
             status={status} {...restProps}

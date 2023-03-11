@@ -59,6 +59,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
     const [passwordTypeTwo, setPasswordTypeTwo] = useState('password');
     const isAuth = useAppSelector((state) => state.userSlice.isAuth);
     const [isTotalErrorRedPassword, setIsTotalErrorRedPassword] = useState<boolean | undefined>(false);
+    const [isCheckmark, setIsCheckmark] = useState<boolean>(false);
     const password = useRef({});
     password.current = watch('password', '');
 
@@ -97,7 +98,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
     }
 
     return (
-        <AllForm data-test-id='auth'>
+        <AllForm data-test-id="auth">
             <HeaderLogin>
                 <LabelText
                     variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>
@@ -137,59 +138,76 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                                 }
                             }}
                             onChange={async (event) => {
-                                if (!errors.password) {
+                                setValue('password', event.currentTarget.value, {shouldDirty: true});
+                                await trigger('password');
+                                const {isDirty, error} = getFieldState('password');
+                                if (!error) {
                                     setIsTotalErrorRedPassword(false);
                                 }
-                                setValue('password', event.currentTarget.value);
-                                await trigger('password');
+                                if (isDirty && !error) {
+                                    setIsCheckmark(true);
+                                }
+                                if (isDirty && error) {
+                                    setIsCheckmark(false);
+                                }
                             }}
                             placeholder="Пароль"/>
                         <LabelBox htmlFor="password">Новый пароль</LabelBox>
-                        <img src={checkPassword} alt="" data-test-id="checkmark"/>
+
+                        {
+                            isCheckmark ?
+                                <img src={checkPassword} alt="" data-test-id="checkmark"/> : null
+                        }
                         <button
                             type="button"
                             onClick={togglePassword}>
                             {
                                 passwordType === 'password' ?
-                                    <EyeClosed data-test-id="eye-closed"/>
+                                    <EyeClosed/>
                                     :
-                                    <Eye data-test-id="eye-opened"/>
+                                    <Eye/>
                             }
                         </button>
                         {
-                            isTotalErrorRedPassword ?
-                                <AssistiveTextBoxStepOne
-                                    isTotalErrorRedPassword={isTotalErrorRedPassword}>
-                                    <AssistiveTextError data-test-id="hint">
-                                        Пароль не менее 8 символов, с заглавной буквой и цифрой
-                                    </AssistiveTextError>
-                                </AssistiveTextBoxStepOne>
+                            errors.password?.type === 'required' ?
+                                <AssistiveTextError data-test-id="hint">
+                                    Поле не может быть пустым
+                                </AssistiveTextError>
                                 :
-                                <AssistiveTextBoxStepOne>
-                                    <AssistiveText data-test-id="hint">
-                                        Пароль {
-                                        errors?.password?.types?.checkLength ? <AssistiveTextError>
-                                                не менее 8 символов
-                                            </AssistiveTextError>
-                                            : <AssistiveText>
-                                                не менее 8 символов
+                                isTotalErrorRedPassword ?
+                                    <AssistiveTextBoxStepOne
+                                        isTotalErrorRedPassword={isTotalErrorRedPassword}>
+                                        <AssistiveTextError data-test-id="hint">
+                                            Пароль не менее 8 символов, с заглавной буквой и цифрой
+                                        </AssistiveTextError>
+                                    </AssistiveTextBoxStepOne>
+                                    :
+                                    <AssistiveTextBoxStepOne>
+                                        <AssistiveText data-test-id="hint">
+                                            Пароль {
+                                            errors?.password?.types?.checkLength ?
+                                                <AssistiveTextError>
+                                                    не менее 8 символов
+                                                </AssistiveTextError>
+                                                : <AssistiveText>
+                                                    не менее 8 символов
+                                                </AssistiveText>
+                                        }
+                                            , с {errors?.password?.types?.matchLetterPattern ?
+                                            <AssistiveTextError>
+                                                заглавной буквой
+                                            </AssistiveTextError> : <AssistiveText>
+                                                заглавной буквой
                                             </AssistiveText>
-                                    }
-                                        , с {errors?.password?.types?.matchLetterPattern ?
-                                        <AssistiveTextError>
-                                            заглавной буквой
-                                        </AssistiveTextError> : <AssistiveText>
-                                            заглавной буквой
+                                        } и {errors?.password?.types?.matchNumberPattern ?
+                                            <AssistiveTextError>
+                                                цифрой
+                                            </AssistiveTextError> : <AssistiveText>
+                                                цифрой
+                                            </AssistiveText>
+                                        }
                                         </AssistiveText>
-                                    } и {errors?.password?.types?.matchNumberPattern ?
-                                        <AssistiveTextError>
-                                            цифрой
-                                        </AssistiveTextError> : <AssistiveText>
-                                            цифрой
-                                        </AssistiveText>
-                                    }
-                                    </AssistiveText>
-                                </AssistiveTextBoxStepOne>
+                                    </AssistiveTextBoxStepOne>
                         }
                     </TextFields>
                     <TextFields>
@@ -229,6 +247,11 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                         </button>
                         <AssistiveTextBox>
                             {
+                                errors.passwordConfirmation?.type === 'required' ?
+                                    <AssistiveTextError data-test-id="hint">
+                                        Поле не может быть пустым
+                                    </AssistiveTextError>
+                                    :
                                 errors.passwordConfirmation
                                     ?
                                     <AssistiveTextError data-test-id="hint">

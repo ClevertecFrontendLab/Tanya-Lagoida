@@ -46,6 +46,7 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
         register,
         control,
         handleSubmit,
+        clearErrors,
         getValues,
         formState: {isDirty, isValid, errors}
     } = useForm<{ phone: string, email: string }>({
@@ -58,14 +59,14 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
         if (error && error.status === 400) {
             setIsUnSuccessMessageSameLogin(true);
         } else setIsUnSuccessMessage(true);
-    }
+    };
 
     const onSubmit: SubmitHandler<{ phone: string, email: string }> = async (data) => {
-        const phone = getValues("phone");
-        const email = getValues("email");
+        const phone = getValues('phone');
+        const email = getValues('email');
         console.log(phone);
         console.log(email);
-        setState({...state, phone, email})
+        setState({...state, phone, email});
 
         const requestData = {...state, ...data};
         try {
@@ -74,12 +75,9 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
 
         } catch (error) {
             console.log(error);
-            setMessage()
+            setMessage();
         }
     };
-
-
-
 
 
     console.log(errors);
@@ -92,7 +90,7 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
 
     return (
         <FormContainer
-            onSubmit={handleSubmit(onSubmit)} data-test-id='register-form'>
+            onSubmit={handleSubmit(onSubmit)} data-test-id="register-form">
             <TitleForm>
                 <LabelText
                     variantText="large24">Регистрация
@@ -114,6 +112,11 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
                             id="phone"
                             errorborder={errors.phone}
                             aria-invalid={errors.phone ? 'true' : 'false'}
+                            onClick={() => {
+                                if (errors.phone) {
+                                    clearErrors('phone');
+                                }
+                            }}
 
                             // onChange={onChange}
                             // onBlur={onBlur}
@@ -149,19 +152,29 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
                 <LabelBox htmlFor="phone"> Номер телефона</LabelBox>
                 <AssistiveTextBoxStepOne>
                     {
-                        errors.phone ?
-                            <AssistiveTextError data-test-id='hint'>
-                                В формате +375 (xx) xxx-xx-xx
+                        errors.phone?.type === 'required' ?
+                            <AssistiveTextError data-test-id="hint">
+                                Поле не может быть пустым
                             </AssistiveTextError>
                             :
-                            <AssistiveText data-test-id='hint'>
-                                В формате +375 (xx) xxx-xx-xx
-                            </AssistiveText>
+                            errors.phone ?
+                                <AssistiveTextError data-test-id="hint">
+                                    В формате +375 (xx) xxx-xx-xx
+                                </AssistiveTextError>
+                                :
+                                <AssistiveText data-test-id="hint">
+                                    В формате +375 (xx) xxx-xx-xx
+                                </AssistiveText>
                     }
                 </AssistiveTextBoxStepOne>
             </TextFields>
             <TextFields>
                 <InputStyles
+                    onClick={() => {
+                        if (errors.email) {
+                            clearErrors('email');
+                        }
+                    }}
                     errorBorder={errors.email}
                     id="email"
                     aria-invalid={errors.email ? 'true' : 'false'}
@@ -174,10 +187,16 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
 
                 <AssistiveTextBoxStepOne>
                     {
-                        errors.email ? <AssistiveTextError data-test-id='hint'>Введите корректный e-mail
-                            </AssistiveTextError> :
-                            <AssistiveText data-test-id='hint'>Введите корректный e-mail
-                            </AssistiveText>
+                        errors.email?.type === 'required' ?
+                            <AssistiveTextError data-test-id="hint">
+                                Поле не может быть пустым
+                            </AssistiveTextError>
+                            :
+                            errors.email ?
+                                <AssistiveTextError data-test-id="hint">Введите корректный e-mail
+                                </AssistiveTextError> :
+                                <AssistiveText data-test-id="hint">Введите корректный e-mail
+                                </AssistiveText>
                     }
 
                 </AssistiveTextBoxStepOne>

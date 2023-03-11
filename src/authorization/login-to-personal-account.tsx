@@ -4,7 +4,7 @@ import {Loader} from '../loader/loader';
 import {FormAuthorizationComponent} from './form-authorization-component';
 
 export const LoginToPersonalAccount = () => {
-    const [authorization, {isLoading, isError, error}] = useAuthorizationMutation();
+    const [authorization, {isLoading, error}] = useAuthorizationMutation();
 
 
     // if (isLoading) {
