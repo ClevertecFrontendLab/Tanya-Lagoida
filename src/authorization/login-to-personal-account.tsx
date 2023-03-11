@@ -7,14 +7,17 @@ export const LoginToPersonalAccount = () => {
     const [authorization, {isLoading, isError, error}] = useAuthorizationMutation();
 
 
-    if (isLoading) {
-        return <>
-             <Loader />
-            <FormAuthorizationComponent data-test-id='auth' authorization={authorization} error={error}/>
-        </>
-    }
+    // if (isLoading) {
+    //     return <>
+    //          <Loader />
+    //         <FormAuthorizationComponent  authorization={authorization} error={error}/>
+    //     </>
+    // }
 
     return (
-        <FormAuthorizationComponent data-test-id='auth' authorization={authorization} error={error}/>
+        <>
+            {isLoading ? <Loader /> : null}
+            <FormAuthorizationComponent authorization={authorization} error={error}/>
+        </>
     );
 };

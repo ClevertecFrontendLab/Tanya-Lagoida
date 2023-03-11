@@ -82,12 +82,12 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
     }
 
     return (
-        <AllForm>
+        <AllForm data-test-id='auth'>
             <HeaderLogin>
                 <LabelText
                     variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>
             </HeaderLogin>
-            <FormAllContainerPasswordReset data-test-id='send-email-form'>
+            <FormAllContainerPasswordReset data-test-id='send-email-form'  onSubmit={handleSubmit(onSubmit)}>
                 <NavLink to="/auth">
                     <LoginToPersonalAccount>
                         <Arrow stroke={EColors.GreyBorder}/>
@@ -98,8 +98,7 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                 <FormBox>
                     <LabelText
                         variantText="large24">Восстановление пароля</LabelText>
-                    <FormContainerReset
-                        onSubmit={handleSubmit(onSubmit)}>
+                    <FormContainerReset>
                         <TextFields>
                             <InputStyles
                                 id="email"

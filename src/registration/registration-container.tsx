@@ -13,12 +13,22 @@ export const RegistrationContainer = () => {
     const [isSuccessMessage, setIsSuccessMessage] = useState<boolean>(false);
     const [isUnSuccessMessage, setIsUnSuccessMessage] = useState<boolean>(false);
     const [isUnSuccessMessageSameLogin, setIsUnSuccessMessageSameLogin] = useState<boolean>(false);
+    const [state, setState] = useState<
+        { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null }>
+    ({email: null, username: null, password: null, firstName: null, lastName: null, phone: null});
 
     if (isUnSuccessMessageSameLogin) {
         return <RegistrationUnsuccessfulMessageSameLogin/>;
     }
     if (isUnSuccessMessage) {
-        return <RegistrationUnsuccessfulMessage/>;
+        return <RegistrationUnsuccessfulMessage
+            error={error}
+            registration={registration}
+            setIsSuccessMessage={setIsSuccessMessage}
+            setIsUnSuccessMessage={setIsUnSuccessMessage}
+            setIsUnSuccessMessageSameLogin={setIsUnSuccessMessageSameLogin}
+            state={state}
+        />;
     }
     if (isSuccessMessage) {
         return <RegistrationSuccessfulMessage/>;
@@ -32,6 +42,8 @@ export const RegistrationContainer = () => {
 
     return (
         <RegistrationForm
+            setState={setState}
+            state={state}
             setIsSuccessMessage={setIsSuccessMessage}
             setIsUnSuccessMessage={setIsUnSuccessMessage}
             setIsUnSuccessMessageSameLogin={setIsUnSuccessMessageSameLogin}

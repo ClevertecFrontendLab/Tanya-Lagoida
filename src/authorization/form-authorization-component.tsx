@@ -16,7 +16,7 @@ import {
     BottomFrame,
     ButtonAndBottomFrame,
     FormAllContainer,
-    FormContainer,
+    FormContainer, FormContainerAuth,
     HeaderLogin,
     InputStyles,
     LabelBox,
@@ -40,7 +40,7 @@ import {Eye} from '../pages/images/eye';
 
 
 type TFormComponentTypes = {
-   'data-test-id'?: string
+    'data-test-id'?: string
     error: any
     // error: FetchBaseQueryError | SerializedError | undefined
     authorization: MutationTrigger<MutationDefinition<TAuthorizationRequest, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, { shout?: boolean }, FetchBaseQueryMeta>, never, TAuthorizationResponse, 'userApi'>>
@@ -51,14 +51,22 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
     error
 }) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
-    const {register, handleSubmit, formState: {touchedFields}} = useForm<TAuthorizationRequest>({mode: 'onBlur', reValidateMode: 'onBlur', shouldFocusError: false});
+    const {
+        register,
+        handleSubmit,
+        formState: {touchedFields}
+    } = useForm<TAuthorizationRequest>({
+        mode: 'onBlur',
+        reValidateMode: 'onBlur',
+        shouldFocusError: false
+    });
     const dispatch = useAppDispatch();
     const [passwordType, setPasswordType] = useState('password');
     const navigate = useNavigate();
     const isAuth = useAppSelector((state) => state.userSlice.isAuth);
 
     const togglePassword = (event: any) => {
-        event.preventDefault()
+        event.preventDefault();
         if (passwordType === 'password') {
             setPasswordType('text');
         } else if (passwordType === 'text') {
@@ -72,7 +80,7 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
             localStorage.setItem('token', JSON.stringify(response.jwt));
             localStorage.setItem('user', JSON.stringify(response.user));
             navigate('/');
-            dispatch(userReceived({user:response.user, isAuth: true}));
+            dispatch(userReceived({user: response.user, isAuth: true}));
         } catch (error) {
             console.log(error);
         }
@@ -90,16 +98,15 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
     }
 
     return (
-        <AllForm>
+        <AllForm data-test-id="auth">
             <HeaderLogin>
                 <LabelText
                     variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>
             </HeaderLogin>
-            <FormAllContainer data-test-id='auth-form'>
+            <FormAllContainer data-test-id="auth-form" onSubmit={handleSubmit(onSubmit)}>
                 <LabelText
                     variantText="large24">Вход в личный кабинет</LabelText>
-                <FormContainer
-                    onSubmit={handleSubmit(onSubmit)}>
+                <FormContainerAuth>
                     <TextFields>
                         <InputStyles
                             type="text"
@@ -120,18 +127,17 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                             placeholder="Пароль"/>
                         <LabelBox htmlFor="password">Пароль</LabelBox>
                         <button
-                            type='button'
                             onClick={togglePassword}>
                             {
                                 passwordType === 'password' ?
-                                    <EyeClosed data-test-id='eye-closed'/>
+                                    <EyeClosed data-test-id="eye-closed"/>
                                     :
-                                    <Eye data-test-id='eye-opened'/>
+                                    <Eye data-test-id="eye-opened"/>
                             }
                         </button>
                         <AssistiveTextBox>
                             {error && error.status === 400
-                                ? <AssistiveTextError >
+                                ? <AssistiveTextError>
                                     <LabelText variantText="small500">Неверный логин или
                                         пароль!</LabelText>
                                 </AssistiveTextError>
@@ -147,9 +153,9 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                                 </NavLink>
                                 :
                                 <NavLink to="/forgot-pass">
-                                <AssistiveText>
-                                    Забыли логин или пароль?
-                                </AssistiveText>
+                                    <AssistiveText>
+                                        Забыли логин или пароль?
+                                    </AssistiveText>
                                 </NavLink>
                             }
                         </AssistiveTextBox>
@@ -159,8 +165,10 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                             type="submit"
                             height={isMobileView ? '40px' : '52px'}
                             width={isMobileView ? '255px' : '416px'}
-                            status="inStock"><LabelText
-                            variantText={isMobileView ? 'smallLS' : 'medium16LS'}>вход</LabelText>
+                            status="inStock">
+                            <LabelText
+                                variantText={isMobileView ? 'smallLS' : 'medium16LS'}>вход
+                            </LabelText>
                         </ButtonComponent>
                         <BottomFrame>
                             <LabelText
@@ -174,7 +182,7 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                             </NavLink>
                         </BottomFrame>
                     </ButtonAndBottomFrame>
-                </FormContainer>
+                </FormContainerAuth>
             </FormAllContainer>
         </AllForm>
     );

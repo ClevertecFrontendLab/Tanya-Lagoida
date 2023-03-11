@@ -8,7 +8,7 @@ import {
     LabelBox, Registration,
     TextFields
 } from '../authorization/styles';
-import {ButtonAndBottomFrameRegistration, InputStylesSteps} from './styles';
+import {ButtonAndBottomFrameRegistration, InputStylesSteps, TitleForm} from './styles';
 import {ButtonComponent} from '../pages/components/button/button-component';
 import {LabelText} from '../pages/labels/labels';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
@@ -19,19 +19,19 @@ import {Arrow} from '../pages/images/arrow';
 
 type TFormComponentTypes = {
     setStepRegistration: (prevState: (prevState: number) => number) => void
+    stepRegistration: number
     setState: any
-    state:   {email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null}
+    state:   {email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null} | undefined
 }
 
 export const StepTwo: React.FC<TFormComponentTypes> = ({
-    setStepRegistration, state, setState
+    setStepRegistration, state, setState, stepRegistration
 }) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
 
     const {
         register,
         clearErrors,
-        getValues,
         handleSubmit,
         formState: { isDirty, errors }
     } = useForm<{firstName: string, lastName: string}>({mode: 'onBlur', shouldFocusError: false});
@@ -40,9 +40,7 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
         setStepRegistration((prevState) => prevState + 1);
     };
 
-    const onSubmitTwo = (): void => {
-        const firstName = getValues("firstName");
-        const lastName = getValues("lastName");
+    const onSubmitTwo = ({firstName, lastName}: {firstName: string, lastName: string}): void => {
         console.log(firstName);
         console.log(lastName);
         setState({...state, firstName, lastName})
@@ -53,8 +51,15 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
 
     return (
         <FormContainer
-            onSubmit={handleSubmit(onSubmitTwo)}>
-
+            onSubmit={handleSubmit(onSubmitTwo)} data-test-id='register-form'>
+            <TitleForm>
+                <LabelText
+                    variantText="large24">Регистрация
+                </LabelText>
+                <LabelText
+                    variantText="medium14Bold">{stepRegistration} шаг из 3
+                </LabelText>
+            </TitleForm>
             <TextFields>
                 <InputStylesSteps
                     onClick={() => {

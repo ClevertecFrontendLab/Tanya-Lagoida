@@ -9,7 +9,7 @@ import {
     LabelBox, Registration,
     TextFields
 } from '../authorization/styles';
-import {ButtonAndBottomFrameRegistration, MaskedInputStyles} from './styles';
+import {ButtonAndBottomFrameRegistration, MaskedInputStyles, TitleForm} from './styles';
 import {ButtonComponent} from '../pages/components/button/button-component';
 import {LabelText} from '../pages/labels/labels';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
@@ -25,16 +25,20 @@ type TFormComponentTypes = {
     setIsSuccessMessage: any
     setIsUnSuccessMessage: any
     setIsUnSuccessMessageSameLogin: any
-    state: { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null }
+    setState: any
+    stepRegistration: number
+    state: { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null } | undefined
 }
 
 export const StepThree: React.FC<TFormComponentTypes> = ({
+    stepRegistration,
     isError, error,
     registration,
     state,
     setIsSuccessMessage,
     setIsUnSuccessMessage,
     setIsUnSuccessMessageSameLogin,
+    setState
 }) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
 
@@ -42,6 +46,7 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
         register,
         control,
         handleSubmit,
+        getValues,
         formState: {isDirty, isValid, errors}
     } = useForm<{ phone: string, email: string }>({
         mode: 'onBlur',
@@ -49,7 +54,18 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
         criteriaMode: 'all'
     });
 
+    const setMessage = () => {
+        if (error && error.status === 400) {
+            setIsUnSuccessMessageSameLogin(true);
+        } else setIsUnSuccessMessage(true);
+    }
+
     const onSubmit: SubmitHandler<{ phone: string, email: string }> = async (data) => {
+        const phone = getValues("phone");
+        const email = getValues("email");
+        console.log(phone);
+        console.log(email);
+        setState({...state, phone, email})
 
         const requestData = {...state, ...data};
         try {
@@ -58,12 +74,11 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
 
         } catch (error) {
             console.log(error);
-            setIsUnSuccessMessageSameLogin(true);
-            // if (error && error.status === 400) {
-            //     setIsUnSuccessMessageSameLogin(true);
-            // } else setIsUnSuccessMessage(true);
+            setMessage()
         }
     };
+
+
 
 
 
@@ -77,10 +92,16 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
 
     return (
         <FormContainer
-            onSubmit={handleSubmit(onSubmit)}>
-
+            onSubmit={handleSubmit(onSubmit)} data-test-id='register-form'>
+            <TitleForm>
+                <LabelText
+                    variantText="large24">Регистрация
+                </LabelText>
+                <LabelText
+                    variantText="medium14Bold">{stepRegistration} шаг из 3
+                </LabelText>
+            </TitleForm>
             <TextFields>
-
                 <Controller
                     name="phone"
                     control={control}

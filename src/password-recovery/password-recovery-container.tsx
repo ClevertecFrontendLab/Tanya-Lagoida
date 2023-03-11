@@ -11,7 +11,7 @@ type TPropsType = {
 }
 
 export const PasswordRecoveryContainer: React.FC<TPropsType> = ({code}) => {
-    const [passwordRecovery, {isLoading, isError, error, data}] = usePasswordRecoveryMutation();
+    const [passwordRecovery, {isLoading, error, data}] = usePasswordRecoveryMutation();
     const [isSuccessMessage, setIsSuccessMessage] = useState<boolean>(false);
     const [isUnSuccessMessage, setIsUnSuccessMessage] = useState<boolean>(false);
 
@@ -35,9 +35,7 @@ export const PasswordRecoveryContainer: React.FC<TPropsType> = ({code}) => {
             passwordRecovery={passwordRecovery}
             data={data}
             setIsUnSuccessMessage={setIsUnSuccessMessage}
-            isUnSuccessMessage={isUnSuccessMessage}
             setIsSuccessMessage={setIsSuccessMessage}
-            isSuccessMessage={isSuccessMessage}
         />
     );
 };

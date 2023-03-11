@@ -15,11 +15,28 @@ export const RegistrationContainer = styled.div`
         gap: 8px;
     }
 `;
-export const FormRegistrationAllContainer = styled(FormAllContainer)`
-    height: 492px;
+export const FormRegistrationAllContainer = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -264px;
+    width: 528px;
+    --height: -492px;
+    background: ${EColors.White};
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 48px 56px;
+    gap: 32px;
+    margin-top: calc(var(--height) / 2);
     @media screen and ${device.mobileS} {
-        height: 464px;
+        margin-left: -144px;
+        width: 288px;
+        --height: -464px;
+        padding: 24px 16px;
     }
+
 `;
 export const TitleForm = styled.div`
     display: flex;

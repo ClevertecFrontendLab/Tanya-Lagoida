@@ -22,8 +22,6 @@ export const FormAllContainer = styled.form`
         width: 288px;
         --height: -456px;
         padding: 24px 16px;
-        //top: 56px;
-        //margin-top: 0;
     }
 `;
 export const AllForm = styled.div`
@@ -96,14 +94,6 @@ export const TextFields = styled.div<{ errorForStyle?: any }>`
     button {
         display: none;
     }
-    //  input:not(:focus) ~ div span {
-    //     color: ${EColors.RedError};
-    //     //color: ${(props) => props.errorForStyle && `${EColors.RedError}`};
-    // }
-    // input:not(:focus) {
-    //     border-bottom: 1px solid ${EColors.RedError};
-    //     //border-bottom: ${(props) => props.errorForStyle && `1px solid ${EColors.RedError}`};
-    // }
 `;
 export const AssistiveTextBox = styled.div`
     display: flex;
@@ -115,8 +105,8 @@ export const AssistiveTextBox = styled.div`
         width: 240px;
     }
 `;
-export const AssistiveTextBoxStepOne = styled(AssistiveTextBox)<{ isTotalErrorRed?: boolean }>`
-    color: ${(props) => props.isTotalErrorRed ? `${EColors.RedError}` : `${EColors.GreyBorder}`};
+export const AssistiveTextBoxStepOne = styled(AssistiveTextBox)<{ isTotalErrorRedUsername?: boolean | undefined, isTotalErrorRedPassword?: boolean | undefined}>`
+    color: ${(props) => props.isTotalErrorRedUsername || props.isTotalErrorRedPassword ? `${EColors.RedError}` : `${EColors.GreyBorder}`};
 
     @media screen and ${device.mobileS} {
         height: 32px;
@@ -169,6 +159,11 @@ export const LabelBox = styled.label`
 `;
 
 export const FormContainer = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+`;
+export const FormContainerAuth = styled.div`
     display: flex;
     flex-direction: column;
     gap: 16px;
