@@ -2,13 +2,21 @@ import React, {useState} from 'react';
 
 import {Navigate, NavLink, useSearchParams} from 'react-router-dom';
 import {SubmitHandler, useForm} from 'react-hook-form';
-
+import {
+    BaseQueryFn,
+    FetchArgs,
+    FetchBaseQueryError, FetchBaseQueryMeta,
+    MutationDefinition
+} from '@reduxjs/toolkit/query';
+import {SerializedError} from '@reduxjs/toolkit';
+import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
 import {ButtonComponent} from '../pages/components/button/button-component';
 import {LabelText} from '../pages/labels/labels';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {device} from '../pages/main/styles';
-
-import {TPasswordResetRequest} from '../services/login-service-types';
+import {
+    TPasswordResetRequest, TPasswordResetResponse,
+} from '../services/login-service-types';
 import {
     AllForm,
     AssistiveText, AssistiveTextBox, AssistiveTextError,
@@ -27,21 +35,20 @@ import {
 } from './styles';
 import {Arrow} from '../pages/images/arrow';
 import {EColors} from '../pages/themes/themes';
-import {MessageContainer} from '../authorization/message-container';
 import {useAppSelector} from '../store/store';
 import {PasswordRecoveryContainer} from './password-recovery-container';
 
 type TFormComponentTypes = {
-    error?: any
-    passwordReset?: any
-    data?: any
+    error?: FetchBaseQueryError | SerializedError | undefined
+    passwordReset: MutationTrigger<MutationDefinition<TPasswordResetRequest, BaseQueryFn<string | FetchArgs, unknown,
+        FetchBaseQueryError, { shout?: boolean }, FetchBaseQueryMeta>, never, TPasswordResetResponse, 'userApi'>>
+    setIsSuccessMessage?: (value: boolean) => void
 }
 
 export const PasswordReset: React.FC<TFormComponentTypes> = ({
     error,
     passwordReset,
-
-    data
+    setIsSuccessMessage
 }) => {
 
     const [searchParams] = useSearchParams();
@@ -63,19 +70,18 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
     const onSubmit: SubmitHandler<TPasswordResetRequest> = async (data) => {
         try {
             await passwordReset(data).unwrap();
+            if (setIsSuccessMessage) {
+                setIsSuccessMessage(true);
+            }
         } catch (error) {
             console.log(error);
+
         }
     };
 
     if (isAuth) {
         return <Navigate to="/"/>;
     }
-
-    if (data) {
-        return <MessageContainer />
-    }
-
     if (code) {
         return <PasswordRecoveryContainer code={code}/>;
     }
@@ -101,6 +107,7 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                     <FormContainerReset>
                         <TextFields>
                             <InputStyles
+                                errorBorder={errors.email}
                                 id="email"
                                 aria-invalid={errors.email ? 'true' : 'false'}
                                 onClick={() => {
@@ -120,8 +127,8 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                                     if (!error) {
                                         setIsFieldEmptyError(false);
                                     }
-                                    if(isDirty) {
-                                        setIsFieldEmptyError(false );
+                                    if (isDirty) {
+                                        setIsFieldEmptyError(false);
                                     }
                                 }}
                                 placeholder="Email"/>
@@ -131,20 +138,21 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                                 {
                                     isFieldEmptyError ?
                                         <AssistiveTextError>
-                                            <LabelText variantText="small500" data-test-id="hint">Поле не может быть пустым
+                                            <LabelText variantText="small500" data-test-id="hint">Поле
+                                                не может быть пустым
                                             </LabelText>
                                         </AssistiveTextError>
                                         :
                                         errors.email?.type === 'pattern' ?
-                                    <AssistiveTextError data-test-id="hint">
-                                        Введите корректный e-mail
-                                    </AssistiveTextError>
-                                    :
-                                        error ?
                                             <AssistiveTextError data-test-id="hint">
-                                                error
+                                                Введите корректный e-mail
                                             </AssistiveTextError>
-                                            : null
+                                            :
+                                            error ?
+                                                <AssistiveTextError data-test-id="hint">
+                                                    error
+                                                </AssistiveTextError>
+                                                : null
                                 }
                             </AssistiveTextBox>
                             <AssistiveTextBoxReset>
@@ -155,13 +163,26 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                             </AssistiveTextBoxReset>
                         </TextFields>
                         <ButtonAndBottomFrameReset>
-                            <ButtonComponent
-                                type="submit"
-                                height={isMobileView ? '40px' : '52px'}
-                                width={isMobileView ? '255px' : '416px'}
-                                status="inStock"><LabelText
-                                variantText={isMobileView ? 'smallLS' : 'medium16LS'}>восстановить</LabelText>
-                            </ButtonComponent>
+                            {
+                                errors.email ?
+                                    <ButtonComponent
+                                        disabled={true}
+                                        error={errors.email}
+                                        type="submit"
+                                        height={isMobileView ? '40px' : '52px'}
+                                        width={isMobileView ? '255px' : '416px'}
+                                        status="inStock"><LabelText
+                                        variantText={isMobileView ? 'smallLS' : 'medium16LS'}>восстановить</LabelText>
+                                    </ButtonComponent>
+                                    :
+                                    <ButtonComponent
+                                        type="submit"
+                                        height={isMobileView ? '40px' : '52px'}
+                                        width={isMobileView ? '255px' : '416px'}
+                                        status="inStock"><LabelText
+                                        variantText={isMobileView ? 'smallLS' : 'medium16LS'}>восстановить</LabelText>
+                                    </ButtonComponent>
+                            }
                             <BottomFrame>
                                 <LabelText
                                     variantText="medium16LH24">Нет

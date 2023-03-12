@@ -2,13 +2,23 @@ import React, {useRef, useState} from 'react';
 
 import {Navigate, useSearchParams} from 'react-router-dom';
 import {SubmitHandler, useForm} from 'react-hook-form';
-
+import {
+    BaseQueryFn,
+    FetchArgs,
+    FetchBaseQueryError, FetchBaseQueryMeta,
+    MutationDefinition
+} from '@reduxjs/toolkit/query';
+import {SerializedError} from '@reduxjs/toolkit';
+import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
 import {ButtonComponent} from '../pages/components/button/button-component';
 import {LabelText} from '../pages/labels/labels';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {device} from '../pages/main/styles';
 
-import {TPasswordRecoveryRequest} from '../services/login-service-types';
+import {
+    TAuthorizationResponse,
+    TPasswordRecoveryRequest
+} from '../services/login-service-types';
 import {
     AllForm,
     AssistiveText, AssistiveTextBox, AssistiveTextBoxStepOne, AssistiveTextError,
@@ -26,12 +36,14 @@ import {Eye} from '../pages/images/eye';
 import {useAppSelector} from '../store/store';
 import checkPassword from '../pages/images/Icon_Other.svg';
 
+
+
 type TFormComponentTypes = {
-    error?: any
-    passwordRecovery?: any
-    data?: any
-    setIsUnSuccessMessage?: any
-    setIsSuccessMessage?: any
+    error?: FetchBaseQueryError | SerializedError | undefined
+    passwordRecovery: MutationTrigger<MutationDefinition<TPasswordRecoveryRequest, BaseQueryFn<string | FetchArgs, unknown,
+        FetchBaseQueryError, { shout?: boolean }, FetchBaseQueryMeta>, never, TAuthorizationResponse, 'userApi'>>
+    setIsUnSuccessMessage?: (value: boolean) => void
+    setIsSuccessMessage?: (value: boolean) => void
 }
 
 export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
@@ -85,14 +97,18 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
     const code = searchParams.get('code');
 
     const onSubmit: SubmitHandler<TPasswordRecoveryRequest> = async (data) => {
-
         const request = {...data, code};
+
         try {
             await passwordRecovery(request).unwrap();
-            setIsSuccessMessage(true);
+            if (setIsSuccessMessage) {
+                setIsSuccessMessage(true);
+            }
 
         } catch (error) {
-            setIsUnSuccessMessage(true);
+            if (setIsUnSuccessMessage) {
+                setIsUnSuccessMessage(true);
+            }
             console.log(error);
         }
     };
@@ -112,10 +128,10 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                 <LabelText
                     variantText="large24">Восстановление пароля</LabelText>
                 <FormContainerAuth>
-                    <TextFields errorForStyle={errors.password}>
+                    <TextFields>
                         <InputStyles
                             errorBorder={errors.password}
-                            error={errors}
+                            error={errors.password}
                             type={passwordType}
                             id="password"
                             aria-invalid={errors.password ? 'true' : 'false'}
@@ -152,9 +168,6 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                                 if (isDirty) {
                                     setIsFieldEmptyError(false);
                                 }
-                                // if (!isDirty) {
-                                //     setIsButtonEyeVisibleOne(false);
-                                // }
                                 if (!getValues('password')) {
                                     setIsButtonEyeVisibleOne(false);
                                 }
@@ -305,22 +318,29 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                             errors.passwordConfirmation ?
                                 <ButtonComponent
                                     disabled={true}
-                                    error={errors}
+                                    error={errors.passwordConfirmation}
                                     type="submit"
                                     height={isMobileView ? '40px' : '52px'}
                                     width={isMobileView ? '255px' : '416px'}
-                                    status="inStock"><LabelText
-                                    variantText={isMobileView ? 'smallLS' : 'medium16LS'}>сохранить
-                                    изменения</LabelText>
+                                    status="inStock"
+                                >
+                                    <LabelText
+                                        variantText={isMobileView ? 'smallLS' : 'medium16LS'}
+                                    >
+                                        сохранить изменения
+                                    </LabelText>
                                 </ButtonComponent>
                                 :
                                 <ButtonComponent
                                     type="submit"
                                     height={isMobileView ? '40px' : '52px'}
                                     width={isMobileView ? '255px' : '416px'}
-                                    status="inStock"><LabelText
-                                    variantText={isMobileView ? 'smallLS' : 'medium16LS'}>сохранить
-                                    изменения</LabelText>
+                                    status="inStock"
+                                >
+                                    <LabelText variantText={isMobileView ? 'smallLS' : 'medium16LS'}
+                                    >
+                                        сохранить изменения
+                                    </LabelText>
                                 </ButtonComponent>
                         }
                         <BottomFrame>

@@ -9,6 +9,7 @@ import {
 } from '@reduxjs/toolkit/query';
 import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
 import {Navigate, NavLink, useNavigate} from 'react-router-dom';
+import {SerializedError} from '@reduxjs/toolkit';
 import {
     AllForm,
     AssistiveText,
@@ -25,10 +26,8 @@ import {
 } from './styles';
 import {LabelText} from '../pages/labels/labels';
 import {ButtonComponent} from '../pages/components/button/button-component';
-
 import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {device} from '../pages/main/styles';
-
 import {TAuthorizationRequest, TAuthorizationResponse} from '../services/login-service-types';
 import {userReceived} from '../store/auth-slice';
 import {useAppDispatch, useAppSelector} from '../store/store';
@@ -37,13 +36,13 @@ import {Arrow} from '../pages/images/arrow';
 import {ErrorsContainer} from './errors-container';
 import {EyeClosed} from '../pages/images/eye-closed';
 import {Eye} from '../pages/images/eye';
-
+import {IsError400} from '../func/isError400';
 
 type TFormComponentTypes = {
     'data-test-id'?: string
-    error: any
-    // error: FetchBaseQueryError | SerializedError | undefined
-    authorization: MutationTrigger<MutationDefinition<TAuthorizationRequest, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, { shout?: boolean }, FetchBaseQueryMeta>, never, TAuthorizationResponse, 'userApi'>>
+    error: FetchBaseQueryError | SerializedError | undefined
+    authorization: MutationTrigger<MutationDefinition<TAuthorizationRequest, BaseQueryFn<string | FetchArgs, unknown,
+        FetchBaseQueryError, { shout?: boolean }, FetchBaseQueryMeta>, never, TAuthorizationResponse, 'userApi'>>
 }
 
 export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
@@ -70,8 +69,7 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
     const isAuth = useAppSelector((state) => state.userSlice.isAuth);
     const [isButtonEyeVisible, setIsButtonEyeVisible] = useState<boolean>(false);
 
-    const togglePassword = (event: any) => {
-        event.preventDefault();
+    const togglePassword = () => {
         if (passwordType === 'password') {
             setPasswordType('text');
         } else if (passwordType === 'text') {
@@ -90,9 +88,8 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
             console.log(error);
         }
     };
-
-    if (error && error.status !== 400) {
-        return <ErrorsContainer/>
+    if (error) {
+        if (!IsError400(error)) return <ErrorsContainer/>;
     }
 
     if (isAuth) {
@@ -120,7 +117,7 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                                     clearErrors('identifier');
                                 }
                             }}
-                            error={error}
+                            error={errors.identifier}
                             placeholder="Логин"/>
                         <LabelBox htmlFor="identifier">Логин</LabelBox>
                         <AssistiveTextBox>
@@ -153,25 +150,25 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                                     setIsButtonEyeVisible(false);
                                 }
                             }}
-                            error={error}
+                            error={errors.password}
                             placeholder="Пароль"/>
                         <LabelBox htmlFor="password">Пароль</LabelBox>
                         {
                             isButtonEyeVisible &&
-                                <button
-                                    type="button"
-                                    onClick={togglePassword}>
-                                    {
-                                        passwordType === 'password' ?
-                                            <EyeClosed/>
-                                            :
-                                            <Eye/>
-                                    }
-                                </button>
+                            <button
+                                type="button"
+                                onClick={togglePassword}>
+                                {
+                                    passwordType === 'password' ?
+                                        <EyeClosed/>
+                                        :
+                                        <Eye/>
+                                }
+                            </button>
                         }
 
                         <AssistiveTextBox>
-                            {error && error.status === 400
+                            {error && IsError400(error)
                                 ? <AssistiveTextError>
                                     <LabelText variantText="small500" data-test-id="hint">Неверный
                                         логин или
@@ -188,7 +185,7 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                             }
                         </AssistiveTextBox>
                         <AssistiveTextBox>
-                            {error && error.status === 400
+                            {error && IsError400(error)
                                 ? <NavLink to="/forgot-pass">
                                     <AssistiveTextAllError>
                                         <LabelText variantText="small500">Восстановить?</LabelText>
@@ -204,14 +201,27 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                         </AssistiveTextBox>
                     </TextFields>
                     <ButtonAndBottomFrame>
-                        <ButtonComponent
+                        {
+                            errors.password || errors.identifier ?
+                                <ButtonComponent
+                                    disabled={true}
+                                    error={errors}
+                                    type="submit"
+                                    height={isMobileView ? '40px' : '52px'}
+                                    width={isMobileView ? '255px' : '416px'}
+                                    status="default">
+                                    вход
+                                </ButtonComponent>
+                                :
+                                <ButtonComponent
+                                    type="submit"
+                                    height={isMobileView ? '40px' : '52px'}
+                                    width={isMobileView ? '255px' : '416px'}
+                                    status="default">
+                                    вход
+                                </ButtonComponent>
+                        }
 
-                            type="submit"
-                            height={isMobileView ? '40px' : '52px'}
-                            width={isMobileView ? '255px' : '416px'}
-                            status="default">
-                            вход
-                        </ButtonComponent>
                         <BottomFrame>
                             <LabelText
                                 variantText={isMobileView ? 'medium15LH' : 'medium16LH24'}>Нет

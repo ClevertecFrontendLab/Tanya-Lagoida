@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 import InputMask from 'react-input-mask';
+import {FieldError} from 'react-hook-form';
+import {FetchBaseQueryError} from '@reduxjs/toolkit/query';
+import {SerializedError} from '@reduxjs/toolkit';
 import {device} from '../pages/main/styles';
 import {
     ButtonAndBottomFrame,
-    FormAllContainer,
     InputStyles
 } from '../authorization/styles';
 import {EColors} from '../pages/themes/themes';
-
+import {IsError400} from '../func/isError400';
 
 export const RegistrationContainer = styled.div`
     gap: 46px;
@@ -36,7 +38,6 @@ export const FormRegistrationAllContainer = styled.div`
         --height: -464px;
         padding: 24px 16px;
     }
-
 `;
 export const TitleForm = styled.div`
     display: flex;
@@ -49,12 +50,11 @@ export const ButtonAndBottomFrameRegistration = styled(ButtonAndBottomFrame)`
         margin-top: 24px;
     }
 `
-export const InputStylesSteps = styled(InputStyles)<{errors?: any, errorBorder?: any, isTotalErrorRed?: boolean}>`
-    border-bottom: ${(props) => (props.errors && props.errors.status === 400) || props.errorBorder || props.isTotalErrorRed ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
+export const InputStylesSteps = styled(InputStyles)<{errors?: FetchBaseQueryError | SerializedError | undefined, errorBorder?: FieldError, isTotalErrorRed?: boolean}>`
+    border-bottom: ${(props) => (props.errors && IsError400) || props.errorBorder || props.isTotalErrorRed ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
     z-index: -1;
-
 `
-export const MaskedInputStyles = styled(InputMask)<{errorborder?: any}>`
+export const MaskedInputStyles = styled(InputMask)<{errorborder?: FieldError}>`
     padding-top: 12px;
     outline: none;
     cursor: pointer;
@@ -69,5 +69,4 @@ export const MaskedInputStyles = styled(InputMask)<{errorborder?: any}>`
     @media screen and ${device.mobileS} {
         width: 256px;
     }
-
 `

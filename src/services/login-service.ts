@@ -31,7 +31,6 @@ export const userApi = createApi({
         passwordReset: builder.mutation<TPasswordResetResponse, TPasswordResetRequest>({
             query: (body) => ({
                 url: EEndPoints.passwordReset,
-                // query: (code) => `EEndPoints.passwordReset?${code}=`,
                 method: 'POST',
                 body,
             }),
@@ -53,7 +52,3 @@ export const {
     usePasswordResetMutation,
     usePasswordRecoveryMutation
 } = userApi;
-
-// export const useGettingAListOfBookGenresQueryState = bookApi.endpoints.gettingAListOfBookGenres.useQueryState;
-// export const useGettingAListOfBooksQueryState = bookApi.endpoints.gettingAListOfBooks.useQueryState;
-// export const useGettingAListOfBooksByIdQueryState = bookApi.endpoints.gettingABookById.useQueryState;

@@ -16,12 +16,13 @@ import {device} from '../pages/main/styles';
 
 import {EColors} from '../pages/themes/themes';
 import {Arrow} from '../pages/images/arrow';
+import {TUseStateType} from './registration-container';
 
 type TFormComponentTypes = {
     setStepRegistration: (prevState: (prevState: number) => number) => void
     stepRegistration: number
-    setState: any
-    state:   {email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null} | undefined
+    setState?: (value: TUseStateType) => void
+    state: {email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null}
 }
 
 export const StepTwo: React.FC<TFormComponentTypes> = ({
@@ -43,7 +44,9 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
     const onSubmitTwo = ({firstName, lastName}: {firstName: string, lastName: string}): void => {
         console.log(firstName);
         console.log(lastName);
-        setState({...state, firstName, lastName})
+        if (setState) {
+            setState({...state, firstName, lastName});
+        }
         onSubmitIncreaseStep()
     }
 
@@ -68,7 +71,6 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
                         }
                     }}
                     errorBorder={errors.firstName}
-                    errors={errors}
                     type="text"
                     id="firstName"
                     {...register('firstName', {required: true})}
@@ -92,7 +94,6 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
                         }
                     }}
                     errorBorder={errors.lastName}
-                    errors={errors}
                     type="text"
                     id="lastName"
                     {...register('lastName', {required: true})}

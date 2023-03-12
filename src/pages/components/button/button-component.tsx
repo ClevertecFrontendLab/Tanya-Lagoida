@@ -1,12 +1,18 @@
 import React from 'react';
 
+import {FieldError, FieldErrors} from 'react-hook-form';
 import {Button} from './styles';
+import {TAuthorizationRequest} from '../../../services/login-service-types';
 
 export type TButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     status?: 'inStock' | 'delivery' | 'booking' | 'default'
     width?: string
     height?: string
-    error?: any
+    error?: FieldError |
+        FieldErrors<{ username: string; password: string}> |
+        FieldErrors<{phone: string, email: string}> |
+        FieldErrors<{firstName: string, lastName: string}> |
+        FieldErrors<TAuthorizationRequest>
 }
 export const ButtonComponent: React.FC<TButtonProps> = ({
     error,

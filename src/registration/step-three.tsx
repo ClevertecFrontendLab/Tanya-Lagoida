@@ -3,6 +3,14 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {Controller, SubmitHandler, useForm} from 'react-hook-form';
 import {
+    BaseQueryFn,
+    FetchArgs,
+    FetchBaseQueryError, FetchBaseQueryMeta,
+    MutationDefinition
+} from '@reduxjs/toolkit/query';
+import {SerializedError} from '@reduxjs/toolkit';
+import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
+import {
     AssistiveText,
     AssistiveTextBoxStepOne, AssistiveTextError, BottomFrame, FormContainer,
     InputStyles,
@@ -14,20 +22,27 @@ import {ButtonComponent} from '../pages/components/button/button-component';
 import {LabelText} from '../pages/labels/labels';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {device} from '../pages/main/styles';
-
 import {EColors} from '../pages/themes/themes';
 import {Arrow} from '../pages/images/arrow';
+import {TUseStateType} from './registration-container';
+import {IsError400} from '../func/isError400';
+
+import {
+    TAuthorizationResponse,
+    TRegistrationRequest
+} from '../services/login-service-types';
 
 type TFormComponentTypes = {
-    isError: any
-    error: any
-    registration: any
-    setIsSuccessMessage: any
-    setIsUnSuccessMessage: any
-    setIsUnSuccessMessageSameLogin: any
-    setState: any
+    isError: boolean
+    error: FetchBaseQueryError | SerializedError | undefined
+    registration: MutationTrigger<MutationDefinition<TRegistrationRequest, BaseQueryFn<string | FetchArgs, unknown,
+        FetchBaseQueryError, { shout?: boolean }, FetchBaseQueryMeta>, never, TAuthorizationResponse, 'userApi'>>
+    setIsSuccessMessage?: (value: boolean) => void
+    setIsUnSuccessMessage?: (value: boolean) => void
+    setIsUnSuccessMessageSameLogin?: (value: boolean) => void
+    setState?: (value: TUseStateType) => void
     stepRegistration: number
-    state: { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null } | undefined
+    state: { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null }
 }
 
 export const StepThree: React.FC<TFormComponentTypes> = ({
@@ -47,43 +62,42 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
         handleSubmit,
         clearErrors,
         getValues,
-        formState: {isDirty, isValid, errors}
+        formState: {errors}
     } = useForm<{ phone: string, email: string }>({
         mode: 'onBlur',
         shouldFocusError: false,
         criteriaMode: 'all'
     });
 
-    const setMessage = (error: any) => {
-        if (error?.status === 400) {
-            setIsUnSuccessMessageSameLogin(true);
-        } else setIsUnSuccessMessage(true);
+    const setMessage = (error: unknown) => {
+        if (error && IsError400(error)) {
+            if (setIsUnSuccessMessageSameLogin) {
+                setIsUnSuccessMessageSameLogin(true);
+            }
+        } else if (setIsUnSuccessMessage) {
+            setIsUnSuccessMessage(true);
+        }
     };
 
     const onSubmit: SubmitHandler<{ phone: string, email: string }> = async (data) => {
         const phone = getValues('phone');
         const email = getValues('email');
-        setState({...state, phone, email});
+        if (setState) {
+            setState({...state, phone, email});
+        }
 
         const requestData = {...state, ...data};
         try {
             await registration(requestData).unwrap();
-            setIsSuccessMessage(true);
+            if (setIsSuccessMessage) {
+                setIsSuccessMessage(true);
+            }
 
         } catch (error) {
             console.log(error);
             setMessage(error);
         }
     };
-
-
-    console.log(errors);
-    console.log(state);
-
-
-    // const inputRef = useRef(null);
-    // const phone = register('phone');
-    // const inputRef = React.useRef<HTMLInputElement>(null);
 
     return (
         <FormContainer
@@ -100,7 +114,7 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
                 <Controller
                     name="phone"
                     control={control}
-                    render={({field: {value, onChange, onBlur}, fieldState: {error}}) => (
+                    render={() => (
                         <MaskedInputStyles
                             mask="+375 (99) 999-99-99"
                             inputMode="tel"
@@ -114,38 +128,14 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
                                     clearErrors('phone');
                                 }
                             }}
-
-                            // onChange={onChange}
-                            // onBlur={onBlur}
-
-                            // ref={ref}
-                            // inputRef={ref}
-
-
-                            // inputRef={register('phone',{
-                            //         required: true,
-                            //     validate: {
-                            //         phonePattern: (value) => /^\+375\s(25|29|44|33)\s\d{3}-\d{2}-\d{2}$/.test(value)
-                            //     },
-                            //     // pattern:  /^\+375\s(25|29|44|33)\s\d{3}-\d{2}-\d{2}$/gmui
-                            //
-                            //     }
-                            //
-                            // ).ref}
-
                             {...register('phone', {
                                     required: true,
-
-                                    // validate: {
-                                    //     phonePattern: (value) => /^\+375\s\(25|29|44|33\)\s\d\d\d-\d\d-\d\d$/gmui.test(value)
-                                    // }
                                     pattern: /^\+375\s\((25|29|44|33)\)\s\d\d\d-\d\d-\d\d$/gmui
                                 }
                             )}
                         />
                     )}
                 />
-
                 <LabelBox htmlFor="phone"> Номер телефона</LabelBox>
                 <AssistiveTextBoxStepOne>
                     {

@@ -20,12 +20,12 @@ export type TAuthorizationResponse = {
     user: TUserType
 }
 export type TRegistrationRequest = {
-    email: string
-    username: string
-    password: string
-    firstName: string
-    lastName: string
-    phone: string
+    email: string | null
+    username: string | null
+    password: string | null
+    firstName: string | null
+    lastName: string | null
+    phone: string | null
 }
 export type TPasswordResetRequest = {
     email: string
@@ -36,5 +36,5 @@ export type TPasswordResetResponse = {
 export type TPasswordRecoveryRequest = {
     password: string
     passwordConfirmation: string
-    code: string
+    code: string | null
 }

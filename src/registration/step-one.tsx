@@ -2,6 +2,13 @@ import React, {useState} from 'react';
 
 import {NavLink} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
+import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
+import {
+    BaseQueryFn,
+    FetchArgs,
+    FetchBaseQueryError, FetchBaseQueryMeta,
+    MutationDefinition
+} from '@reduxjs/toolkit/query';
 import {
     AssistiveText,
     AssistiveTextBoxStepOne, AssistiveTextError, BottomFrame, FormContainer,
@@ -19,13 +26,16 @@ import {Arrow} from '../pages/images/arrow';
 import {EColors} from '../pages/themes/themes';
 import {EyeClosed} from '../pages/images/eye-closed';
 import {Eye} from '../pages/images/eye';
+import {TUseStateType} from './registration-container';
+import {TAuthorizationResponse, TRegistrationRequest} from '../services/login-service-types';
 
 type TFormComponentTypes = {
-    registration: any
+    registration: MutationTrigger<MutationDefinition<TRegistrationRequest, BaseQueryFn<string | FetchArgs, unknown,
+        FetchBaseQueryError, { shout?: boolean }, FetchBaseQueryMeta>, never, TAuthorizationResponse, 'userApi'>>
     stepRegistration: number
     setStepRegistration: (prevState: (prevState: number) => number) => void
-    setState: any
-    state: { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null } | undefined
+    setState?: (value: TUseStateType) => void
+    state: { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null }
 }
 
 export const StepOne: React.FC<TFormComponentTypes> = ({
@@ -44,7 +54,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
         clearErrors,
         getValues,
         setValue,
-        formState: {errors, isValid}
+        formState: {errors}
     } = useForm<{ username: string, password: string }>({
         shouldFocusError: false,
         criteriaMode: 'all'
@@ -61,12 +71,13 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
     };
 
     const onSubmitOne = ({username, password}: { username: string, password: string }): void => {
-        setState({...state, username, password});
+        if (setState) {
+            setState({...state, username, password});
+        }
         onSubmitIncreaseStep();
     };
 
-    const togglePassword = (event: any) => {
-        event.stopPropagation();
+    const togglePassword = ( ) => {
         if (passwordType === 'password') {
             setPasswordType('text');
         } else if (passwordType === 'text') {
@@ -86,10 +97,9 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     variantText="medium14Bold">{stepRegistration} шаг из 3
                 </LabelText>
             </TitleForm>
-            <TextFields errorForStyle={errors.username}>
+            <TextFields>
                 <InputStylesSteps
                     errorBorder={errors.username}
-                    errors={errors}
                     type="text"
                     id="username"
                     {...register('username', {
@@ -168,10 +178,9 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                             </AssistiveTextBoxStepOne>
                 }
             </TextFields>
-            <TextFields errorForStyle={errors.password}>
+            <TextFields>
                 <InputStylesSteps
                     errorBorder={errors.password}
-                    errors={errors}
                     type={passwordType}
                     id="password"
                     {...register('password', {

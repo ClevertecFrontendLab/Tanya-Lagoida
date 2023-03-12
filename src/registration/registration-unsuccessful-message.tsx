@@ -6,14 +6,25 @@ import {device} from '../pages/main/styles';
 import {ButtonComponent} from '../pages/components/button/button-component';
 import {AllForm, HeaderLogin} from '../authorization/styles';
 import {MessageContainerBox} from '../authorization/errors-container-styles';
+import {
+    BaseQueryFn,
+    FetchArgs,
+    FetchBaseQueryError, FetchBaseQueryMeta,
+    MutationDefinition
+} from '@reduxjs/toolkit/query';
+import {SerializedError} from '@reduxjs/toolkit';
+import {IsError400} from '../func/isError400';
+import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
+import {TAuthorizationResponse, TRegistrationRequest} from '../services/login-service-types';
 
 type TPropsTypes = {
-    registration: any
-    setIsSuccessMessage?: any
-    setIsUnSuccessMessage?: any
-    setIsUnSuccessMessageSameLogin?: any
-    state?: { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null } | undefined
-    error: any
+    registration: MutationTrigger<MutationDefinition<TRegistrationRequest, BaseQueryFn<string | FetchArgs, unknown,
+        FetchBaseQueryError, { shout?: boolean }, FetchBaseQueryMeta>, never, TAuthorizationResponse, 'userApi'>>
+    setIsSuccessMessage?: (value: boolean) => void
+    setIsUnSuccessMessage?: (value: boolean) => void
+    setIsUnSuccessMessageSameLogin?: (value: boolean) => void
+    state: { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null }
+    error: FetchBaseQueryError | SerializedError | undefined
 }
 
 export const RegistrationUnsuccessfulMessage: React.FC<TPropsTypes> = ({
@@ -25,17 +36,23 @@ export const RegistrationUnsuccessfulMessage: React.FC<TPropsTypes> = ({
 }) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
 
-    const setMessage = (error: any) => {
-        if (error?.status === 400) {
-            setIsUnSuccessMessageSameLogin(true);
-        } else setIsUnSuccessMessage(true);
+    const setMessage = (error: unknown) => {
+        if (error && IsError400(error)) {
+            if (setIsUnSuccessMessageSameLogin) {
+                setIsUnSuccessMessageSameLogin(true);
+            }
+        } else if (setIsUnSuccessMessage) {
+            setIsUnSuccessMessage(true);
+        }
     }
 
     const onSubmit = async () => {
 
         try {
             await registration(state).unwrap();
-            setIsSuccessMessage(true);
+            if (setIsSuccessMessage) {
+                setIsSuccessMessage(true);
+            }
 
         } catch (error) {
             console.log(error);
@@ -45,7 +62,6 @@ export const RegistrationUnsuccessfulMessage: React.FC<TPropsTypes> = ({
 
     return (
         <AllForm data-test-id="auth">
-
             <HeaderLogin>
                 <LabelText
                     variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>

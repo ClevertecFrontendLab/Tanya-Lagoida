@@ -1,6 +1,8 @@
 import styled from 'styled-components';
+import {FieldError} from 'react-hook-form';
 import {device} from '../pages/main/styles';
 import {EColors} from '../pages/themes/themes';
+import {IsError400} from '../func/isError400';
 
 export const FormAllContainer = styled.form`
     position: absolute;
@@ -41,7 +43,7 @@ export const HeaderLogin = styled.div`
         margin-left: -51px;
     }
 `;
-export const TextFields = styled.div<{ errorForStyle?: any }>`
+export const TextFields = styled.div`
     position: relative;
     input ~ label {
         letter-spacing: 0.1px;
@@ -124,7 +126,7 @@ export const AssistiveTextError = styled(AssistiveText)`
 export const AssistiveTextAllError = styled(AssistiveText)`
     color: ${EColors.Inherit};
 `;
-export const InputStyles = styled.input<{ error?: any, errorBorder?: any, errorBorderPass?: any }>`
+export const InputStyles = styled.input<{ error?: FieldError, errorBorder?: FieldError }>`
     padding-top: 12px;
     outline: none;
     cursor: pointer;
@@ -135,7 +137,7 @@ export const InputStyles = styled.input<{ error?: any, errorBorder?: any, errorB
     background: ${EColors.LightGrey};
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-    border-bottom: ${(props) => (props.error && props.error.status === 400) || props.errorBorder || props.errorBorderPass ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
+    border-bottom: ${(props) => (props.error && IsError400) || props.errorBorder ? `1px solid ${EColors.RedError}` : `1px solid ${EColors.GreyBorder}`};
     @media screen and ${device.mobileS} {
         width: 256px;
     }
