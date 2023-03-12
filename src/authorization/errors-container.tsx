@@ -1,20 +1,22 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
+
+import {ButtonComponent} from '../pages/components/button/button-component';
+import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {LabelText} from '../pages/labels/labels';
+import {device} from '../pages/main/styles';
+
+import {BlockContainerOne} from './errors-container-styles';
 import {
     AllForm,
     HeaderLogin,
 } from './styles';
-import {useMediaQuery} from '../pages/hooks/use-media-query';
-import {device} from '../pages/main/styles';
-import {BlockContainerOne} from './errors-container-styles';
-import {ButtonComponent} from '../pages/components/button/button-component';
 
 export const ErrorsContainer = () => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
 
     return (
         <AllForm data-test-id="auth">
-
                 <HeaderLogin>
                     <LabelText
                         variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>

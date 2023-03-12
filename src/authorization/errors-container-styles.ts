@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import {device} from '../pages/main/styles';
 import {EColors} from '../pages/themes/themes';
 

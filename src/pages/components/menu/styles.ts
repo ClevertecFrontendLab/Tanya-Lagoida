@@ -131,6 +131,10 @@ export const ProfileAndExitContainer = styled.div`
         width: 0;
         display: none;
     }
+    button {
+        background: none;
+        border: none;
+    }
 `;
 export const MenuContainer = styled.div<{ isMenuCollapsed: boolean }>`
     @media screen and ${device.mobileS} {

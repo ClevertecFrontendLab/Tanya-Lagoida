@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
-import { Navigate, NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import { LabelText } from '../../labels/labels';
+import { categoryAmountCount } from '../../../func/category-amount-count';
+import {
+    useGettingAListOfBookGenresQueryState,
+    useGettingAListOfBooksQueryState
+} from '../../../services/book-service';
+import { userReceived } from '../../../store/auth-slice';
+import { useAppDispatch } from '../../../store/store';
+import { useMediaQuery } from '../../hooks/use-media-query';
 import menu from '../../images/stroke.svg';
+import { LabelText } from '../../labels/labels';
+import { device } from '../../main/styles';
 
 import {
     BookCategoriesStyle,
@@ -11,15 +20,6 @@ import {
     RulesAndContract,
     ShowcaseBooksBox, ShowMenu
 } from './styles';
-import { useMediaQuery } from '../../hooks/use-media-query';
-import { device } from '../../main/styles';
-import {
-    useGettingAListOfBookGenresQueryState,
-    useGettingAListOfBooksQueryState
-} from '../../../services/book-service';
-import { categoryAmountCount } from '../../../func/category-amount-count';
-import { useAppDispatch } from '../../../store/store';
-import { userReceived } from '../../../store/auth-slice';
 
 type TMenuProps = {
     setIsMenuCollapsed?: (value: boolean) => void
@@ -141,9 +141,11 @@ export const Menu: React.FC<TMenuProps> = ({ setIsMenuCollapsed }) => {
             <ProfileAndExitContainer>
                 <LabelText variantText="medium18LS">Профиль</LabelText>
                 <NavLink to="/auth">
-                    <div onClick={handleExitFromUser}>
+                    <button
+                        type='button'
+                        onClick={handleExitFromUser}>
                         <LabelText variantText="medium18LS" data-test-id='exit-button'>Выход</LabelText>
-                    </div>
+                    </button>
                 </NavLink>
             </ProfileAndExitContainer>
         </MenuStyles>

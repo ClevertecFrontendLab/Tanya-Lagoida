@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { TBooksGenresType, TBooksType } from '../../../services/book-service-types';
 import {BookCardList} from '../book-card-list/book-card-list';
 import {BookCardTable} from '../book-card-table/book-card-table';
 
 import {ContentStylesForDesktopListView, ContentStylesForDesktopTableView} from './styles';
-import { TBooksGenresType, TBooksType } from '../../../services/book-service-types';
 
 type TProps = {
     isListView: boolean

@@ -1,11 +1,10 @@
 import React from 'react';
 import {Outlet, useOutletContext} from 'react-router-dom';
 
+import {useGettingAListOfBookGenresQuery} from '../../../services/book-service';
 import {MainStyles} from '../../main/styles';
 import {Footer} from '../footer/footer';
 import {Header} from '../header/header';
-import {useGettingAListOfBookGenresQuery} from '../../../services/book-service';
-import {LoginToPersonalAccount} from '../../../authorization/login-to-personal-account';
 
 export type TContextType = {
     isDefaultSort: boolean,

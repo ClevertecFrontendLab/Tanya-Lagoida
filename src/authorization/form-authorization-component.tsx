@@ -1,15 +1,29 @@
 import React, {useState} from 'react';
-
 import {SubmitHandler, useForm} from 'react-hook-form';
+import {Navigate, NavLink, useNavigate} from 'react-router-dom';
+import {SerializedError} from '@reduxjs/toolkit';
+import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
 import {
     BaseQueryFn,
     FetchArgs,
     FetchBaseQueryError, FetchBaseQueryMeta,
     MutationDefinition
 } from '@reduxjs/toolkit/query';
-import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
-import {Navigate, NavLink, useNavigate} from 'react-router-dom';
-import {SerializedError} from '@reduxjs/toolkit';
+
+import {IsError400} from '../func/is-error400';
+import {ButtonComponent} from '../pages/components/button/button-component';
+import {useMediaQuery} from '../pages/hooks/use-media-query';
+import {Arrow} from '../pages/images/arrow';
+import {Eye} from '../pages/images/eye';
+import {EyeClosed} from '../pages/images/eye-closed';
+import {LabelText} from '../pages/labels/labels';
+import {device} from '../pages/main/styles';
+import {EColors} from '../pages/themes/themes';
+import {TAuthorizationRequest, TAuthorizationResponse} from '../services/login-service-types';
+import {userReceived} from '../store/auth-slice';
+import {useAppDispatch, useAppSelector} from '../store/store';
+
+import {ErrorsContainer} from './errors-container';
 import {
     AllForm,
     AssistiveText,
@@ -24,19 +38,6 @@ import {
     Registration,
     TextFields
 } from './styles';
-import {LabelText} from '../pages/labels/labels';
-import {ButtonComponent} from '../pages/components/button/button-component';
-import {useMediaQuery} from '../pages/hooks/use-media-query';
-import {device} from '../pages/main/styles';
-import {TAuthorizationRequest, TAuthorizationResponse} from '../services/login-service-types';
-import {userReceived} from '../store/auth-slice';
-import {useAppDispatch, useAppSelector} from '../store/store';
-import {EColors} from '../pages/themes/themes';
-import {Arrow} from '../pages/images/arrow';
-import {ErrorsContainer} from './errors-container';
-import {EyeClosed} from '../pages/images/eye-closed';
-import {Eye} from '../pages/images/eye';
-import {IsError400} from '../func/is-error400';
 
 type TFormComponentTypes = {
     'data-test-id'?: string
@@ -89,6 +90,7 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
             // error
         }
     };
+
     if (error) {
 
         if (!IsError400(error)) return <ErrorsContainer/>;
@@ -97,7 +99,6 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
     if (isAuth) {
         return <Navigate to="/"/>;
     }
-    console.log(isButtonEyeVisible);
 
     return (
         <AllForm data-test-id="auth">
@@ -141,6 +142,7 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                                 setIsButtonEyeVisible(true);
                                 await trigger('password');
                                 const {error: passwordError} = getFieldState('password');
+
                                 if (passwordError) {
                                     clearErrors('password');
                                 }

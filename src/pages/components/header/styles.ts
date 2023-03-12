@@ -160,13 +160,11 @@ export const BurgerMenu = styled.div<{ isMenuCollapsed: boolean }>`
 
     @media screen and ${device.mobileS} {
          margin: ${(props) => props.isMenuCollapsed ? '0 26px 0 3px' : '0 28px 0 3px'} ;
-         //padding-left: 16px;
         gap: 4px;
     }
     @media screen and ${device.tablet} {
         margin: ${(props) => props.isMenuCollapsed ? '0 26px 0 3px' : '0 28px 0 3px'} ;
         gap: 5.33px;
-        //padding-left: 30px;
     }
     @media ${device.laptopL} {
         display: none;
@@ -192,7 +190,7 @@ export const LineOne = styled.div<{ isMenuCollapsed: boolean }>`
     }
 `;
 export const LineTwo = styled.div<{ isMenuCollapsed: boolean }>`
-    display: ${(props) => props.isMenuCollapsed ? 'block' : `none`};
+    display: ${(props) => props.isMenuCollapsed ? 'block' : 'none'};
     @media screen and  ${device.mobileS} {
         width: 19px;
         border-bottom: 2.8px solid ${EColors.Inherit};
@@ -246,5 +244,9 @@ export const ProfileAndExit = styled.div<{ isPersonMenuClose: boolean }>`
     box-shadow: ${(props) => !props.isPersonMenuClose && '4px 4px 4px rgba(54, 54, 54, 0.05), -4px 4px 4px rgba(54, 54, 54, 0.05)'};
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    }
+    button {
+        background: none;
+        border: none;
     }
 `

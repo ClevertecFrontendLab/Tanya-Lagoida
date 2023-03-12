@@ -1,6 +1,8 @@
 import React from 'react';
-import {useAuthorizationMutation} from '../services/login-service';
+
 import {Loader} from '../loader/loader';
+import {useAuthorizationMutation} from '../services/login-service';
+
 import {FormAuthorizationComponent} from './form-authorization-component';
 
 export const LoginToPersonalAccount = () => {

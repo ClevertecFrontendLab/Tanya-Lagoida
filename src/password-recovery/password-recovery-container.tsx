@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 
-import {usePasswordRecoveryMutation} from '../services/login-service';
 import {Loader} from '../loader/loader';
+import {usePasswordRecoveryMutation} from '../services/login-service';
+
 import {PasswordRecovery} from './password-recovery';
 import {PasswordRecoverySuccessMessage} from './password-recovery-success-message';
 import {PasswordRecoveryUnSuccessMessage} from './password-recovery-unsuccess-message';

@@ -1,24 +1,15 @@
 import React, {useRef, useState} from 'react';
-
-import {Navigate, useSearchParams} from 'react-router-dom';
 import {SubmitHandler, useForm} from 'react-hook-form';
+import {Navigate, useSearchParams} from 'react-router-dom';
+import {SerializedError} from '@reduxjs/toolkit';
+import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
 import {
     BaseQueryFn,
     FetchArgs,
     FetchBaseQueryError, FetchBaseQueryMeta,
     MutationDefinition
 } from '@reduxjs/toolkit/query';
-import {SerializedError} from '@reduxjs/toolkit';
-import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
-import {ButtonComponent} from '../pages/components/button/button-component';
-import {LabelText} from '../pages/labels/labels';
-import {useMediaQuery} from '../pages/hooks/use-media-query';
-import {device} from '../pages/main/styles';
 
-import {
-    TAuthorizationResponse,
-    TPasswordRecoveryRequest
-} from '../services/login-service-types';
 import {
     AllForm,
     AssistiveText, AssistiveTextBox, AssistiveTextBoxStepOne, AssistiveTextError,
@@ -28,13 +19,22 @@ import {
     LabelBox,
     TextFields
 } from '../authorization/styles';
+import {ButtonComponent} from '../pages/components/button/button-component';
+import {useMediaQuery} from '../pages/hooks/use-media-query';
+import {Eye} from '../pages/images/eye';
+import {EyeClosed} from '../pages/images/eye-closed';
+import checkPassword from '../pages/images/Icon_Other.svg';
+import {LabelText} from '../pages/labels/labels';
+import {device} from '../pages/main/styles';
+import {
+    TAuthorizationResponse,
+    TPasswordRecoveryRequest
+} from '../services/login-service-types';
+import {useAppSelector} from '../store/store';
+
 import {
     FormAllContainerPasswordRecovery,
 } from './styles';
-import {EyeClosed} from '../pages/images/eye-closed';
-import {Eye} from '../pages/images/eye';
-import {useAppSelector} from '../store/store';
-import checkPassword from '../pages/images/Icon_Other.svg';
 
 
 
@@ -46,6 +46,7 @@ type TFormComponentTypes = {
     setIsSuccessMessage?: (value: boolean) => void
 }
 
+// eslint-disable-next-line complexity
 export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
     passwordRecovery,
     setIsUnSuccessMessage,
@@ -159,6 +160,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                                     error: userPasswordError,
                                     isDirty
                                 } = getFieldState('password');
+
                                 if (!userPasswordError) {
 
                                     setIsTotalErrorRedPassword(false);
