@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
-import {useRegistrationMutation} from '../services/login-service';
+
 import {Loader} from '../loader/loader';
+import {useRegistrationMutation} from '../services/login-service';
+
 import {RegistrationForm} from './registration';
+import {RegistrationSuccessfulMessage} from './registration-successful-message';
+import {RegistrationUnsuccessfulMessage} from './registration-unsuccessful-message';
 import {
     RegistrationUnsuccessfulMessageSameLogin
 } from './registration-unsuccessful-message-same-login';
-import {RegistrationUnsuccessfulMessage} from './registration-unsuccessful-message';
-import {RegistrationSuccessfulMessage} from './registration-successful-message';
 
 export type TUseStateType = {
     email: string | null

@@ -1,22 +1,15 @@
 import React, {useState} from 'react';
-
-import {Navigate, NavLink, useSearchParams} from 'react-router-dom';
 import {SubmitHandler, useForm} from 'react-hook-form';
+import {Navigate, NavLink, useSearchParams} from 'react-router-dom';
+import {SerializedError} from '@reduxjs/toolkit';
+import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
 import {
     BaseQueryFn,
     FetchArgs,
     FetchBaseQueryError, FetchBaseQueryMeta,
     MutationDefinition
 } from '@reduxjs/toolkit/query';
-import {SerializedError} from '@reduxjs/toolkit';
-import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
-import {ButtonComponent} from '../pages/components/button/button-component';
-import {LabelText} from '../pages/labels/labels';
-import {useMediaQuery} from '../pages/hooks/use-media-query';
-import {device} from '../pages/main/styles';
-import {
-    TPasswordResetRequest, TPasswordResetResponse,
-} from '../services/login-service-types';
+
 import {
     AllForm,
     AssistiveText, AssistiveTextBox, AssistiveTextError,
@@ -27,16 +20,26 @@ import {
     Registration,
     TextFields
 } from '../authorization/styles';
+import {regesp} from '../constants/regesp';
+import {ButtonComponent} from '../pages/components/button/button-component';
+import {useMediaQuery} from '../pages/hooks/use-media-query';
+import {Arrow} from '../pages/images/arrow';
+import {LabelText} from '../pages/labels/labels';
+import {device} from '../pages/main/styles';
+import {EColors} from '../pages/themes/themes';
+import {
+    TPasswordResetRequest, TPasswordResetResponse,
+} from '../services/login-service-types';
+import {useAppSelector} from '../store/store';
+
+import {PasswordRecoveryContainer} from './password-recovery-container';
 import {
     AssistiveTextBoxReset, ButtonAndBottomFrameReset,
     FormAllContainerPasswordReset,
     FormBox, FormContainerReset,
     LoginToPersonalAccount
 } from './styles';
-import {Arrow} from '../pages/images/arrow';
-import {EColors} from '../pages/themes/themes';
-import {useAppSelector} from '../store/store';
-import {PasswordRecoveryContainer} from './password-recovery-container';
+import {getCommonButtonProps} from '../func/get-common-button-props';
 
 type TFormComponentTypes = {
     error?: FetchBaseQueryError | SerializedError | undefined
@@ -84,6 +87,7 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
     if (code) {
         return <PasswordRecoveryContainer code={code}/>;
     }
+    const commonButtonProps = getCommonButtonProps(isMobileView);
 
     return (
         <AllForm data-test-id="auth">
@@ -117,12 +121,13 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                                 }}
                                 {...register('email', {
                                     required: true,
-                                    pattern: /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i,
+                                    pattern: regesp.email,
                                 })}
                                 onBlur={async () => {
                                     setIsFieldEmptyError(true);
                                     await trigger('email');
                                     const {error: errorEmail, isDirty} = getFieldState('email');
+
                                     if (!errorEmail) {
 
                                         setIsFieldEmptyError(false);
@@ -168,18 +173,16 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                                     <ButtonComponent
                                         disabled={true}
                                         error={errors.email}
-                                        type="submit"
-                                        height={isMobileView ? '40px' : '52px'}
-                                        width={isMobileView ? '255px' : '416px'}
-                                        status="inStock"><LabelText
+                                        {...commonButtonProps}
+                                    >
+                                        <LabelText
                                         variantText={isMobileView ? 'smallLS' : 'medium16LS'}>восстановить</LabelText>
                                     </ButtonComponent>
                                     :
                                     <ButtonComponent
-                                        type="submit"
-                                        height={isMobileView ? '40px' : '52px'}
-                                        width={isMobileView ? '255px' : '416px'}
-                                        status="inStock"><LabelText
+                                        {...commonButtonProps}
+                                    >
+                                        <LabelText
                                         variantText={isMobileView ? 'smallLS' : 'medium16LS'}>восстановить</LabelText>
                                     </ButtonComponent>
                             }

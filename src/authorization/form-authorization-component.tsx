@@ -100,6 +100,13 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
         return <Navigate to="/"/>;
     }
 
+    const commonButtonProps = {
+        type: 'submit',
+        height: isMobileView ? '40px' : '52px',
+        width: isMobileView ? '255px' : '416px',
+        status: 'default',
+    } as const
+
     return (
         <AllForm data-test-id="auth">
             <HeaderLogin>
@@ -210,22 +217,17 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                                 <ButtonComponent
                                     disabled={true}
                                     error={errors}
-                                    type="submit"
-                                    height={isMobileView ? '40px' : '52px'}
-                                    width={isMobileView ? '255px' : '416px'}
-                                    status="default">
+                                    {...commonButtonProps}
+                                >
                                     вход
                                 </ButtonComponent>
                                 :
                                 <ButtonComponent
-                                    type="submit"
-                                    height={isMobileView ? '40px' : '52px'}
-                                    width={isMobileView ? '255px' : '416px'}
-                                    status="default">
+                                    {...commonButtonProps}
+                                >
                                     вход
                                 </ButtonComponent>
                         }
-
                         <BottomFrame>
                             <LabelText
                                 variantText={isMobileView ? 'medium15LH' : 'medium16LH24'}>Нет

@@ -1,34 +1,35 @@
 import React, {useState} from 'react';
-
+import {Navigate} from 'react-router-dom';
 import {SerializedError} from '@reduxjs/toolkit';
+import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
 import {
     BaseQueryFn,
     FetchArgs,
     FetchBaseQueryError, FetchBaseQueryMeta,
     MutationDefinition
 } from '@reduxjs/toolkit/query';
-import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
-import {Navigate} from 'react-router-dom';
+
 import {
     AllForm,
     HeaderLogin,
 } from '../authorization/styles';
-import {LabelText} from '../pages/labels/labels';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
+import {LabelText} from '../pages/labels/labels';
 import {device} from '../pages/main/styles';
-import {
-    FormRegistrationAllContainer,
-    RegistrationContainer
-} from './styles';
-import {StepOne} from './step-one';
-import {StepTwo} from './step-two';
-import {StepThree} from './step-three';
-import {useAppSelector} from '../store/store';
-import {TUseStateType} from './registration-container';
 import {
     TAuthorizationResponse,
     TRegistrationRequest
 } from '../services/login-service-types';
+import {useAppSelector} from '../store/store';
+
+import {TUseStateType} from './registration-container';
+import {StepOne} from './step-one';
+import {StepThree} from './step-three';
+import {StepTwo} from './step-two';
+import {
+    FormRegistrationAllContainer,
+    RegistrationContainer
+} from './styles';
 
 type TFormComponentTypes = {
     error: FetchBaseQueryError | SerializedError | undefined

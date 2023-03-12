@@ -19,6 +19,8 @@ import {
     LabelBox,
     TextFields
 } from '../authorization/styles';
+import {regesp} from '../constants/regesp';
+import {getCommonButtonProps} from '../func/get-common-button-props';
 import {ButtonComponent} from '../pages/components/button/button-component';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {Eye} from '../pages/images/eye';
@@ -117,6 +119,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
     if (isAuth) {
         return <Navigate to="/"/>;
     }
+    const commonButtonProps = getCommonButtonProps(isMobileView);
 
     return (
         <AllForm data-test-id="auth">
@@ -140,8 +143,8 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                                 required: true,
                                 validate: {
                                     checkLength: (value) => value.length >= 8,
-                                    matchLetterPattern: (value) => /[A-ZА-ЯЁ]/.test(value),
-                                    matchNumberPattern: (value) => /\d/.test(value)
+                                    matchLetterPattern: (value) => regesp.lettersUpperCase.test(value),
+                                    matchNumberPattern: (value) => regesp.numbers.test(value)
                                 }
                             })}
                             onClick={() => {
@@ -322,10 +325,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                                 <ButtonComponent
                                     disabled={true}
                                     error={errors.passwordConfirmation}
-                                    type="submit"
-                                    height={isMobileView ? '40px' : '52px'}
-                                    width={isMobileView ? '255px' : '416px'}
-                                    status="inStock"
+                                    {...commonButtonProps}
                                 >
                                     <LabelText
                                         variantText={isMobileView ? 'smallLS' : 'medium16LS'}
@@ -335,10 +335,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                                 </ButtonComponent>
                                 :
                                 <ButtonComponent
-                                    type="submit"
-                                    height={isMobileView ? '40px' : '52px'}
-                                    width={isMobileView ? '255px' : '416px'}
-                                    status="inStock"
+                                    {...commonButtonProps}
                                 >
                                     <LabelText variantText={isMobileView ? 'smallLS' : 'medium16LS'}
                                     >

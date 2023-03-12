@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 
-import {usePasswordResetMutation} from '../services/login-service';
-import {Loader} from '../loader/loader';
-import {PasswordReset} from './password-reset';
 import {MessageContainer} from '../authorization/message-container';
+import {Loader} from '../loader/loader';
+import {usePasswordResetMutation} from '../services/login-service';
+
+import {PasswordReset} from './password-reset';
 
 export const PasswordResetContainer = () => {
     const [passwordReset, {isLoading, error}] = usePasswordResetMutation();

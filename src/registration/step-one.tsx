@@ -28,6 +28,8 @@ import {EyeClosed} from '../pages/images/eye-closed';
 import {Eye} from '../pages/images/eye';
 import {TUseStateType} from './registration-container';
 import {TAuthorizationResponse, TRegistrationRequest} from '../services/login-service-types';
+import {regesp} from '../constants/regesp';
+import {getCommonButtonProps} from '../func/get-common-button-props';
 
 type TFormComponentTypes = {
     registration: MutationTrigger<MutationDefinition<TRegistrationRequest, BaseQueryFn<string | FetchArgs, unknown,
@@ -84,7 +86,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
             setPasswordType('password');
         }
     };
-
+    const commonButtonProps = getCommonButtonProps(isMobileView);
 
     return (
         <FormContainer
@@ -104,10 +106,10 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     id="username"
                     {...register('username', {
                         required: true,
-                        pattern: /^[A-Za-z0-9]+$/,
+                        pattern: regesp.englishLettersAndNumbers,
                         validate: {
-                            matchLetterPattern: (value) => /[A-Za-z]/.test(value),
-                            matchNumberPattern: (value) => /\d/.test(value)
+                            matchLetterPattern: (value) => regesp.englishLetters.test(value),
+                            matchNumberPattern: (value) => regesp.numbers.test(value)
                         }
                     })}
                     onClick={() => {
@@ -188,8 +190,8 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                         required: true,
                         validate: {
                             checkLength: (value) => value.length >= 8,
-                            matchLetterPattern: (value) => /[A-ZА-ЯЁ]/.test(value),
-                            matchNumberPattern: (value) => /\d/.test(value)
+                            matchLetterPattern: (value) => regesp.lettersUpperCase.test(value),
+                            matchNumberPattern: (value) => regesp.numbers.test(value)
                         }
                     })}
                     onClick={() => {
@@ -296,19 +298,17 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                         <ButtonComponent
                             disabled={true}
                             error={errors}
-                            type="submit"
-                            height={isMobileView ? '40px' : '52px'}
-                            width={isMobileView ? '255px' : '416px'}
-                            status="inStock"><LabelText
+                            {...commonButtonProps}
+                        >
+                            <LabelText
                             variantText={isMobileView ? 'smallLS' : 'medium16LS'}>следующий
                             шаг</LabelText>
                         </ButtonComponent>
                         :
                         <ButtonComponent
-                            type="submit"
-                            height={isMobileView ? '40px' : '52px'}
-                            width={isMobileView ? '255px' : '416px'}
-                            status="inStock"><LabelText
+                            {...commonButtonProps}
+                        >
+                            <LabelText
                             variantText={isMobileView ? 'smallLS' : 'medium16LS'}>следующий
                             шаг</LabelText>
                         </ButtonComponent>

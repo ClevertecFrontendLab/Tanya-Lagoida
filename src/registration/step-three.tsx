@@ -1,15 +1,15 @@
 import React from 'react';
-
-import {NavLink} from 'react-router-dom';
 import {Controller, SubmitHandler, useForm} from 'react-hook-form';
+import {NavLink} from 'react-router-dom';
+import {SerializedError} from '@reduxjs/toolkit';
+import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
 import {
     BaseQueryFn,
     FetchArgs,
     FetchBaseQueryError, FetchBaseQueryMeta,
     MutationDefinition
 } from '@reduxjs/toolkit/query';
-import {SerializedError} from '@reduxjs/toolkit';
-import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
+
 import {
     AssistiveText,
     AssistiveTextBoxStepOne, AssistiveTextError, BottomFrame, FormContainer,
@@ -17,20 +17,22 @@ import {
     LabelBox, Registration,
     TextFields
 } from '../authorization/styles';
-import {ButtonAndBottomFrameRegistration, MaskedInputStyles, TitleForm} from './styles';
+import {regesp} from '../constants/regesp';
+import {getCommonButtonProps} from '../func/get-common-button-props';
+import {IsError400} from '../func/is-error400';
 import {ButtonComponent} from '../pages/components/button/button-component';
-import {LabelText} from '../pages/labels/labels';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
+import {Arrow} from '../pages/images/arrow';
+import {LabelText} from '../pages/labels/labels';
 import {device} from '../pages/main/styles';
 import {EColors} from '../pages/themes/themes';
-import {Arrow} from '../pages/images/arrow';
-import {TUseStateType} from './registration-container';
-import {IsError400} from '../func/is-error400';
-
 import {
     TAuthorizationResponse,
     TRegistrationRequest
 } from '../services/login-service-types';
+
+import {TUseStateType} from './registration-container';
+import {ButtonAndBottomFrameRegistration, MaskedInputStyles, TitleForm} from './styles';
 
 type TFormComponentTypes = {
     isError: boolean
@@ -99,6 +101,7 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
             setMessage(error);
         }
     };
+    const commonButtonProps = getCommonButtonProps(isMobileView);
 
     return (
         <FormContainer
@@ -131,7 +134,7 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
                             }}
                             {...register('phone', {
                                     required: true,
-                                    pattern: /^\+375\s\((25|29|44|33)\)\s\d\d\d-\d\d-\d\d$/gmui
+                                    pattern: regesp.phone
                                 }
                             )}
                         />
@@ -168,7 +171,7 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
                     aria-invalid={errors.email ? 'true' : 'false'}
                     {...register('email', {
                         required: true,
-                        pattern: /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i
+                        pattern: regesp.email
                     })}
                     placeholder="E-mail"/>
                 <LabelBox htmlFor="email">E-mail</LabelBox>
@@ -195,22 +198,19 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
                         <ButtonComponent
                             disabled={true}
                             error={errors}
-                            type="submit"
-                            height={isMobileView ? '40px' : '52px'}
-                            width={isMobileView ? '255px' : '416px'}
-                            status="inStock"><LabelText
+                            {...commonButtonProps}
+                        >
+                            <LabelText
                             variantText={isMobileView ? 'smallLS' : 'medium16LS'}>зарегистрироваться</LabelText>
                         </ButtonComponent>
                         :
                         <ButtonComponent
-                            type="submit"
-                            height={isMobileView ? '40px' : '52px'}
-                            width={isMobileView ? '255px' : '416px'}
-                            status="inStock"><LabelText
+                            {...commonButtonProps}
+                        >
+                            <LabelText
                             variantText={isMobileView ? 'smallLS' : 'medium16LS'}>зарегистрироваться</LabelText>
                         </ButtonComponent>
                 }
-
                 <BottomFrame>
                     <LabelText
                         variantText={isMobileView ? 'medium15LH' : 'medium16LH24'}>Есть

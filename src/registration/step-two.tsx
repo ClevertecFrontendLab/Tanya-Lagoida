@@ -1,22 +1,23 @@
 import React from 'react';
-
-import {NavLink} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
+import {NavLink} from 'react-router-dom';
+
 import {
     AssistiveText,
     AssistiveTextBoxStepOne, AssistiveTextError, BottomFrame, FormContainer,
     LabelBox, Registration,
     TextFields
 } from '../authorization/styles';
-import {ButtonAndBottomFrameRegistration, InputStylesSteps, TitleForm} from './styles';
+import {getCommonButtonProps} from '../func/get-common-button-props';
 import {ButtonComponent} from '../pages/components/button/button-component';
-import {LabelText} from '../pages/labels/labels';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
-import {device} from '../pages/main/styles';
-
-import {EColors} from '../pages/themes/themes';
 import {Arrow} from '../pages/images/arrow';
+import {LabelText} from '../pages/labels/labels';
+import {device} from '../pages/main/styles';
+import {EColors} from '../pages/themes/themes';
+
 import {TUseStateType} from './registration-container';
+import {ButtonAndBottomFrameRegistration, InputStylesSteps, TitleForm} from './styles';
 
 type TFormComponentTypes = {
     setStepRegistration: (prevState: (prevState: number) => number) => void
@@ -47,6 +48,7 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
         }
         onSubmitIncreaseStep()
     }
+    const commonButtonProps = getCommonButtonProps(isMobileView);
 
     return (
         <FormContainer
@@ -111,21 +113,17 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
                         <ButtonComponent
                             disabled={true}
                             error = {errors}
-                            type="submit"
-                            height={isMobileView ? '40px' : '52px'}
-                            width={isMobileView ? '255px' : '416px'}
-                            status="inStock"><LabelText
-                            variantText={isMobileView ? 'smallLS' : 'medium16LS'}>последний
-                            шаг</LabelText>
+                            {...commonButtonProps}
+                        >
+                            <LabelText variantText={isMobileView ? 'smallLS' : 'medium16LS'}>
+                                последний шаг
+                            </LabelText>
                         </ButtonComponent>
                         :
-                        <ButtonComponent
-                            type="submit"
-                            height={isMobileView ? '40px' : '52px'}
-                            width={isMobileView ? '255px' : '416px'}
-                            status="inStock"><LabelText
-                            variantText={isMobileView ? 'smallLS' : 'medium16LS'}>последний
-                            шаг</LabelText>
+                        <ButtonComponent {...commonButtonProps}>
+                            <LabelText variantText={isMobileView ? 'smallLS' : 'medium16LS'}>
+                            последний шаг
+                            </LabelText>
                         </ButtonComponent>
                 }
 
