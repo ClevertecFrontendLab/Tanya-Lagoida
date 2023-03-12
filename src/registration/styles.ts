@@ -9,7 +9,7 @@ import {
     InputStyles
 } from '../authorization/styles';
 import {EColors} from '../pages/themes/themes';
-import {IsError400} from '../func/isError400';
+import {IsError400} from '../func/is-error400';
 
 export const RegistrationContainer = styled.div`
     gap: 46px;

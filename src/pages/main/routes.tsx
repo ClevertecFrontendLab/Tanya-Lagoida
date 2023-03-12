@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Navigate, Route, Routes, useNavigate} from 'react-router-dom';
+import {Navigate, Route, Routes} from 'react-router-dom';
 import {LoginToPersonalAccount} from '../../authorization/login-to-personal-account';
 import {RegistrationContainer} from '../../registration/registration-container';
 import {Layout} from '../components/layout/layout';
@@ -10,12 +10,6 @@ import {BookPage} from '../components/book-card-page/book-page';
 import {MainPage} from './main-page';
 import {PasswordResetContainer} from '../../password-recovery/password-reset-container';
 import {RootState, useAppSelector} from '../../store/store';
-
-function PrivateOutlet() {
-    const isAuth = useAppSelector((state: RootState) => state.userSlice.isAuth);
-    console.log(isAuth);
-    return isAuth ? <Layout /> : <Navigate to="/auth" />;
-}
 
 export const RoutesComponent = () => {
     const isAuth = useAppSelector((state: RootState) => state.userSlice.isAuth);

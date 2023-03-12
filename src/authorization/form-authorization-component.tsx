@@ -36,7 +36,7 @@ import {Arrow} from '../pages/images/arrow';
 import {ErrorsContainer} from './errors-container';
 import {EyeClosed} from '../pages/images/eye-closed';
 import {Eye} from '../pages/images/eye';
-import {IsError400} from '../func/isError400';
+import {IsError400} from '../func/is-error400';
 
 type TFormComponentTypes = {
     'data-test-id'?: string
@@ -80,15 +80,17 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
     const onSubmit: SubmitHandler<TAuthorizationRequest> = async (data) => {
         try {
             const response = await authorization(data).unwrap();
+
             localStorage.setItem('token', JSON.stringify(response.jwt));
             localStorage.setItem('user', JSON.stringify(response.user));
             navigate('/');
             dispatch(userReceived({user: response.user, isAuth: true}));
-        } catch (error) {
-            console.log(error);
+        } catch (errorResponse) {
+            // error
         }
     };
     if (error) {
+
         if (!IsError400(error)) return <ErrorsContainer/>;
     }
 
@@ -138,15 +140,15 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                             onClick={async () => {
                                 setIsButtonEyeVisible(true);
                                 await trigger('password');
-                                const {error} = getFieldState('password');
-                                if (error) {
+                                const {error: passwordError} = getFieldState('password');
+                                if (passwordError) {
                                     clearErrors('password');
                                 }
                             }}
                             onBlur={async () => {
                                 await trigger('password');
-                                const {isDirty} = getFieldState('password');
                                 if (!getValues('password')) {
+
                                     setIsButtonEyeVisible(false);
                                 }
                             }}

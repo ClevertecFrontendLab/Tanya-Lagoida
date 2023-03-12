@@ -1,6 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-import {redirect} from 'react-router-dom';
 import {EEndPoints} from '../config/endpoints';
 import {TBooksByIdType, TBooksGenresType, TBooksType} from './book-service-types';
 
@@ -12,9 +11,11 @@ export const bookApi = createApi({
         baseUrl: EEndPoints.baseUrl,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem('token');
+
             if (token) {
                 headers.set('authorization', `Bearer ${JSON.parse(token)}`)
             }
+
             return headers
         }
     }),

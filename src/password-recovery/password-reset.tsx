@@ -73,9 +73,8 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
             if (setIsSuccessMessage) {
                 setIsSuccessMessage(true);
             }
-        } catch (error) {
-            console.log(error);
-
+        } catch (errorResponse) {
+            // error
         }
     };
 
@@ -123,8 +122,9 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                                 onBlur={async () => {
                                     setIsFieldEmptyError(true);
                                     await trigger('email');
-                                    const {error, isDirty} = getFieldState('email');
-                                    if (!error) {
+                                    const {error: errorEmail, isDirty} = getFieldState('email');
+                                    if (!errorEmail) {
+
                                         setIsFieldEmptyError(false);
                                     }
                                     if (isDirty) {

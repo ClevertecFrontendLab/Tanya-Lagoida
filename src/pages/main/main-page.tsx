@@ -1,6 +1,5 @@
 import React, {ChangeEvent, useState} from 'react';
 
-import {Navigate} from 'react-router-dom';
 import {BlockNavigationAndContent} from './styles';
 import {Navigation} from '../components/navigation/navigation';
 import {Content} from '../components/content/content';
@@ -11,8 +10,6 @@ import {
 import {Loader} from '../../loader/loader';
 import {Error} from '../../error/error';
 import {useSort} from '../components/layout/layout';
-import {useAppSelector} from '../../store/store';
-
 
 export const MainPage = () => {
     const {
@@ -31,9 +28,6 @@ export const MainPage = () => {
     const [isListView, setIsListView] = useState<boolean>(false);
     const [enteredText, setEnteredText] = useState<string>('');
     const {isDefaultSort, updateSort} =  useSort()
-
-    // const isLoggedUser = useAppSelector((state) => state.userSlice.isLoggedUser)
-    const state = useAppSelector((state) => state.userSlice)
 
     const handleSortBooks = (): void => {
 

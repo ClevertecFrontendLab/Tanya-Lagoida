@@ -226,7 +226,6 @@ export const LineThree = styled.div<{ isMenuCollapsed: boolean }>`
 export const ProfileAndExit = styled.div<{ isPersonMenuClose: boolean }>`
 @media screen and ${device.mobileS} {
         display: none;
-
     }
     @media screen and ${device.tablet} {
        display: none;

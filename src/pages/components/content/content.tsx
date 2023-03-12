@@ -13,7 +13,7 @@ type TProps = {
     isDefaultSort: boolean
     enteredText: string
 }
-export const Content: React.FC<TProps> = ({isListView, dataBooks, dataCategories, isDefaultSort, enteredText,  ...restProps}) => {
+export const Content: React.FC<TProps> = ({isListView, dataBooks, dataCategories, isDefaultSort, enteredText}) => {
     if (isListView) {
         return (
             <ContentStylesForDesktopListView>

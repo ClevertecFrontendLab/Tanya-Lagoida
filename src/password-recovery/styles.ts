@@ -3,8 +3,7 @@ import {EColors} from '../pages/themes/themes';
 import {
     AssistiveTextBox,
     ButtonAndBottomFrame,
-    FormAllContainer,
-    FormContainer, FormContainerAuth,
+    FormContainerAuth,
 } from '../authorization/styles';
 import {device} from '../pages/main/styles';
 

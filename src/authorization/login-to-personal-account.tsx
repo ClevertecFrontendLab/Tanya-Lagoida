@@ -6,18 +6,10 @@ import {FormAuthorizationComponent} from './form-authorization-component';
 export const LoginToPersonalAccount = () => {
     const [authorization, {isLoading, error}] = useAuthorizationMutation();
 
-
-    // if (isLoading) {
-    //     return <>
-    //          <Loader />
-    //         <FormAuthorizationComponent  authorization={authorization} error={error}/>
-    //     </>
-    // }
-
     return (
-        <>
+        <React.Fragment>
             {isLoading ? <Loader /> : null}
             <FormAuthorizationComponent authorization={authorization} error={error}/>
-        </>
+        </React.Fragment>
     );
 };

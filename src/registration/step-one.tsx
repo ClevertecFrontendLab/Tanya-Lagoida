@@ -122,6 +122,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                         setIsTotalErrorRedUsername(true);
                         await trigger('username');
                         const {error: userNameError, isDirty} = getFieldState('username');
+
                         if ((!userNameError)) {
                             setIsTotalErrorRedUsername(false);
                         }
@@ -201,7 +202,8 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     onBlur={async () => {
                         setIsTotalErrorRedPassword(true);
                         await trigger('password');
-                        const {error: userPasswordError, isDirty} = getFieldState('password');
+                        const {error: userPasswordError} = getFieldState('password');
+
                         if (!userPasswordError) {
                             setIsTotalErrorRedPassword(false);
                         }
@@ -214,6 +216,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                         setValue('password', event.currentTarget.value, {shouldDirty: true});
                         await trigger('password');
                         const {isDirty, error} = getFieldState('password');
+
                         if (!error) {
                             setIsTotalErrorRedPassword(false);
                         }

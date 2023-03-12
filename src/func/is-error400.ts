@@ -4,6 +4,7 @@ import {SerializedError} from '@reduxjs/toolkit';
 export const IsError400 = (error: FetchBaseQueryError | SerializedError) => {
     if ('status' in error) {
         return error.status === 400;
-    } else return false
+    }
+    return false
 };
 

@@ -34,7 +34,7 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
         register,
         clearErrors,
         handleSubmit,
-        formState: { isDirty, errors }
+        formState: { errors }
     } = useForm<{firstName: string, lastName: string}>({mode: 'onBlur', shouldFocusError: false});
 
     const onSubmitIncreaseStep = () => {
@@ -42,15 +42,11 @@ export const StepTwo: React.FC<TFormComponentTypes> = ({
     };
 
     const onSubmitTwo = ({firstName, lastName}: {firstName: string, lastName: string}): void => {
-        console.log(firstName);
-        console.log(lastName);
         if (setState) {
             setState({...state, firstName, lastName});
         }
         onSubmitIncreaseStep()
     }
-
-    console.log(state);
 
     return (
         <FormContainer

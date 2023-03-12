@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import {FieldError} from 'react-hook-form';
 import {device} from '../pages/main/styles';
 import {EColors} from '../pages/themes/themes';
-import {IsError400} from '../func/isError400';
+import {IsError400} from '../func/is-error400';
 
 export const FormAllContainer = styled.form`
     position: absolute;

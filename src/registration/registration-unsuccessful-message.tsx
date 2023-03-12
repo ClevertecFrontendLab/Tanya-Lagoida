@@ -1,20 +1,19 @@
 import React from 'react';
 
-import {LabelText} from '../pages/labels/labels';
-import {useMediaQuery} from '../pages/hooks/use-media-query';
-import {device} from '../pages/main/styles';
-import {ButtonComponent} from '../pages/components/button/button-component';
-import {AllForm, HeaderLogin} from '../authorization/styles';
-import {MessageContainerBox} from '../authorization/errors-container-styles';
 import {
     BaseQueryFn,
     FetchArgs,
     FetchBaseQueryError, FetchBaseQueryMeta,
     MutationDefinition
 } from '@reduxjs/toolkit/query';
-import {SerializedError} from '@reduxjs/toolkit';
-import {IsError400} from '../func/isError400';
 import {MutationTrigger} from '@reduxjs/toolkit/dist/query/react/buildHooks';
+import {LabelText} from '../pages/labels/labels';
+import {useMediaQuery} from '../pages/hooks/use-media-query';
+import {device} from '../pages/main/styles';
+import {ButtonComponent} from '../pages/components/button/button-component';
+import {AllForm, HeaderLogin} from '../authorization/styles';
+import {MessageContainerBox} from '../authorization/errors-container-styles';
+import {IsError400} from '../func/is-error400';
 import {TAuthorizationResponse, TRegistrationRequest} from '../services/login-service-types';
 
 type TPropsTypes = {
@@ -24,8 +23,7 @@ type TPropsTypes = {
     setIsUnSuccessMessage?: (value: boolean) => void
     setIsUnSuccessMessageSameLogin?: (value: boolean) => void
     state: { email: string | null, username: string | null, password: string | null, firstName: string | null, lastName: string | null, phone: string | null }
-    error: FetchBaseQueryError | SerializedError | undefined
-}
+    }
 
 export const RegistrationUnsuccessfulMessage: React.FC<TPropsTypes> = ({
     state,
@@ -55,7 +53,6 @@ export const RegistrationUnsuccessfulMessage: React.FC<TPropsTypes> = ({
             }
 
         } catch (error) {
-            console.log(error);
             setMessage(error)
         }
     };

@@ -52,8 +52,9 @@ export const RegistrationForm: React.FC<TFormComponentTypes> = ({
     state, setState
 }) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
-    const isAuth = useAppSelector((state) => state.userSlice.isAuth);
+    const isAuth = useAppSelector((rootState) => rootState.userSlice.isAuth);
     const [stepRegistration, setStepRegistration] = useState<number>(1);
+
     if (isAuth) {
         return <Navigate to="/"/>;
     }

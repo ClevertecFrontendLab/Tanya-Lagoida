@@ -29,7 +29,6 @@ export const RegistrationContainer = () => {
     }
     if (isUnSuccessMessage) {
         return <RegistrationUnsuccessfulMessage
-            error={error}
             registration={registration}
             setIsSuccessMessage={setIsSuccessMessage}
             setIsUnSuccessMessage={setIsUnSuccessMessage}
@@ -41,7 +40,7 @@ export const RegistrationContainer = () => {
         return <RegistrationSuccessfulMessage/>;
     }
     if (isLoading) {
-        return <>
+        return <React.Fragment>
             <Loader />
             <RegistrationForm
                 state={state}
@@ -49,7 +48,7 @@ export const RegistrationContainer = () => {
                 error={error}
                 isError={isError}
             />
-        </>
+        </React.Fragment>
     }
 
     return (

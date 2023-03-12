@@ -10,12 +10,12 @@ export const PasswordResetContainer = () => {
     const [isSuccessMessage, setIsSuccessMessage] = useState<boolean>(false);
 
     if (isLoading) {
-        return <>
+        return <React.Fragment>
             <Loader />
             <PasswordReset
                 passwordReset={passwordReset}
             />
-        </>
+        </React.Fragment>
     }
     if (isSuccessMessage) {
         return <MessageContainer />

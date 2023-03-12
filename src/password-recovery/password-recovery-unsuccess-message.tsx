@@ -1,5 +1,6 @@
 import React from 'react';
 
+import {useNavigate} from 'react-router-dom';
 import {LabelText} from '../pages/labels/labels';
 import {useMediaQuery} from '../pages/hooks/use-media-query';
 import {device} from '../pages/main/styles';
@@ -12,10 +13,11 @@ type TPropsType = {
 }
 export const PasswordRecoveryUnSuccessMessage: React.FC<TPropsType> = ({code}) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
+    const navigate = useNavigate();
 
     const handleNavigateToPasswordRecoveryPage = () => {
         if (code) {
-            location.reload()
+            navigate(0);
         }
     }
 

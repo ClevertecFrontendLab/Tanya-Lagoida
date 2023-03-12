@@ -25,7 +25,7 @@ import {device} from '../pages/main/styles';
 import {EColors} from '../pages/themes/themes';
 import {Arrow} from '../pages/images/arrow';
 import {TUseStateType} from './registration-container';
-import {IsError400} from '../func/isError400';
+import {IsError400} from '../func/is-error400';
 
 import {
     TAuthorizationResponse,
@@ -82,11 +82,13 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
     const onSubmit: SubmitHandler<{ phone: string, email: string }> = async (data) => {
         const phone = getValues('phone');
         const email = getValues('email');
+
         if (setState) {
             setState({...state, phone, email});
         }
 
         const requestData = {...state, ...data};
+
         try {
             await registration(requestData).unwrap();
             if (setIsSuccessMessage) {
@@ -94,7 +96,6 @@ export const StepThree: React.FC<TFormComponentTypes> = ({
             }
 
         } catch (error) {
-            console.log(error);
             setMessage(error);
         }
     };

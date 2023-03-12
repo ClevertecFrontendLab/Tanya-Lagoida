@@ -23,12 +23,12 @@ export const PasswordRecoveryContainer: React.FC<TPropsType> = ({code}) => {
         return <PasswordRecoveryUnSuccessMessage code={code}/>;
     }
     if (isLoading) {
-        return <>
+        return <React.Fragment>
             <Loader/>
             <PasswordRecovery
                 passwordRecovery={passwordRecovery}
             />
-        </>;
+        </React.Fragment>;
     }
 
     return (

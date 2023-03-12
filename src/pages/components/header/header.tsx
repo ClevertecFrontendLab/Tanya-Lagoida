@@ -19,7 +19,6 @@ import {
 import {device} from '../../main/styles';
 import {useMediaQuery} from '../../hooks/use-media-query';
 import {MenuBurgerContainer} from '../menu/menu-burger-container';
-import { ProfileAndExitContainer } from '../menu/styles';
 import { userReceived } from '../../../store/auth-slice';
 import { useAppDispatch } from '../../../store/store';
 
@@ -93,9 +92,11 @@ export const Header = () => {
                 <ProfileAndExit isPersonMenuClose={isPersonMenuClose}>
                     <LabelText variantText="medium18LS">Профиль</LabelText>
                     <NavLink to="/auth">
-                        <div onClick={handleExitFromUser}>
+                        <button
+                            type='button'
+                            onClick={handleExitFromUser}>
                             <LabelText variantText="medium18LS">Выход</LabelText>
-                        </div>
+                        </button>
                     </NavLink>
                 </ProfileAndExit>
             </PersonContainer>

@@ -77,6 +77,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
     const [isButtonEyeVisibleOne, setIsButtonEyeVisibleOne] = useState<boolean>(false);
     const [isButtonEyeVisibleTwo, setIsButtonEyeVisibleTwo] = useState<boolean>(false);
     const password = useRef({});
+
     password.current = watch('password', '');
 
     const togglePassword = () => {
@@ -109,7 +110,6 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
             if (setIsUnSuccessMessage) {
                 setIsUnSuccessMessage(true);
             }
-            console.log(error);
         }
     };
 
@@ -160,6 +160,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                                     isDirty
                                 } = getFieldState('password');
                                 if (!userPasswordError) {
+
                                     setIsTotalErrorRedPassword(false);
                                 }
                                 if (!userPasswordError) {
@@ -176,6 +177,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                                 setValue('password', event.currentTarget.value, {shouldDirty: true});
                                 await trigger('password');
                                 const {isDirty, error} = getFieldState('password');
+
                                 if (!error) {
                                     setIsTotalErrorRedPassword(false);
                                 }
@@ -273,7 +275,6 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                             })}
                             onBlur={async () => {
                                 await trigger('passwordConfirmation');
-                                const {isDirty} = getFieldState('passwordConfirmation');
                                 if (!getValues('passwordConfirmation')) {
                                     setIsButtonEyeVisibleTwo(false);
                                 }

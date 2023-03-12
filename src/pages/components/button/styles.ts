@@ -11,10 +11,10 @@ export const Button = styled.button<TButtonProps>`
     text-transform: uppercase;
     background: ${props => props.status === 'inStock'
         ? `linear-gradient(231.58deg, ${EColors.Red} -53.35%, ${EColors.Yellow} 297.76%)`
-        : 'default' ? `linear-gradient(231.58deg, ${EColors.Red} -53.35%, ${EColors.Yellow} 297.76%)`
+        : props.status === 'default' ? `linear-gradient(231.58deg, ${EColors.Red} -53.35%, ${EColors.Yellow} 297.76%)`
             : props.status === 'booking' ? EColors.White : EColors.LightGrey};
     color: ${props => props.status === 'inStock' ? EColors.White
-        : 'default' ? EColors.White
+        : props.status === 'default' ? EColors.White
             : props.status === 'booking' ? EColors.DarkGrey : EColors.Grey};
     border-radius: 30px;
     border: 1px solid ${EColors.GreyBorder};

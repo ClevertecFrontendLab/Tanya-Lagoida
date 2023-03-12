@@ -6,6 +6,7 @@ type AuthState = {
     isAuth: boolean
 }
 const token = localStorage.getItem('token');
+
 export const userSlice = createSlice({
 
     name: 'user',
@@ -15,7 +16,9 @@ export const userSlice = createSlice({
     } as AuthState,
     reducers: {
         userReceived(state, action) {
+            // eslint-disable-next-line no-param-reassign
             state.user = action.payload.user;
+            // eslint-disable-next-line no-param-reassign
             state.isAuth = action.payload.isAuth
         },
     },
