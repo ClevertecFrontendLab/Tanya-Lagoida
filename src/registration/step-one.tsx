@@ -42,8 +42,9 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
         handleSubmit,
         trigger,
         clearErrors,
+        getValues,
         setValue,
-        formState: { errors, isValid}
+        formState: {errors, isValid}
     } = useForm<{ username: string, password: string }>({
         shouldFocusError: false,
         criteriaMode: 'all'
@@ -52,6 +53,8 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
     const [isTotalErrorRedUsername, setIsTotalErrorRedUsername] = useState<boolean | undefined>(false);
     const [isTotalErrorRedPassword, setIsTotalErrorRedPassword] = useState<boolean | undefined>(false);
     const [isCheckmark, setIsCheckmark] = useState<boolean>(false);
+    const [isFieldEmptyError, setIsFieldEmptyError] = useState<boolean>(false);
+    const [isButtonEyeVisible, setIsButtonEyeVisible] = useState<boolean>(false);
 
     const onSubmitIncreaseStep = () => {
         setStepRegistration((prevState: number) => prevState + 1);
@@ -74,7 +77,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
 
     return (
         <FormContainer
-            onSubmit={handleSubmit(onSubmitOne)} data-test-id='register-form'>
+            onSubmit={handleSubmit(onSubmitOne)} data-test-id="register-form">
             <TitleForm>
                 <LabelText
                     variantText="large24">Регистрация
@@ -100,22 +103,30 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     onClick={() => {
                         if (errors.username) {
                             setIsTotalErrorRedUsername(false);
+                            setIsFieldEmptyError(false);
                             clearErrors('username');
                         }
                     }}
                     onBlur={async () => {
+                        setIsFieldEmptyError(true);
                         setIsTotalErrorRedUsername(true);
                         await trigger('username');
-                        const {error: userNameError} = getFieldState('username');
-                        if ((!userNameError) ) {
+                        const {error: userNameError, isDirty} = getFieldState('username');
+                        if ((!userNameError)) {
                             setIsTotalErrorRedUsername(false);
+                        }
+                        if ((!userNameError)) {
+                            setIsFieldEmptyError(false);
+                        }
+                        if (isDirty) {
+                            setIsFieldEmptyError(false);
                         }
                     }}
                     onChange={async (event) => {
                         if (!errors.username) {
                             setIsTotalErrorRedUsername(false);
                         }
-                        setValue('username', event.currentTarget.value, { shouldDirty: true });
+                        setValue('username', event.currentTarget.value, {shouldDirty: true});
                         await trigger('username');
                     }}
                     placeholder="Придумайте логин для входа"/>
@@ -123,33 +134,38 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     входа</LabelBox>
 
                 {
-                    errors.username?.type === 'required' ?
-                        <AssistiveTextError data-test-id="hint">
-                            Поле не может быть пустым
-                        </AssistiveTextError>
-                        :
-                    isTotalErrorRedUsername ?
-                        <AssistiveTextBoxStepOne isTotalErrorRedUsername={isTotalErrorRedUsername}>
-                            <AssistiveTextError data-test-id='hint'>
-                                Используйте для логина латинский алфавит и цифры
+                    isFieldEmptyError ?
+                        <AssistiveTextBoxStepOne>
+                            <AssistiveTextError data-test-id="hint">
+                                Поле не может быть пустым
                             </AssistiveTextError>
                         </AssistiveTextBoxStepOne>
                         :
-                        <AssistiveTextBoxStepOne>
-                            <AssistiveText data-test-id='hint'>
-                                Используйте для логина {
-                                errors?.username?.types?.matchLetterPattern ? <AssistiveTextError>
-                                        латинский алфавит
-                                    </AssistiveTextError> :
-                                    <AssistiveText>латинский алфавит</AssistiveText>
-                            } и {
-                                errors?.username?.types?.matchNumberPattern ? <AssistiveTextError>
-                                        цифры
-                                    </AssistiveTextError> :
-                                    <AssistiveText>цифры</AssistiveText>
-                            }
-                            </AssistiveText>
-                        </AssistiveTextBoxStepOne>
+                        isTotalErrorRedUsername ?
+                            <AssistiveTextBoxStepOne
+                                isTotalErrorRedUsername={isTotalErrorRedUsername}>
+                                <AssistiveTextError data-test-id="hint">
+                                    Используйте для логина латинский алфавит и цифры
+                                </AssistiveTextError>
+                            </AssistiveTextBoxStepOne>
+                            :
+                            <AssistiveTextBoxStepOne>
+                                <AssistiveText data-test-id="hint">
+                                    Используйте для логина {
+                                    errors?.username?.types?.matchLetterPattern ?
+                                        <AssistiveTextError>
+                                            латинский алфавит
+                                        </AssistiveTextError> :
+                                        <AssistiveText>латинский алфавит</AssistiveText>
+                                } и {
+                                    errors?.username?.types?.matchNumberPattern ?
+                                        <AssistiveTextError>
+                                            цифры
+                                        </AssistiveTextError> :
+                                        <AssistiveText>цифры</AssistiveText>
+                                }
+                                </AssistiveText>
+                            </AssistiveTextBoxStepOne>
                 }
             </TextFields>
             <TextFields errorForStyle={errors.password}>
@@ -167,6 +183,7 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                         }
                     })}
                     onClick={() => {
+                        setIsButtonEyeVisible(true);
                         if (errors.password) {
                             setIsTotalErrorRedPassword(false);
                             clearErrors('password');
@@ -175,23 +192,26 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                     onBlur={async () => {
                         setIsTotalErrorRedPassword(true);
                         await trigger('password');
-                        const {error: userPasswordError} = getFieldState('password');
+                        const {error: userPasswordError, isDirty} = getFieldState('password');
                         if (!userPasswordError) {
                             setIsTotalErrorRedPassword(false);
+                        }
+                        if (!getValues('password')) {
+                            setIsButtonEyeVisible(false);
                         }
                     }}
 
                     onChange={async (event) => {
-                        setValue('password', event.currentTarget.value, { shouldDirty: true });
+                        setValue('password', event.currentTarget.value, {shouldDirty: true});
                         await trigger('password');
                         const {isDirty, error} = getFieldState('password');
                         if (!error) {
                             setIsTotalErrorRedPassword(false);
                         }
-                        if (isDirty && !error){
+                        if (isDirty && !error) {
                             setIsCheckmark(true);
                         }
-                        if (isDirty && error){
+                        if (isDirty && error) {
                             setIsCheckmark(false);
                         }
                     }}
@@ -199,55 +219,63 @@ export const StepOne: React.FC<TFormComponentTypes> = ({
                 <LabelBox htmlFor="password">Пароль</LabelBox>
                 {
                     isCheckmark ?
-                        <img src={checkPassword} alt="" data-test-id='checkmark'/> : null
+                        <img src={checkPassword} alt="" data-test-id="checkmark"/> : null
+                }
+                {
+                    isButtonEyeVisible &&
+                    <button
+                        type="button"
+                        onClick={togglePassword}>
+                        {
+                            passwordType === 'password' ?
+                                <EyeClosed data-test-id="eye-closed"/>
+                                :
+                                <Eye data-test-id="eye-opened"/>
+                        }
+                    </button>
                 }
 
-                <button
-                    type="button"
-                    onClick={togglePassword}>
-                    {
-                        passwordType === 'password' ?
-                            <EyeClosed data-test-id='eye-closed'/>
-                            :
-                            <Eye data-test-id='eye-opened'/>
-                    }
-                </button>
                 {
                     errors.password?.type === 'required' ?
-                        <AssistiveTextError data-test-id="hint">
-                            Поле не может быть пустым
-                        </AssistiveTextError>
-                        :
-                    isTotalErrorRedPassword ?
-                        <AssistiveTextBoxStepOne isTotalErrorRedPassword={isTotalErrorRedPassword}>
-                            <AssistiveTextError data-test-id='hint'>
-                                Пароль не менее 8 символов, с заглавной буквой и цифрой
+                        <AssistiveTextBoxStepOne>
+                            <AssistiveTextError data-test-id="hint">
+                                Поле не может быть пустым
                             </AssistiveTextError>
                         </AssistiveTextBoxStepOne>
                         :
-                <AssistiveTextBoxStepOne >
-                    <AssistiveText data-test-id='hint'>
-                        Пароль {
-                        errors?.password?.types?.checkLength ? <AssistiveTextError>
-                                не менее 8 символов
-                            </AssistiveTextError>
-                            : <AssistiveText>
-                                не менее 8 символов
-                            </AssistiveText>
-                    }
-                        , с {errors?.password?.types?.matchLetterPattern ? <AssistiveTextError>
-                        заглавной буквой
-                    </AssistiveTextError> : <AssistiveText>
-                        заглавной буквой
-                    </AssistiveText>
-                    } и {errors?.password?.types?.matchNumberPattern ? <AssistiveTextError>
-                        цифрой
-                    </AssistiveTextError> : <AssistiveText>
-                        цифрой
-                    </AssistiveText>
-                    }
-                    </AssistiveText>
-                </AssistiveTextBoxStepOne>
+                        isTotalErrorRedPassword ?
+                            <AssistiveTextBoxStepOne
+                                isTotalErrorRedPassword={isTotalErrorRedPassword}>
+                                <AssistiveTextError data-test-id="hint">
+                                    Пароль не менее 8 символов, с заглавной буквой и цифрой
+                                </AssistiveTextError>
+                            </AssistiveTextBoxStepOne>
+                            :
+                            <AssistiveTextBoxStepOne>
+                                <AssistiveText data-test-id="hint">
+                                    Пароль {
+                                    errors?.password?.types?.checkLength ? <AssistiveTextError>
+                                            не менее 8 символов
+                                        </AssistiveTextError>
+                                        : <AssistiveText>
+                                            не менее 8 символов
+                                        </AssistiveText>
+                                }
+                                    , с {errors?.password?.types?.matchLetterPattern ?
+                                    <AssistiveTextError>
+                                        заглавной буквой
+                                    </AssistiveTextError> : <AssistiveText>
+                                        заглавной буквой
+                                    </AssistiveText>
+                                } и {errors?.password?.types?.matchNumberPattern ?
+                                    <AssistiveTextError>
+                                        цифрой
+                                    </AssistiveTextError> : <AssistiveText>
+                                        цифрой
+                                    </AssistiveText>
+                                }
+                                </AssistiveText>
+                            </AssistiveTextBoxStepOne>
                 }
             </TextFields>
             <ButtonAndBottomFrameRegistration>

@@ -12,7 +12,7 @@ export const RegistrationSuccessfulMessage = () => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
 
     return (
-        <AllForm >
+        <AllForm data-test-id="auth">
             <HeaderLogin>
                 <LabelText
                     variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>

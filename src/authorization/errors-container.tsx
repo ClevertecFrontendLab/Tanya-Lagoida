@@ -9,36 +9,28 @@ import {device} from '../pages/main/styles';
 import {BlockContainerOne} from './errors-container-styles';
 import {ButtonComponent} from '../pages/components/button/button-component';
 
-type TErrorsType = {
-    title: string
-    text: string
-    textButton: string
-}
-
-export const ErrorsContainer: React.FC<TErrorsType> = ({title, textButton, text}) => {
+export const ErrorsContainer = () => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
 
     return (
-        <AllForm data-test-id="hint">
+        <AllForm data-test-id="auth">
 
                 <HeaderLogin>
                     <LabelText
                         variantText={isMobileView ? 'medium18LS' : 'large'}>Cleverland</LabelText>
                 </HeaderLogin>
-                <BlockContainerOne>
-                    <LabelText variantText={isMobileView ? 'medium18LS' : 'large24'}>{title}</LabelText>
+                <BlockContainerOne data-test-id='status-block'>
+                    <LabelText variantText={isMobileView ? 'medium18LS' : 'large24'}>Вход не выполнен</LabelText>
                     <div>
-                        <LabelText variantText={isMobileView ? 'medium15LH' : 'medium16LH24'}>{text}</LabelText>
+                        <LabelText variantText={isMobileView ? 'medium15LH' : 'medium16LH24'}>Что-то пошло не так. Попробуйте ещё раз</LabelText>
                     </div>
                     <ButtonComponent
                         height={isMobileView ? '40px' : '52px'}
                         width={isMobileView ? '256px' : '410px'}
                         status="inStock"><LabelText
-                        variantText={isMobileView ? 'smallLS' : 'medium16LS'}>{textButton}</LabelText>
+                        variantText={isMobileView ? 'smallLS' : 'medium16LS'}>повторить</LabelText>
                     </ButtonComponent>
                 </BlockContainerOne>
-
-
         </AllForm>
     );
 };

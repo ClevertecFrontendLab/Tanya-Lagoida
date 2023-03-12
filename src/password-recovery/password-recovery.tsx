@@ -44,6 +44,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
         register,
         handleSubmit,
         getFieldState,
+        getValues,
         formState: {errors},
         clearErrors,
         watch,
@@ -60,6 +61,9 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
     const isAuth = useAppSelector((state) => state.userSlice.isAuth);
     const [isTotalErrorRedPassword, setIsTotalErrorRedPassword] = useState<boolean | undefined>(false);
     const [isCheckmark, setIsCheckmark] = useState<boolean>(false);
+    const [isFieldEmptyError, setIsFieldEmptyError] = useState<boolean>(false);
+    const [isButtonEyeVisibleOne, setIsButtonEyeVisibleOne] = useState<boolean>(false);
+    const [isButtonEyeVisibleTwo, setIsButtonEyeVisibleTwo] = useState<boolean>(false);
     const password = useRef({});
     password.current = watch('password', '');
 
@@ -124,17 +128,35 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                                 }
                             })}
                             onClick={() => {
+                                setIsButtonEyeVisibleOne(true);
                                 if (errors.password) {
                                     setIsTotalErrorRedPassword(false);
+                                    setIsFieldEmptyError(false);
                                     clearErrors('password');
                                 }
                             }}
                             onBlur={async () => {
+                                setIsFieldEmptyError(true);
                                 setIsTotalErrorRedPassword(true);
                                 await trigger('password');
-                                const {error: userPasswordError} = getFieldState('password');
-                                if ((!userPasswordError)) {
+                                const {
+                                    error: userPasswordError,
+                                    isDirty
+                                } = getFieldState('password');
+                                if (!userPasswordError) {
                                     setIsTotalErrorRedPassword(false);
+                                }
+                                if (!userPasswordError) {
+                                    setIsFieldEmptyError(false);
+                                }
+                                if (isDirty) {
+                                    setIsFieldEmptyError(false);
+                                }
+                                // if (!isDirty) {
+                                //     setIsButtonEyeVisibleOne(false);
+                                // }
+                                if (!getValues('password')) {
+                                    setIsButtonEyeVisibleOne(false);
                                 }
                             }}
                             onChange={async (event) => {
@@ -158,21 +180,26 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                             isCheckmark ?
                                 <img src={checkPassword} alt="" data-test-id="checkmark"/> : null
                         }
-                        <button
-                            type="button"
-                            onClick={togglePassword}>
-                            {
-                                passwordType === 'password' ?
-                                    <EyeClosed/>
-                                    :
-                                    <Eye/>
-                            }
-                        </button>
                         {
-                            errors.password?.type === 'required' ?
-                                <AssistiveTextError data-test-id="hint">
-                                    Поле не может быть пустым
-                                </AssistiveTextError>
+                            isButtonEyeVisibleOne &&
+                            <button
+                                type="button"
+                                onClick={togglePassword}>
+                                {
+                                    passwordType === 'password' ?
+                                        <EyeClosed/>
+                                        :
+                                        <Eye/>
+                                }
+                            </button>
+                        }
+                        {
+                            isFieldEmptyError ?
+                                <AssistiveTextBoxStepOne>
+                                    <AssistiveTextError data-test-id="hint">
+                                        Поле не может быть пустым
+                                    </AssistiveTextError>
+                                </AssistiveTextBoxStepOne>
                                 :
                                 isTotalErrorRedPassword ?
                                     <AssistiveTextBoxStepOne
@@ -221,6 +248,7 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                             id="passwordConfirmation"
                             aria-invalid={errors.passwordConfirmation ? 'true' : 'false'}
                             onClick={() => {
+                                setIsButtonEyeVisibleTwo(true);
                                 if (errors.passwordConfirmation) {
                                     clearErrors('passwordConfirmation');
                                 }
@@ -232,19 +260,26 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                             })}
                             onBlur={async () => {
                                 await trigger('passwordConfirmation');
+                                const {isDirty} = getFieldState('passwordConfirmation');
+                                if (!getValues('passwordConfirmation')) {
+                                    setIsButtonEyeVisibleTwo(false);
+                                }
                             }}
-                            placeholder="passwordConfirmation"/>
+                            placeholder="Повторите пароль"/>
                         <LabelBox htmlFor="passwordConfirmation">Повторите пароль</LabelBox>
-                        <button
-                            type="button"
-                            onClick={togglePasswordTwo}>
-                            {
-                                passwordTypeTwo === 'password' ?
-                                    <EyeClosed data-test-id="eye-closed"/>
-                                    :
-                                    <Eye data-test-id="eye-opened"/>
-                            }
-                        </button>
+                        {
+                            isButtonEyeVisibleTwo &&
+                            <button
+                                type="button"
+                                onClick={togglePasswordTwo}>
+                                {
+                                    passwordTypeTwo === 'password' ?
+                                        <EyeClosed data-test-id="eye-closed"/>
+                                        :
+                                        <Eye data-test-id="eye-opened"/>
+                                }
+                            </button>
+                        }
                         <AssistiveTextBox>
                             {
                                 errors.passwordConfirmation?.type === 'required' ?
@@ -252,12 +287,12 @@ export const PasswordRecovery: React.FC<TFormComponentTypes> = ({
                                         Поле не может быть пустым
                                     </AssistiveTextError>
                                     :
-                                errors.passwordConfirmation
-                                    ?
-                                    <AssistiveTextError data-test-id="hint">
-                                        Пароли не совпадают
-                                    </AssistiveTextError>
-                                    : ''
+                                    errors.passwordConfirmation
+                                        ?
+                                        <AssistiveTextError data-test-id="hint">
+                                            Пароли не совпадают
+                                        </AssistiveTextError>
+                                        : ''
                             }
                         </AssistiveTextBox>
                         <AssistiveTextBox>

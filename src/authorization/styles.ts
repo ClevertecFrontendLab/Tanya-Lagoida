@@ -43,11 +43,6 @@ export const HeaderLogin = styled.div`
 `;
 export const TextFields = styled.div<{ errorForStyle?: any }>`
     position: relative;
-
-    input::placeholder {
-        color: transparent;
-    }
-
     input ~ label {
         letter-spacing: 0.1px;
         font-size: 14px;
@@ -59,14 +54,17 @@ export const TextFields = styled.div<{ errorForStyle?: any }>`
         display: block;
         position: absolute;
         top: 6px;
-        transition-duration: 500ms;
+        left: 12px;
         color: ${EColors.Grey};
         letter-spacing: 0.2px;
         font-size: 12px;
         font-weight: 500;
         line-height: 16px;
     }
-     button {
+    input:focus::placeholder {
+        color: transparent;
+    }
+    button {
         z-index: 5;
         position: absolute;
         top: 16px;
@@ -85,6 +83,13 @@ export const TextFields = styled.div<{ errorForStyle?: any }>`
         width: 24px;
         height: 24px;
     }
+`;
+export const LabelBox = styled.label`
+    display: none;
+    letter-spacing: 0.1px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
 `;
 export const AssistiveTextBox = styled.div`
     display: flex;
@@ -135,20 +140,7 @@ export const InputStyles = styled.input<{ error?: any, errorBorder?: any, errorB
         width: 256px;
     }
 `;
-export const LabelBox = styled.label`
-    cursor: pointer;
-    display: block;
-    position: absolute;
-    transition-duration: 500ms;
-    left: 12px;
-    top: 19px;
-    letter-spacing: 0.1px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 18px;
-    //z-index: -3;
 
-`;
 
 export const FormContainer = styled.form`
     display: flex;

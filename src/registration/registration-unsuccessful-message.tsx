@@ -22,12 +22,11 @@ export const RegistrationUnsuccessfulMessage: React.FC<TPropsTypes> = ({
     setIsUnSuccessMessage,
     setIsUnSuccessMessageSameLogin,
     setIsSuccessMessage,
-    error
 }) => {
     const isMobileView = useMediaQuery(`${device.mobileS}`);
 
-    const setMessage = () => {
-        if (error && error.status === 400) {
+    const setMessage = (error: any) => {
+        if (error?.status === 400) {
             setIsUnSuccessMessageSameLogin(true);
         } else setIsUnSuccessMessage(true);
     }
@@ -40,12 +39,12 @@ export const RegistrationUnsuccessfulMessage: React.FC<TPropsTypes> = ({
 
         } catch (error) {
             console.log(error);
-            setMessage()
+            setMessage(error)
         }
     };
 
     return (
-        <AllForm >
+        <AllForm data-test-id="auth">
 
             <HeaderLogin>
                 <LabelText

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {Navigate, NavLink, useSearchParams} from 'react-router-dom';
 import {SubmitHandler, useForm} from 'react-hook-form';
@@ -48,13 +48,15 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
     const code = searchParams.get('code');
     const isMobileView = useMediaQuery(`${device.mobileS}`);
     const isAuth = useAppSelector((state) => state.userSlice.isAuth);
+    const [isFieldEmptyError, setIsFieldEmptyError] = useState<boolean>(false);
     const {
         register,
         handleSubmit,
+        trigger,
         formState: {errors},
+        getFieldState,
         clearErrors,
     } = useForm<TPasswordResetRequest>({
-        mode: 'onBlur',
         shouldFocusError: false
     });
 
@@ -71,9 +73,7 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
     }
 
     if (data) {
-        return <MessageContainer
-            text="Перейдите в вашу почту, чтобы воспользоваться подсказками по восстановлению пароля"
-            title="Письмо выслано"/>;
+        return <MessageContainer />
     }
 
     if (code) {
@@ -105,6 +105,7 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                                 aria-invalid={errors.email ? 'true' : 'false'}
                                 onClick={() => {
                                     if (errors) {
+                                        setIsFieldEmptyError(false);
                                         clearErrors('email');
                                     }
                                 }}
@@ -112,14 +113,26 @@ export const PasswordReset: React.FC<TFormComponentTypes> = ({
                                     required: true,
                                     pattern: /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i,
                                 })}
+                                onBlur={async () => {
+                                    setIsFieldEmptyError(true);
+                                    await trigger('email');
+                                    const {error, isDirty} = getFieldState('email');
+                                    if (!error) {
+                                        setIsFieldEmptyError(false);
+                                    }
+                                    if(isDirty) {
+                                        setIsFieldEmptyError(false );
+                                    }
+                                }}
                                 placeholder="Email"/>
                             <LabelBox htmlFor="email">Email</LabelBox>
                             <AssistiveTextBox>
 
                                 {
-                                    errors.email?.type === 'required' ?
-                                        <AssistiveTextError data-test-id="hint">
-                                            Поле не может быть пустым
+                                    isFieldEmptyError ?
+                                        <AssistiveTextError>
+                                            <LabelText variantText="small500" data-test-id="hint">Поле не может быть пустым
+                                            </LabelText>
                                         </AssistiveTextError>
                                         :
                                         errors.email?.type === 'pattern' ?

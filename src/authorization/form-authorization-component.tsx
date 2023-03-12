@@ -55,8 +55,8 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
         register,
         clearErrors,
         trigger,
-        setValue,
         formState: {errors},
+        getValues,
         getFieldState,
         handleSubmit,
     } = useForm<TAuthorizationRequest>({
@@ -92,15 +92,13 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
     };
 
     if (error && error.status !== 400) {
-        return <ErrorsContainer title="Вход не выполнен"
-                                text="Что-то пошло не так. Попробуйте ещё раз"
-                                textButton="повторить"/>;
+        return <ErrorsContainer/>
     }
-
 
     if (isAuth) {
         return <Navigate to="/"/>;
     }
+    console.log(isButtonEyeVisible);
 
     return (
         <AllForm data-test-id="auth">
@@ -110,7 +108,7 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
             </HeaderLogin>
             <FormAllContainer data-test-id="auth-form" onSubmit={handleSubmit(onSubmit)}>
                 <LabelText
-                    variantText="large24">Вход в личный кабинет</LabelText>
+                    variantText="large24">Bход в личный кабинет</LabelText>
                 <FormContainerAuth>
                     <TextFields>
                         <InputStyles
@@ -128,7 +126,8 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                         <AssistiveTextBox>
                             {errors.identifier ?
                                 <AssistiveTextError>
-                                    <LabelText variantText="small500" data-test-id="hint">Поле не может быть пустым
+                                    <LabelText variantText="small500" data-test-id="hint">Поле не
+                                        может быть пустым
                                     </LabelText>
                                 </AssistiveTextError>
                                 : null
@@ -139,16 +138,18 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                         <InputStyles
                             type={passwordType}
                             id="password" {...register('password', {required: true})}
-                            onClick={ async ()  => {
+                            onClick={async () => {
+                                setIsButtonEyeVisible(true);
                                 await trigger('password');
-                                const {isTouched, error} = getFieldState('password');
+                                const {error} = getFieldState('password');
                                 if (error) {
                                     clearErrors('password');
                                 }
-                                if (isTouched) {
-                                    setIsButtonEyeVisible(true);
-                                }
-                                if (!isTouched) {
+                            }}
+                            onBlur={async () => {
+                                await trigger('password');
+                                const {isDirty} = getFieldState('password');
+                                if (!getValues('password')) {
                                     setIsButtonEyeVisible(false);
                                 }
                             }}
@@ -156,29 +157,31 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                             placeholder="Пароль"/>
                         <LabelBox htmlFor="password">Пароль</LabelBox>
                         {
-                            isButtonEyeVisible ?
-                            <button
-                                type="button"
-                                onClick={togglePassword}>
-                                {
-                                    passwordType === 'password' ?
-                                        <EyeClosed />
-                                        :
-                                        <Eye />
-                                }
-                            </button> : null
+                            isButtonEyeVisible &&
+                                <button
+                                    type="button"
+                                    onClick={togglePassword}>
+                                    {
+                                        passwordType === 'password' ?
+                                            <EyeClosed/>
+                                            :
+                                            <Eye/>
+                                    }
+                                </button>
                         }
 
                         <AssistiveTextBox>
                             {error && error.status === 400
                                 ? <AssistiveTextError>
-                                    <LabelText variantText="small500" data-test-id="hint">Неверный логин или
+                                    <LabelText variantText="small500" data-test-id="hint">Неверный
+                                        логин или
                                         пароль!</LabelText>
                                 </AssistiveTextError>
                                 : errors.password
                                     ?
                                     <AssistiveTextError>
-                                        <LabelText variantText="small500" data-test-id="hint">Поле не может быть пустым
+                                        <LabelText variantText="small500" data-test-id="hint">Поле
+                                            не может быть пустым
                                         </LabelText>
                                     </AssistiveTextError>
                                     : null
@@ -201,29 +204,14 @@ export const FormAuthorizationComponent: React.FC<TFormComponentTypes> = ({
                         </AssistiveTextBox>
                     </TextFields>
                     <ButtonAndBottomFrame>
-                        {
-                            errors ?
-                            <ButtonComponent
-                                disabled={true}
-                                dataTestId="button-tanya"
-                                type="submit"
-                                height={isMobileView ? '40px' : '52px'}
-                                width={isMobileView ? '255px' : '416px'}
-                                status="inStock">
-                                вход
-                            </ButtonComponent>
-                            :
-                            <ButtonComponent
-                            dataTestId="button-tanya"
+                        <ButtonComponent
+
                             type="submit"
                             height={isMobileView ? '40px' : '52px'}
                             width={isMobileView ? '255px' : '416px'}
-                            status="inStock">
+                            status="default">
                             вход
-                            </ButtonComponent>
-                        }
-
-
+                        </ButtonComponent>
                         <BottomFrame>
                             <LabelText
                                 variantText={isMobileView ? 'medium15LH' : 'medium16LH24'}>Нет
