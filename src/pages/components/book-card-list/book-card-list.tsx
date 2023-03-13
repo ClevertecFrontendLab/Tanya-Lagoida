@@ -1,9 +1,15 @@
 import React from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 
+import {EEndPoints} from '../../../config/endpoints';
+import {dateFunc} from '../../../func/date-adding-zero-func';
+import {TBooksGenresType, TBooksType} from '../../../services/book-service-types';
+import {BookFilterSort} from '../../common-components/book-filter-sort';
 import {StarComponent} from '../../common-components/stars/star-component';
+import {useMediaQuery} from '../../hooks/use-media-query';
 import withoutCover from '../../images/icon-without-cover.svg';
 import {LabelText} from '../../labels/labels';
+import {device} from '../../main/styles';
 import {
     EnteredText,
     NonCategory,
@@ -19,12 +25,6 @@ import {
     ContainerListView, ImgContainerList,
     NameList, RatingAndButtonList, RightContainerList
 } from './styles';
-import {useMediaQuery} from '../../hooks/use-media-query';
-import {device} from '../../main/styles';
-import {TBooksGenresType, TBooksType} from '../../../services/book-service-types';
-import {EEndPoints} from '../../../config/endpoints';
-import {dateFunc} from '../../../func/date-adding-zero-func';
-import {BookFilterSort} from '../../common-components/book-filter-sort';
 
 type TProps = {
     dataBooks: TBooksType[]
@@ -87,7 +87,7 @@ export const BookCardList: React.FC<TProps> = ({
     }
 
     return (
-        <>
+        <React.Fragment>
             {
                 (category === 'all' ? sortBook[0] : sortBook[1])
                     .map((book: TBooksType) =>
@@ -178,7 +178,7 @@ export const BookCardList: React.FC<TProps> = ({
                         </ContainerListView>
                     )
             }
-        </>
+        </React.Fragment>
     );
 };
 

@@ -4,7 +4,7 @@ import {device} from '../pages/main/styles';
 
 export const LoaderContainer = styled.div`
     background-color: ${EColors.Blur};
-    z-index: 5;
+    z-index: 50;
     position: fixed;
     width: 100%;
     height: 100%;

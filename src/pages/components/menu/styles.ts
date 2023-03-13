@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import {device} from '../../main/styles';
-import {EColors} from '../../themes/themes';
+import { device } from '../../main/styles';
+import { EColors } from '../../themes/themes';
 
 export const MenuStyles = styled.aside`
     @media screen and ${device.mobileS} {
@@ -39,13 +39,15 @@ export const ShowcaseBooksBox = styled.div<{ isActive: boolean }>`
     border-bottom: ${(props) => props.isActive ? '1px solid' : 'none'};
     border-image: ${(props) => props.isActive ? `linear-gradient(231.58deg, ${EColors.Red} -53.35%, ${EColors.Yellow} 297.76%) 1 0` : 'none'};
 `;
-export const BooksCategoriesContainer = styled.nav<{ isMenuOpen: boolean,
+export const BooksCategoriesContainer = styled.nav<{
+    isMenuOpen: boolean,
     isLoadingCategories: boolean,
     isFetchingCategories: boolean,
     isErrorCategories: boolean,
     isLoadingBooks: boolean,
     isFetchingBooks: boolean,
-    isErrorBooks: boolean}>`
+    isErrorBooks: boolean
+}>`
     display: ${(props) => props.isMenuOpen === false ? 'none' : 'flex'};
     gap: 14.5px;
     flex-direction: column;
@@ -100,6 +102,7 @@ export const ShowMenu = styled.img<{
     display: ${(props) => props.isActive && !props.isLoadingCategories && !props.isFetchingCategories && !props.isErrorCategories && !props.isLoadingBooks && !props.isFetchingBooks && !props.isErrorBooks ? 'block' : 'none'};
 `;
 export const ProfileAndExitContainer = styled.div`
+
     @media screen and ${device.mobileS} {
         display: flex;
         flex-direction: column;
@@ -127,6 +130,10 @@ export const ProfileAndExitContainer = styled.div`
     @media screen and  ${device.laptopL} {
         width: 0;
         display: none;
+    }
+    button {
+        background: none;
+        border: none;
     }
 `;
 export const MenuContainer = styled.div<{ isMenuCollapsed: boolean }>`

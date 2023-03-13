@@ -4,8 +4,21 @@ import {EEndPoints} from '../config/endpoints';
 import {TBooksByIdType, TBooksGenresType, TBooksType} from './book-service-types';
 
 
+
 export const bookApi = createApi({
-    baseQuery: fetchBaseQuery({ baseUrl: EEndPoints.baseUrl }),
+    reducerPath: 'bookApi',
+    baseQuery: fetchBaseQuery({
+        baseUrl: EEndPoints.baseUrl,
+        prepareHeaders: (headers) => {
+            const token = localStorage.getItem('token');
+
+            if (token) {
+                headers.set('authorization', `Bearer ${JSON.parse(token)}`)
+            }
+
+            return headers
+        }
+    }),
     keepUnusedDataFor: 0,
     endpoints: (builder) => ({
         gettingAListOfBooks: builder.query<TBooksType[], void>({

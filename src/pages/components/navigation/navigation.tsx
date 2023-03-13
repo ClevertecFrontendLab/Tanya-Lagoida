@@ -1,9 +1,13 @@
 import React, {ChangeEvent, useState} from 'react';
 
 import {IconButton} from '../../common-components/icon-button/icon-button';
-import iconSort from '../../images/icon-sort-ascending.svg';
+import {useMediaQuery} from '../../hooks/use-media-query';
 import closeInput from '../../images/close-input.svg';
+import {Lupa} from '../../images/icon-search-active';
+import iconSort from '../../images/icon-sort-ascending.svg';
 import {LabelText} from '../../labels/labels';
+import {device} from '../../main/styles';
+import {useSort} from '../layout/layout';
 
 import {
     ButtonCloseInput,
@@ -14,10 +18,6 @@ import {
     SortBookImg,
     SortBookInput
 } from './styles';
-import {useMediaQuery} from '../../hooks/use-media-query';
-import {device} from '../../main/styles';
-import {useSort} from '../layout/layout';
-import {Lupa} from '../../images/icon-search-active';
 
 type TProps = {
     isListView: boolean
@@ -35,7 +35,9 @@ export const Navigation: React.FC<TProps> = ({
 
     const [isSearchInputOpen, setIsSearchInputOpen] = useState<boolean>(false);
     const isMobileView = useMediaQuery(`${device.mobileS}`);
-    const {isDefaultSort, updateSort} =  useSort()
+    const isTabletView = useMediaQuery(`${device.tablet}`);
+    const isLaptopView = useMediaQuery(`${device.laptopL}`);
+    const {isDefaultSort} =  useSort()
 
     const handleIconTableClick = (): void => {
         handleIsListView(false);
@@ -53,7 +55,7 @@ export const Navigation: React.FC<TProps> = ({
     return (
 
         <NavigationStyles>
-            {!isMobileView
+            {isTabletView || isLaptopView
                 ?
                 <SearchAndSortContainer>
                     <SearchContainer>

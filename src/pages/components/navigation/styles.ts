@@ -79,9 +79,6 @@ export const SearchContainer = styled.div`
         display: flex;
         align-items: center;
         justify-content: end;
-        :active {
-            background: url('../../images/search-book.svg') no-repeat left;
-        }
 
         button {
             position: absolute;
